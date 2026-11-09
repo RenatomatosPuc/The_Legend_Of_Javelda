@@ -1,2 +1,2 @@
 # The-Legend-Of-Javelda
-Jogo lendario de Renato e Matheus
+Jogo lendario de Renato, Vasco e Matheus
