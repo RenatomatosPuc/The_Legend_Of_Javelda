@@ -1,17 +1,5 @@
-<<<<<<< HEAD
-# The_Legend_Of_Javelda
-
-Projeto básico com **Vaadin 24 + Spring Boot 3.2** e Java 21.
-
-## Como compilar e rodar
-
-```bash
-cd The_Legend_Of_Javelda
-mvn clean install
-mvn spring-boot:run
-
-=======
 # The-Legend-Of-Javelda
+
 Jogo lendario de Renato, Vasco e Matheus
 
 ```text
@@ -85,5 +73,4 @@ The-Legend-Of-Javelda/
 │       └── java/
 │           └── br/edu/pucrs/javaria/
 └── docs/                         # relatório, diagrama, etc.
->>>>>>> d37b7b8bb1c80d69f4708bd668cc39a53e229f29
 ```
