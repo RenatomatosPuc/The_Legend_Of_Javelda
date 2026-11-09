@@ -1,4 +1,4 @@
-package The-Legend-Of-Javelda.Personagens;
+package Herois;
 
 public class Clerigo {
 
