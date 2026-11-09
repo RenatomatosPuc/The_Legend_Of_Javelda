@@ -10,7 +10,7 @@ The-Legend-Of-Javelda/
 ├── mvnw.cmd
 ├── .mvn/
 │   └── wrapper/
-├── data/                         # CSV gravados durante a execução
+├── data/                         # CSV que vão ser gravados durante a execução
 │   ├── herois.csv
 │   ├── inventarios.csv
 │   └── batalhas.csv
@@ -71,5 +71,5 @@ The-Legend-Of-Javelda/
 │   └── test/
 │       └── java/
 │           └── br/edu/pucrs/javaria/
-└── docs/                         # relatório, diagrama e materiais do grupo
+└── docs/                         # relatório, diagrama, etc.
 ```
