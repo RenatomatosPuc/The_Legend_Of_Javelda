@@ -1,5 +1,21 @@
 package com.Personagens;
 
 public interface Combatente {
+    String getNome();
 
+    // Guilda getGuilda();
+
+    double getVidaAtual();
+
+    double getVidaMaxima();
+
+    boolean estaVivo();
+
+    double receberDano(double danoRecebido);
+
+    // Arma getArmamento();
+
+    // Armadura getArmadura();
+
+    // Batalha Acao();
 }
