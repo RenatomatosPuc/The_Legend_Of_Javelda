@@ -2,6 +2,7 @@ target/
 node_modules/
 frontend/generated/
 .idea/
+<<<<<<< HEAD
 data/javelda*
 docs/
 vite.generated.ts
@@ -12,3 +13,6 @@ vite.generated.ts
 .settings/
 .DS_Store
 Thumbs.db
+=======
+docs/
+>>>>>>> 7b562d92db18062af7e50b076f94303f799cde53
