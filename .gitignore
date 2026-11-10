@@ -2,3 +2,13 @@ target/
 node_modules/
 frontend/generated/
 .idea/
+data/javelda*
+docs/
+vite.generated.ts
+.iml
+.vscode/
+.classpath
+.project
+.settings/
+.DS_Store
+Thumbs.db
