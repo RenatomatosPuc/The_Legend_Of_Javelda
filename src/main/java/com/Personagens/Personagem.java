@@ -35,7 +35,8 @@ public abstract class Personagem implements Combatente {
         if (danoRecebido > this.defesa * 0.25)
             return this.vidaAtual = this.vidaAtual + this.defesa - danoRecebido; // a defesa reduz o dano em 1 quarto
                                                                                  // dela. Ou seja,
-        // ao ter 40 de defesa, tanka 10 de dano;
+                                                                                 // ao ter 40 de defesa, tanka 10 de
+                                                                                 // dano;
         return this.vidaAtual - 1;
     }
 
