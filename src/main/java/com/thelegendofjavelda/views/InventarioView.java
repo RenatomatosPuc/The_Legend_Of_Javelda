@@ -10,10 +10,6 @@ import com.vaadin.flow.component.button.Button;
 public class InventarioView extends VerticalLayout {
     public InventarioView() {
         add(new H1("Inventário"));
-        Button menu = new Button("Menu", event -> getUI().ifPresent(ui -> ui.navigate("")));
-        Button guilda = new Button("Guilda", event -> getUI().ifPresent(ui -> ui.navigate("guilda")));
-        Button equipe = new Button("Equipe", event -> getUI().ifPresent(ui -> ui.navigate("equipe")));
-        add(menu, guilda, equipe);
     }
 
 }
