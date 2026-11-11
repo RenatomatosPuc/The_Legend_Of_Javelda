@@ -11,6 +11,20 @@ public abstract class Personagem implements Combatente {
     private boolean estaVivo;
 
     @Override
+    public double getAtaque() {
+        return this.ataque;
+    }
+
+    @Override
+    public double getDefesa() {
+        return this.defesa;
+    }
+
+    public int getVelocidade() {
+        return this.velocidade;
+    }
+
+    @Override
     public String getNome() {
         return this.nome;
     }
@@ -27,7 +41,9 @@ public abstract class Personagem implements Combatente {
 
     @Override
     public boolean estaVivo() {
-        return this.estaVivo;
+        if (this.vidaAtual >= 0)
+            return true;
+        return false;
     }
 
     @Override

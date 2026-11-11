@@ -9,6 +9,10 @@ public interface Combatente {
 
     double getVidaMaxima();
 
+    double getAtaque();
+
+    double getDefesa();
+
     boolean estaVivo();
 
     double receberDano(double danoRecebido);
