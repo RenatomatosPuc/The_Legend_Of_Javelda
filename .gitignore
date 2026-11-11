@@ -2,5 +2,6 @@ target/
 node_modules/
 frontend/generated/
 .idea/
-docs/
-data/javelda*
+docs/*
+data/
+.vscode/
