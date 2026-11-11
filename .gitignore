@@ -4,3 +4,4 @@ frontend/generated/
 .idea/
 docs/*
 data/
+.vscode/

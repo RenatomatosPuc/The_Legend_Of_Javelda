@@ -1,6 +1,7 @@
 package com.thelegendofjavelda;
 
 import com.thelegendofjavelda.views.MainLayout;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
@@ -16,9 +17,12 @@ public class MainView extends VerticalLayout {
 
         Button novoJogo = new Button("novo Jogo", event -> getUI().ifPresent(ui -> ui.navigate("guilda")));
         Button continuar = new Button("Continuar", event -> Notification.show("Em breve!"));
-        Button dificuldade = new Button("Dificuldade");
+        ComboBox<String> comboDificuldade = new ComboBox<>("Dificuldade");
+        comboDificuldade.setLabel("Dificuldade");
+        comboDificuldade.setPlaceholder("Selecione a dificuldade");
+        comboDificuldade.setItems("Fácil", "Médio", "Difícil");
         Button sair = new Button("Sair", event -> System.exit(0));
-        add(continuar, novoJogo, dificuldade, sair);
+        add(continuar, novoJogo, comboDificuldade, sair);
 
         // add(new Button("Clique aqui", event -> add(new H2("Olá, mundo!"))));
     }
