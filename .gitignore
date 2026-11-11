@@ -3,3 +3,4 @@ node_modules/
 frontend/generated/
 .idea/
 docs/
+data/javelda*
