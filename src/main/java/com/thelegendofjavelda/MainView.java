@@ -8,7 +8,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
-@Route(value = "", layout = MainLayout.class)
+@Route("")
 public class MainView extends VerticalLayout {
     public MainView() {
         add(new H1("The Legend of Javelda!"));
