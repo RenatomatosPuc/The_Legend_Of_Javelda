@@ -8,12 +8,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import java.util.Set;
 
+import com.thelegendofjavelda.persistence.GuildaService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 
 @Route(value = "equipe", layout = MainLayout.class)
 public class EquipeView extends VerticalLayout {
-    public EquipeView() {
+    public EquipeView(GuildaService guildaService) {
         add(new H1("Equipe"));
 
         Grid<HeroResumo> grade = new Grid<>();
@@ -21,7 +22,7 @@ public class EquipeView extends VerticalLayout {
         grade.addColumn(HeroResumo::classe).setHeader("Classe");
         grade.addColumn(HeroResumo::nivel).setHeader("Nível");
         grade.setSelectionMode(Grid.SelectionMode.MULTI);
-        grade.setItems();
+        grade.setItems(guildaService.listarMembros());
 
         Button adicionar = new Button("Adicionar à Equipe", event -> {
             Set<HeroResumo> selecionados = grade.getSelectedItems();

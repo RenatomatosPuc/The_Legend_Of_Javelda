@@ -11,12 +11,13 @@ import com.vaadin.flow.component.textfield.TextField;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.thelegendofjavelda.persistence.GuildaService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 
 @Route(value = "guilda", layout = MainLayout.class)
 public class GuildaView extends VerticalLayout {
-    public GuildaView() {
+    public GuildaView(GuildaService guildaService) {
         add(new H1("Guilda"));
 
         TextField nome = new TextField("Nome");
@@ -24,7 +25,7 @@ public class GuildaView extends VerticalLayout {
         classe.setLabel("Classe");
         classe.setItems("Guerreiro", "Mago", "Arqueiro", "Clérigo");
 
-        List<HeroResumo> membros = new ArrayList<>();
+        // List<HeroResumo> membros = new ArrayList<>();
         Grid<HeroResumo> grade = new Grid<>();
         grade.addColumn(HeroResumo::nome).setHeader("Nome");
         grade.addColumn(HeroResumo::classe).setHeader("Classe");
@@ -35,8 +36,10 @@ public class GuildaView extends VerticalLayout {
                 Notification.show("Informe o nome e a classe.");
                 return;
             }
-            membros.add(new HeroResumo(nome.getValue(), classe.getValue(), 1));
-            grade.setItems(membros);
+
+            guildaService.adicionar(new HeroResumo(nome.getValue(), classe.getValue(), 1));
+            // membros.add(new HeroResumo(nome.getValue(), classe.getValue(), 1));
+            grade.setItems(guildaService.listarMembros());
             nome.clear();
         });
         add(nome, classe, adicionar, grade);
