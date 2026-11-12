@@ -20,12 +20,13 @@ public class EquipeView extends VerticalLayout {
 
         Grid<HeroResumo> grade = new Grid<>();
         Grid.Column<HeroResumo> colunaNome = grade.addColumn(HeroResumo::nome).setHeader("Nome");
-Grid.Column<HeroResumo> colunaClasse = grade.addColumn(HeroResumo::classe).setHeader("Classe");
-Grid.Column<HeroResumo> colunaNivel = grade.addColumn(HeroResumo::nivel).setHeader("Nível");
+        Grid.Column<HeroResumo> colunaClasse = grade.addColumn(HeroResumo::classe).setHeader("Classe");
+        Grid.Column<HeroResumo> colunaNivel = grade.addColumn(HeroResumo::nivel).setHeader("Nível");
         grade.setSelectionMode(Grid.SelectionMode.MULTI);
         grade.setItems(guildaService.listarMembros());
         HeaderRow gradeHeader = grade.prependHeaderRow();
         gradeHeader.join(colunaNome, colunaClasse, colunaNivel).setText("Guilda");
+        grade.setWidth("25%");
         
         
 
@@ -35,6 +36,7 @@ Grid.Column<HeroResumo> colunaNivel = grade.addColumn(HeroResumo::nivel).setHead
         Grid.Column<HeroResumo> colunaNivelEquipe = gradeEquipe.addColumn(HeroResumo::nivel).setHeader("Nível");
         HeaderRow gradeEquipeHeader = gradeEquipe.prependHeaderRow();
         gradeEquipeHeader.join(colunaNomeEquipe, colunaClasseEquipe, colunaNivelEquipe).setText("Equipe");
+        gradeEquipe.setWidth("25%");
 
         Set<HeroResumo> membrosEquipe = new HashSet<>();
 
@@ -50,7 +52,7 @@ Grid.Column<HeroResumo> colunaNivel = grade.addColumn(HeroResumo::nivel).setHead
         });
         
 
-        VerticalLayout gradesLayout = new VerticalLayout(grade, gradeEquipe);
+        HorizontalLayout gradesLayout = new HorizontalLayout(grade, gradeEquipe);
         VerticalLayout layoutPrincipal = new VerticalLayout(adicionar);
         add(layoutPrincipal);
         add(gradesLayout);

@@ -1,3 +1,7 @@
 vaadin-grid::part(addEquipe) {
     background: rgba(0, 255, 0, 0.432);
 }
+
+html{
+    --vaadin-app-layout-drawer-width: 200px;
+}
