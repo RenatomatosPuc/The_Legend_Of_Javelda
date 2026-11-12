@@ -1,10 +1,11 @@
 package com.Arsenal;
 
-public class Arma {
+public class Arma implements Equipavel {
 
     private String nome;
     private double ataque;
     private double durabilidade;
+    private int slotInventario = 0;
 
     public Arma(String nome, double ataque, double durabilidade) {
         this.nome = nome;
@@ -22,5 +23,9 @@ public class Arma {
 
     public double getDurabilidade() {
         return durabilidade;
+    }
+
+    public int getSlotInventario() {
+        return this.slotInventario;
     }
 }
