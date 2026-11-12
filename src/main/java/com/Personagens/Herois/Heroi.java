@@ -4,78 +4,53 @@ import com.Personagens.Personagem;
 import com.Arsenal.*;
 
 public abstract class Heroi extends Personagem {
-    private Arma armamento;
-    private Armadura armadura;
-    private Utilitario item;
-    private int nivel;
     private Classe classe;
-    private double ouro;
-    private Inventario inventario;
+    private int nivel;
     private double experiencia;
-    private double valorBuff;
-    private double danoArma;
+    private InventarioPersonagem inventarioPersonagem;
+    private double ouro;
 
     // METODOS DE NIVEL
 
-    public double ganharExperiencia(double experienciaGanha) { // Faz o heroi receber experiencia, e ao chegar em 100,
-                                                               // sobe o nivel em 1 e reduz exp em 100
+    public Heroi(int n, Classe c) {
+        this.classe = c;
+        this.nivel = n;
+        this.experiencia = 0;
+        this.inventarioPersonagem = new InventarioPersonagem();
+        this.ouro = 0;
+    }
+
+    // Faz o heroi receber experiencia, e ao chegar em 100, sobe o nivel em 1 e
+    // reduz exp em 100 e retorna a exp atual do jogador
+    public double ganharExperiencia(double experienciaGanha) {
         this.experiencia = this.experiencia + experienciaGanha;
         if (experiencia >= 100) {
             this.experiencia = this.experiencia - 100;
             subirNivel();
         }
-        return this.experiencia; // Retrna a experiencia atual |*POR ENQUANTO*|
+        return this.experiencia;
     }
 
-    public void subirNivel() { // Aumenta o nivel em 1
+    // Aumenta o nivel em 1
+    public void subirNivel() {
         this.nivel = this.nivel + 1;
     }
 
     // METODOS DE ACOES
 
+    // Calcula o poder da arma mais a forca do personagem e retorna o dano causado
     public double atacar() {
-
-        if (this.armamento != null) {
-            danoArma = this.armamento.getAtaque();
-
-        } else {
-            danoArma = 0;
+        double danoArma = 0;
+        if (inventarioPersonagem.getArma() != null) {
+            danoArma = inventarioPersonagem.getArma().getAtaque();
         }
-        return danoArma + super.getAtaque(); // rolar o dano do ataque (sujeito a alterações)
+        return danoArma + super.getAtaque();
     }
 
-    public void usarItem() { // removi o double de retorno pra tirar o erro
-                             // porque não sei o que vocês queriam fazer com ele -Vasco
+    // Usa o utilitario
+    public void usarItem() {
         try {
-            this.item.usarUtilitario();
-        } catch (Exception e) { // ATUALIZAR O EXCEPTION E O CATCH *********
-
-        }
-    }
-
-    // METODOS DE EQUIPAMENTO:
-
-    public void equiparArmadura(Armadura armadura) {
-        try {
-            this.armadura = armadura;
-
-        } catch (Exception e) { // ATUALIZAR O EXCEPTION E O CATCH *********
-
-        }
-    }
-
-    public void equiparArma(Arma arma) { // Armamento? Não deveria ser Arma?
-                                         // Mudei pra arma pra tirar o erro, mas não sei se é o certo -Vasco
-        try {
-            this.armamento = arma;
-        } catch (Exception e) { // ATUALIZAR O EXCEPTION E O CATCH *********
-
-        }
-    }
-
-    public void equiparItem(Utilitario item) {
-        try {
-            this.item = item;
+            this.inventarioPersonagem.getUtilitario().usarUtilitario();
         } catch (Exception e) { // ATUALIZAR O EXCEPTION E O CATCH *********
 
         }

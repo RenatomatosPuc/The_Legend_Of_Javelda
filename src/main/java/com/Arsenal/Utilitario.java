@@ -1,8 +1,9 @@
 package com.Arsenal;
 
-public class Utilitario {
+public class Utilitario implements Equipavel {
     private String nome;
     private double uso;
+    private int slotInventario = 2;
 
     public Utilitario(String nome, double uso) {
         this.nome = nome;
@@ -25,6 +26,10 @@ public class Utilitario {
         } else {
             throw new Exception("O utilitário " + nome + " não pode mais ser usado.");
         }
+    }
+
+    public int getSlotInventario() {
+        return this.slotInventario;
     }
 
 }
