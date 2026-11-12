@@ -1,6 +1,7 @@
 package com.Personagens.Herois;
 
 import com.Personagens.Personagem;
+import com.Arsenal.*;
 
 public abstract class Heroi extends Personagem {
     private Arma armamento;
@@ -12,6 +13,7 @@ public abstract class Heroi extends Personagem {
     private Inventario inventario;
     private double experiencia;
     private double valorBuff;
+    private double danoArma;
 
     // METODOS DE NIVEL
 
@@ -37,15 +39,16 @@ public abstract class Heroi extends Personagem {
             danoArma = this.armamento.getAtaque();
 
         } else {
-            double danoArma = 0;
+            danoArma = 0;
         }
         return danoArma + super.getAtaque(); // rolar o dano do ataque (sujeito a alterações)
     }
 
-    public double usarItem() {
+    public void usarItem() { // removi o double de retorno pra tirar o erro
+                             // porque não sei o que vocês queriam fazer com ele -Vasco
         try {
             this.item.usarUtilitario();
-        } catch (ExceptionBOLADONA e) { // ATUALIZAR O EXCEPTION E O CATCH *********
+        } catch (Exception e) { // ATUALIZAR O EXCEPTION E O CATCH *********
 
         }
     }
@@ -56,15 +59,16 @@ public abstract class Heroi extends Personagem {
         try {
             this.armadura = armadura;
 
-        } catch (ExceptionBOLADONA e) { // ATUALIZAR O EXCEPTION E O CATCH *********
+        } catch (Exception e) { // ATUALIZAR O EXCEPTION E O CATCH *********
 
         }
     }
 
-    public void equiparArma(Armamento arma) {
+    public void equiparArma(Arma arma) { // Armamento? Não deveria ser Arma?
+                                         // Mudei pra arma pra tirar o erro, mas não sei se é o certo -Vasco
         try {
             this.armamento = arma;
-        } catch (ExceptionBOLADONA e) { // ATUALIZAR O EXCEPTION E O CATCH *********
+        } catch (Exception e) { // ATUALIZAR O EXCEPTION E O CATCH *********
 
         }
     }
@@ -72,7 +76,7 @@ public abstract class Heroi extends Personagem {
     public void equiparItem(Utilitario item) {
         try {
             this.item = item;
-        } catch (ExceptionBOLADONA e) { // ATUALIZAR O EXCEPTION E O CATCH *********
+        } catch (Exception e) { // ATUALIZAR O EXCEPTION E O CATCH *********
 
         }
     }
