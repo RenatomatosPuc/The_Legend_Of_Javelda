@@ -74,3 +74,12 @@ The-Legend-Of-Javelda/
 │           └── br/edu/pucrs/javaria/
 └── docs/                         # relatório, diagrama, etc.
 ```
+
+MERGE comando:
+
+git checkout (Minha Branch)
+
+> > git fetch origin
+> > git merge origin/main
+
+//nesse caso da merge da main para a branch origin

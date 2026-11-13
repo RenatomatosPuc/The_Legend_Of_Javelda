@@ -18,15 +18,11 @@ public class Utilitario implements Equipavel {
         return uso;
     }
 
-    // Metodo PlaceHolder pra usar o utilitario
-    // Mudem depois
-    public void usarUtilitario() throws Exception {
-        if (uso > 0) {
-            uso--;
-        } else {
-            throw new Exception("O utilitário " + nome + " não pode mais ser usado.");
-        }
-    }
+    // Usa o utilitario
+    // E necessario criar os itens para implimentar esse metodo
+    /*
+     * public void usarUtilitario()
+     */
 
     public int getSlotInventario() {
         return this.slotInventario;
