@@ -4,11 +4,18 @@ import com.thelegendofjavelda.persistence.CsvSaveService;
 import com.thelegendofjavelda.views.MainLayout;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
+import com.vaadin.flow.component.notification.Notification.Position;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
@@ -29,9 +36,7 @@ public class MainView extends VerticalLayout {
         confirmaNovoJogo.setCancelable(true);
         confirmaNovoJogo.setConfirmText("Sim");
         confirmaNovoJogo.setConfirmButtonTheme("error primary");
-        confirmaNovoJogo.addConfirmListener(event -> System.out.println("Novo jogo confirmado!")); // adicionar evento
-                                                                                                   // correto
-
+    
         Button novoJogo = new Button("novo Jogo");
         novoJogo.setDisableOnClick(true);
         Button continuar = new Button("Continuar");
@@ -58,15 +63,37 @@ public class MainView extends VerticalLayout {
             if (comboDificuldade.getValue() != null) {
                 if (csvSaveService.existeCampanha()) {
                     confirmaNovoJogo.open();
+                    confirmaNovoJogo.addConfirmListener(e -> {
+                        csvSaveService.iniciarNovaCampanha(String.valueOf(comboDificuldade.getValue()));
+                        getUI().ifPresent(ui -> ui.navigate("guilda"));
+                    });
+                    confirmaNovoJogo.addCancelListener(e -> {
+                        novoJogo.setEnabled(true);
+                    });
                 } else {
                     csvSaveService.iniciarNovaCampanha(String.valueOf(comboDificuldade.getValue()));
                     getUI().ifPresent(ui -> ui.navigate("guilda"));
                 }
+            } else {
+                erroDificuldade().open();
+                novoJogo.setEnabled(true);
+
             }
         });
 
         add(continuar, novoJogo, comboDificuldade, sair);
 
         // add(new Button("Clique aqui", event -> add(new H2("Olá, mundo!"))));
+    }
+
+    public static Notification erroDificuldade() {
+        Notification erroDificuldade = new Notification();
+        erroDificuldade.addThemeVariants(NotificationVariant.ERROR);
+        Icon erroIcon = VaadinIcon.WARNING.create();
+        HorizontalLayout erroLayout = new HorizontalLayout(erroIcon, new Text("Nenhuma dificuldade Selecionada!"));
+        erroLayout.setAlignItems(Alignment.CENTER);
+        erroDificuldade.add(erroLayout);
+        erroDificuldade.setDuration(3000);
+        return erroDificuldade;
     }
 }
