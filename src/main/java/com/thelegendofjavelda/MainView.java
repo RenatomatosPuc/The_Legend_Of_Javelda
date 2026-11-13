@@ -22,28 +22,28 @@ public class MainView extends VerticalLayout {
 
         status = new Span();
         status.setVisible(false);
-        
+
         ConfirmDialog confirmaNovoJogo = new ConfirmDialog();
         confirmaNovoJogo.setHeader("Já existe uma campanha em andamento!");
         confirmaNovoJogo.setText("Deseja realmente começar um novo jogo?");
         confirmaNovoJogo.setCancelable(true);
         confirmaNovoJogo.setConfirmText("Sim");
         confirmaNovoJogo.setConfirmButtonTheme("error primary");
-        confirmaNovoJogo.addConfirmListener(event -> System.out.println("Novo jogo confirmado!")); // adicionar evento correto
-
+        confirmaNovoJogo.addConfirmListener(event -> System.out.println("Novo jogo confirmado!")); // adicionar evento
+                                                                                                   // correto
 
         Button novoJogo = new Button("novo Jogo");
         novoJogo.setDisableOnClick(true);
         Button continuar = new Button("Continuar");
         continuar.addClickListener(event -> {
-            if(csvSaveService.existeCampanha()) {
+            if (csvSaveService.existeCampanha()) {
                 csvSaveService.carregarCampanha();
                 getUI().ifPresent(ui -> ui.navigate("jornada"));
             } else {
                 Notification.show("Não há campanha em andamento.");
             }
         });
-        if(csvSaveService.existeCampanha()) {
+        if (csvSaveService.existeCampanha()) {
             continuar.setEnabled(true);
         } else {
             continuar.setEnabled(false);
@@ -55,11 +55,11 @@ public class MainView extends VerticalLayout {
         Button sair = new Button("Sair", event -> System.exit(0));
 
         novoJogo.addClickListener(event -> {
-            if(comboDificuldade.getValue() != null) {
-                if(csvSaveService.existeCampanha()) {
+            if (comboDificuldade.getValue() != null) {
+                if (csvSaveService.existeCampanha()) {
                     confirmaNovoJogo.open();
                 } else {
-                    csvSaveService.iniciarNovaCampanha(comboDificuldade.getValue());
+                    csvSaveService.iniciarNovaCampanha(String.valueOf(comboDificuldade.getValue()));
                     getUI().ifPresent(ui -> ui.navigate("guilda"));
                 }
             }
