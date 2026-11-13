@@ -9,6 +9,7 @@ public abstract class Heroi extends Personagem {
     private double experiencia;
     private InventarioPersonagem inventarioPersonagem;
     private double ouro;
+    private int contadorAtaque;
 
     // METODOS DE NIVEL
 
@@ -18,6 +19,11 @@ public abstract class Heroi extends Personagem {
         this.experiencia = 0;
         this.inventarioPersonagem = new InventarioPersonagem();
         this.ouro = 0;
+        this.contadorAtaque = 0;
+    }
+
+    public int getContadorAtaque() {
+        return this.contadorAtaque;
     }
 
     // Faz o heroi receber experiencia, e ao chegar em 100, sobe o nivel em 1 e
@@ -44,17 +50,17 @@ public abstract class Heroi extends Personagem {
         if (inventarioPersonagem.getArma() != null) {
             danoArma = inventarioPersonagem.getArma().getAtaque();
         }
+        this.contadorAtaque++;
         return danoArma + super.getAtaque();
     }
 
     // Usa o utilitario
-    public void usarItem() {
-        try {
-            this.inventarioPersonagem.getUtilitario().usarUtilitario();
-        } catch (Exception e) { // ATUALIZAR O EXCEPTION E O CATCH *********
+    // E necessario criar os itens para implimentar esse metodo
+    /*
+     * public void usarItem() {
+     * inventarioPersonagem.getUtilitario().usarUtilitario();
+     * }
+     */
 
-        }
-    }
-
-    public abstract void usarHabilidadeEspecial();
+    public abstract double usarHabilidadeEspecial();
 }
