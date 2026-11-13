@@ -7,16 +7,18 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.grid.Grid;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.thelegendofjavelda.persistence.GuildaService;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.grid.Grid;
+import com.Personagens.*;
 
 @Route(value = "guilda", layout = MainLayout.class)
 public class GuildaView extends VerticalLayout {
@@ -46,6 +48,7 @@ public class GuildaView extends VerticalLayout {
             guildaService.adicionar(new HeroResumo(nome.getValue(), classe.getValue(), 1));
             adicionarMembro(nome.getValue(), classe.getValue());
             grade.setItems(guildaService.listarMembros());
+            
             nome.clear();
         });
         add(nome, classe, adicionar, grade);
@@ -55,8 +58,30 @@ public class GuildaView extends VerticalLayout {
     public void adicionarMembro(String nome, String classe) {
         int nivel = 1; // Nível inicial do herói
         String membro = nome + "," + classe + "," + nivel;
+        double vidaMaxima = 0;
+        switch (classe.toLowerCase()) {
+            case "guerreiro":
+                vidaMaxima = 150;
+                break;
+            case "mago":
+                vidaMaxima = 80;
+                break;
+            case "arqueiro":
+                vidaMaxima = 100;
+                break;
+            case "clérigo":
+                vidaMaxima = 120;
+                break;
+            default:
+                Notification.show("Classe inválida.");
+                return;
+        }
+        double vidaAtual = vidaMaxima; // Vida atual inicial igual à vida máxima
+        membro += "," + vidaMaxima + "," + vidaAtual;
+        int id = Objects.hash(membro);
+        String linha = id + "," + membro;
         try {
-            Files.writeString(GUILDA_CSV, membro + System.lineSeparator(), java.nio.file.StandardOpenOption.APPEND);
+            Files.writeString(GUILDA_CSV, linha + System.lineSeparator(), java.nio.file.StandardOpenOption.APPEND);
         } catch (Exception e) {
             Notification.show("Erro ao adicionar membro à guilda: " + e.getMessage());
         }
