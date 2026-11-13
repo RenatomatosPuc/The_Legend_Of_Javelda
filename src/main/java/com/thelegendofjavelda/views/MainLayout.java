@@ -7,7 +7,7 @@ import com.vaadin.flow.component.sidenav.SideNavItem;
 
 
 
-@StyleSheet("styles.css")
+
 public class MainLayout extends AppLayout {
     public MainLayout() {
         SideNav menu = new SideNav();

@@ -39,6 +39,14 @@ public abstract class Personagem implements Combatente {
         return this.vidaMaxima;
     }
 
+    public void setVidaMaxima(double vidaMaxima) {
+        this.vidaMaxima = vidaMaxima;
+    }
+
+    public void setVidaAtual(double vidaAtual) {
+        this.vidaAtual = vidaAtual;
+    }
+
     @Override
     public boolean estaVivo() {
         if (this.vidaAtual >= 0)

@@ -26,8 +26,6 @@ public class EquipeView extends VerticalLayout {
         grade.setItems(guildaService.listarMembros());
         HeaderRow gradeHeader = grade.prependHeaderRow();
         gradeHeader.join(colunaNome, colunaClasse, colunaNivel).setText("Guilda");
-        grade.setWidth("25%");
-        
         
 
         Grid<HeroResumo> gradeEquipe = new Grid<>();
@@ -36,7 +34,7 @@ public class EquipeView extends VerticalLayout {
         Grid.Column<HeroResumo> colunaNivelEquipe = gradeEquipe.addColumn(HeroResumo::nivel).setHeader("Nível");
         HeaderRow gradeEquipeHeader = gradeEquipe.prependHeaderRow();
         gradeEquipeHeader.join(colunaNomeEquipe, colunaClasseEquipe, colunaNivelEquipe).setText("Equipe");
-        gradeEquipe.setWidth("25%");
+       
 
         Set<HeroResumo> membrosEquipe = new HashSet<>();
 
@@ -53,6 +51,7 @@ public class EquipeView extends VerticalLayout {
         
 
         HorizontalLayout gradesLayout = new HorizontalLayout(grade, gradeEquipe);
+        gradesLayout.setWidthFull();
         VerticalLayout layoutPrincipal = new VerticalLayout(adicionar);
         add(layoutPrincipal);
         add(gradesLayout);
