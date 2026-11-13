@@ -27,7 +27,7 @@ public class CsvSaveService {
 
     public boolean existeCampanha() {
         return Files.isRegularFile(HEROIS_CSV) && Files.isRegularFile(GUILDA_CSV) && Files.isRegularFile(INVENTARIO_CSV)
-                && Files.isRegularFile(BATALHA_CSV); 
+                && Files.isRegularFile(BATALHA_CSV);
     }
 
     public CampanhaSalva iniciarNovaCampanha(String dificuldade) {
@@ -105,11 +105,34 @@ public class CsvSaveService {
             if (!DIFICULDADES.contains(dificuldade)) {
                 throw new IllegalStateException("Arquivo " + BATALHA_CSV + " corrompido ou com formato inválido.");
             }
-            // int mapa = numeroPositivo(campos[2], "mapa atual", i);
-            // int batalha = numeroPositivo(campos[3], "batalha atual", i);
-            // boolean concluida = booleano(campos[4], i);
-            // encontrada = new CampanhaSalva(dificuldade, batalha, mapa, concluida);
+            int mapa = numPositivo(campos[2], "mapa atual", i);
+            int batalha = numPositivo(campos[3], "batalha atual", i);
+            boolean concluida = booleano(campos[4], i);
+            encontrada = new CampanhaSalva(dificuldade, batalha, mapa, concluida);
         }
         return Optional.ofNullable(encontrada);
+    }
+
+    private int numPositivo(String valor, String campo, int linha) {
+        try {
+            int numero = Integer.parseInt(valor);
+            if (numero < 1) {
+                throw new NumberFormatException("Valor não é positivo");
+            }
+            return numero;
+        } catch (NumberFormatException e) {
+            throw new IllegalStateException(
+                    "Campo " + campo + " inválido na linha " + (linha + 1) + " de " + BATALHA_CSV, e);
+        }
+    }
+
+    private boolean booleano(String valor, int linha) {
+        if (valor.equalsIgnoreCase("true")) {
+            return true;
+        }
+        if (valor.equalsIgnoreCase("false")) {
+            return false;
+        }
+        throw new IllegalStateException("campanha_concluida inválido na linha " + (linha + 1) + " de " + BATALHA_CSV);
     }
 }
