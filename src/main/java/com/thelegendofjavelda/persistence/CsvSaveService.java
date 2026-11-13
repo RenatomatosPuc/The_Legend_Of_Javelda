@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -18,7 +21,7 @@ public class CsvSaveService {
     private static final String HEROIS_HEADER = "id,nome,classe,nivel,vida_maxima,vida_atual,ataque,defesa,na_equipe";
     private static final String INVENTARIO_HEADER = "id,tipo,nome,ataque,defesa,quantidade,heroi_id";
     private static final String BATALHA_HEADER = "tipo,dificuldade,mapa_atual,batalha_atual,campanha_concluida,id_batalha,resultado";
-    private static final Set<String> DIFICULDADES = Set.of("facil", "normal", "dificil");
+    private static final Set<String> DIFICULDADES = Set.of("fácil", "médio", "difícil");
 
     public boolean existeCampanha() {
         return Files.isRegularFile(HEROIS_CSV) && Files.isRegularFile(INVENTARIO_CSV)
@@ -27,7 +30,7 @@ public class CsvSaveService {
 
     public CampanhaSalva iniciarNovaCampanha(String dificuldade) {
         if (dificuldade == null || !DIFICULDADES.contains(dificuldade.toLowerCase())) {
-            throw new IllegalArgumentException("Escolha uma dificuldade válida: facil, normal ou dificil");
+            throw new IllegalArgumentException("Escolha uma dificuldade valida: facil, normal ou dificil");
         }
 
         String estadoInicial = BATALHA_HEADER
@@ -46,5 +49,63 @@ public class CsvSaveService {
                     "Não foi possivel criar os arquivos da campanha em " + DATA, erro);
         }
 
+    }
+
+    public Optional<CampanhaSalva> carregarCampanha() { // codigo gerado por VSCODE, verificar se está correto
+        if (!existeCampanha()) {
+            return Optional.empty();
+        }
+
+        try {
+            validarCabecalho(HEROIS_CSV, HEROIS_HEADER);
+            validarCabecalho(INVENTARIO_CSV, INVENTARIO_HEADER);
+            List<String> linhas = Files.readAllLines(BATALHA_CSV, StandardCharsets.UTF_8);
+            validarPrimeiraLinha(BATALHA_CSV, linhas, BATALHA_HEADER);
+            return lerEstadoCampanha(linhas);
+        } catch (IOException erro) {
+            throw new UncheckedIOException(
+                    "Não foi possivel ler os arquivos da campanha em " + DATA, erro);
+        }
+    }
+
+    private void validarCabecalho(Path arquivo, String cabecalhoEsperado) throws IOException {
+        List<String> linhas = Files.readAllLines(arquivo, StandardCharsets.UTF_8);
+        validarPrimeiraLinha(arquivo, linhas, cabecalhoEsperado);
+    }
+
+    private void validarPrimeiraLinha(Path arquivo, List<String> linhas, String cabecalhoEsperado) {
+        if (linhas.isEmpty() || !linhas.get(0).equals(cabecalhoEsperado)) {
+            throw new IllegalStateException("Arquivo " + arquivo + " corrompido ou com cabeçalho inválido.");
+        }
+    }
+
+    private Optional<CampanhaSalva> lerEstadoCampanha(List<String> linhas) {
+        CampanhaSalva encontrada = null;
+
+        for (int i = 1; i < linhas.size(); i++) {
+            String linha = linhas.get(i);
+            if (linha.isBlank()) {
+                continue;
+            }
+            String[] campos = linha.split(",", -1);
+            if (campos.length != 7) {
+                throw new IllegalStateException("Arquivo " + BATALHA_CSV + " corrompido ou com formato inválido.");
+            }
+            if (!campos[0].equals("CAMPANHA")) {
+                continue;
+            }
+            if (encontrada != null) {
+                throw new IllegalStateException("Arquivo " + BATALHA_CSV + " corrompido ou com formato inválido.");
+            }
+            String dificuldade = campos[1];
+            if (!DIFICULDADES.contains(dificuldade)) {
+                throw new IllegalStateException("Arquivo " + BATALHA_CSV + " corrompido ou com formato inválido.");
+            }
+            // int mapa = numeroPositivo(campos[2], "mapa atual", i);
+            // int batalha = numeroPositivo(campos[3], "batalha atual", i);
+            // boolean concluida = booleano(campos[4], i);
+            // encontrada = new CampanhaSalva(dificuldade, batalha, mapa, concluida);
+        }
+        return Optional.ofNullable(encontrada);
     }
 }
