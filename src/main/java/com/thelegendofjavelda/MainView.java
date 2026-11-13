@@ -1,7 +1,10 @@
 package com.thelegendofjavelda;
 
+import java.io.UncheckedIOException;
+import java.util.Optional;
+
+import com.thelegendofjavelda.persistence.CampanhaSalva;
 import com.thelegendofjavelda.persistence.CsvSaveService;
-import com.thelegendofjavelda.views.MainLayout;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.Text;
@@ -30,22 +33,21 @@ public class MainView extends VerticalLayout {
         status = new Span();
         status.setVisible(false);
 
-        ConfirmDialog confirmaNovoJogo = new ConfirmDialog();
-        confirmaNovoJogo.setHeader("Já existe uma campanha em andamento!");
-        confirmaNovoJogo.setText("Deseja realmente começar um novo jogo?");
-        confirmaNovoJogo.setCancelable(true);
-        confirmaNovoJogo.setConfirmText("Sim");
-        confirmaNovoJogo.setConfirmButtonTheme("error primary");
-    
         Button novoJogo = new Button("novo Jogo");
         novoJogo.setDisableOnClick(true);
         Button continuar = new Button("Continuar");
         continuar.addClickListener(event -> {
-            if (csvSaveService.existeCampanha()) {
-                csvSaveService.carregarCampanha();
+            try {
+                Optional<CampanhaSalva> campanha = csvSaveService.carregarCampanha();
+                if (campanha.isEmpty()) {
+                    Notification.show("Não há campanha em andamento.");
+                    continuar.setEnabled(false);
+                    return;
+                }
                 getUI().ifPresent(ui -> ui.navigate("jornada"));
-            } else {
-                Notification.show("Não há campanha em andamento.");
+            } catch (UncheckedIOException | IllegalStateException e) {
+                Notification.show("Erro ao carregar a campanha: " + e.getMessage());
+                continuar.setEnabled(false);
             }
         });
         if (csvSaveService.existeCampanha()) {
@@ -62,17 +64,22 @@ public class MainView extends VerticalLayout {
         novoJogo.addClickListener(event -> {
             if (comboDificuldade.getValue() != null) {
                 if (csvSaveService.existeCampanha()) {
-                    confirmaNovoJogo.open();
-                    confirmaNovoJogo.addConfirmListener(e -> {
+                    confirmaNovoJogo().open();
+                    confirmaNovoJogo().addConfirmListener(e -> {
                         csvSaveService.iniciarNovaCampanha(String.valueOf(comboDificuldade.getValue()));
                         getUI().ifPresent(ui -> ui.navigate("guilda"));
                     });
-                    confirmaNovoJogo.addCancelListener(e -> {
+                    confirmaNovoJogo().addCancelListener(e -> {
                         novoJogo.setEnabled(true);
                     });
                 } else {
-                    csvSaveService.iniciarNovaCampanha(String.valueOf(comboDificuldade.getValue()));
-                    getUI().ifPresent(ui -> ui.navigate("guilda"));
+                    try {
+                        csvSaveService.iniciarNovaCampanha(String.valueOf(comboDificuldade.getValue()));
+                        getUI().ifPresent(ui -> ui.navigate("guilda"));
+                    } catch (UncheckedIOException e) {
+                        Notification.show("Erro ao iniciar nova campanha: " + e.getMessage());
+                        novoJogo.setEnabled(true);
+                    }
                 }
             } else {
                 erroDificuldade().open();
@@ -94,6 +101,18 @@ public class MainView extends VerticalLayout {
         erroLayout.setAlignItems(Alignment.CENTER);
         erroDificuldade.add(erroLayout);
         erroDificuldade.setDuration(3000);
+        erroDificuldade.setPosition(Position.BOTTOM_STRETCH);
         return erroDificuldade;
     }
+
+    public static ConfirmDialog confirmaNovoJogo() {
+        ConfirmDialog confirmaNovoJogo = new ConfirmDialog();
+        confirmaNovoJogo.setHeader("Já existe uma campanha em andamento!");
+        confirmaNovoJogo.setText("Deseja realmente começar um novo jogo?");
+        confirmaNovoJogo.setCancelable(true);
+        confirmaNovoJogo.setConfirmText("Sim");
+        confirmaNovoJogo.setConfirmButtonTheme("error primary");
+        return confirmaNovoJogo;
+    }
+
 }

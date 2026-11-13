@@ -1,4 +1,4 @@
 package com.thelegendofjavelda.views;
 
-public record HeroResumo(String nome, String classe, int nivel) {
+public record HeroResumo(int id, String nome, String classe, int nivel) {
 }
