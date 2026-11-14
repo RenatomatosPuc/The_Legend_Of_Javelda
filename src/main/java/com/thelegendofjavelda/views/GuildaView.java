@@ -10,6 +10,8 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -24,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.thelegendofjavelda.persistence.GuildaService;
 import com.Personagens.*;
+import com.thelegendofjavelda.persistence.CsvSaveService;
 
 @Route(value = "guilda", layout = MainLayout.class)
 public class GuildaView extends VerticalLayout {
@@ -36,8 +38,10 @@ public class GuildaView extends VerticalLayout {
             .setHeader()
             .setSkipHeaderRecord(true)
             .get();
+    private final CsvSaveService service;
 
-    public GuildaView(GuildaService guildaService) {
+    public GuildaView(CsvSaveService service) {
+        this.service = service;
         add(new H1("Guilda"));
 
         TextField nome = new TextField("Nome");
@@ -61,7 +65,7 @@ public class GuildaView extends VerticalLayout {
             adicionarMembro(nome.getValue(), classe.getValue());
 
             nome.clear();
-            carregarMembros(guildaService, grade, formato);
+            carregarMembros(grade, formato);
         });
 
         Button remover = new Button("Remover membro");
@@ -78,9 +82,9 @@ public class GuildaView extends VerticalLayout {
                 Notification.show("Erro ao remover membro.");
             }
 
-            carregarMembros(guildaService, grade, formato);
+            carregarMembros(grade, formato);
         });
-        carregarMembros(guildaService, grade, formato);
+        carregarMembros(grade, formato);
         HorizontalLayout btnLayout = new HorizontalLayout();
         btnLayout.add(adicionar, remover);
         add(nome, classe, btnLayout, grade);
@@ -185,7 +189,7 @@ public class GuildaView extends VerticalLayout {
         }
     }
 
-    public static void carregarMembros(GuildaService guildaService, Grid<HeroResumo> grade, CSVFormat formato) {
+    public static void carregarMembros(Grid<HeroResumo> grade, CSVFormat formato) {
         if (!Files.exists(GUILDA_CSV)) {
             return;
         }
@@ -208,6 +212,11 @@ public class GuildaView extends VerticalLayout {
         } catch (Exception e) {
             Notification.show("Erro ao carregar membros da guilda: " + e.getMessage());
         }
+    }
 
+    public void beforeEnter(BeforeEnterEvent event) {
+        if (!service.existeCampanha()) {
+            event.rerouteTo("menu");
+        }
     }
 }
