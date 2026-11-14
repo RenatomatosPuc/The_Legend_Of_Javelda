@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import com.thelegendofjavelda.persistence.GuildaService;
 import com.thelegendofjavelda.persistence.CsvSaveService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -44,7 +43,7 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
             .get();
     public final CsvSaveService service;
 
-    public EquipeView(GuildaService guildaService, CsvSaveService service) {
+    public EquipeView(CsvSaveService service) {
         this.service = service;
         add(new H1("Equipe"));
 
@@ -62,9 +61,9 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
                 .setText("Equipe");
         gradeEquipe.setRowsDraggable(true);
 
-        ArrayList<HeroResumo> guilda = new ArrayList<>(carregarMembros(guildaService, grade, formato, GUILDA_CSV));
+        ArrayList<HeroResumo> guilda = new ArrayList<>(carregarMembros(grade, formato, GUILDA_CSV));
         ArrayList<HeroResumo> equipe = new ArrayList<>(
-                carregarMembros(guildaService, gradeEquipe, formato, HEROIS_CSV));
+                carregarMembros(gradeEquipe, formato, HEROIS_CSV));
         GridListDataView<HeroResumo> gradeView = grade.setItems(guilda);
         GridListDataView<HeroResumo> gradeEquipeView = gradeEquipe.setItems(equipe);
         grade.addDragStartListener(e -> {
@@ -118,7 +117,7 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
         add(salvarButton, gradesLayout);
     }
 
-    public static List<HeroResumo> carregarMembros(GuildaService guildaService, Grid<HeroResumo> grade,
+    public static List<HeroResumo> carregarMembros(Grid<HeroResumo> grade,
             CSVFormat formato, Path arquivoCsv) {
         if (!Files.exists(arquivoCsv)) {
             return null;
@@ -183,7 +182,6 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
         return grade;
     }
 
-    @Override
     public void beforeEnter(BeforeEnterEvent event) {
         if (!service.existeCampanha()) {
             event.rerouteTo("menu");
