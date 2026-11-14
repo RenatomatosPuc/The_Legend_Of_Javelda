@@ -7,6 +7,7 @@ import com.vaadin.flow.theme.aura.Aura;
 import com.vaadin.flow.theme.lumo.Lumo;
 
 @StyleSheet(Lumo.STYLESHEET)
+@StyleSheet("styles.css")
 @Push
 public class AppShell implements AppShellConfigurator {
 

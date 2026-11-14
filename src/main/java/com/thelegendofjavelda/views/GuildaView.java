@@ -31,7 +31,6 @@ import com.Personagens.*;
 public class GuildaView extends VerticalLayout {
     private static final Path DATA = Path.of("data");
     private static final Path GUILDA_CSV = DATA.resolve("guilda.csv");
-    private static final Path HEROIS_CSV = DATA.resolve("heroes.csv");
 
     private final CSVFormat formato = CSVFormat.DEFAULT.builder()
             .setHeader()
@@ -111,6 +110,27 @@ public class GuildaView extends VerticalLayout {
         }
         double vidaAtual = vidaMaxima; // Vida atual inicial igual à vida máxima
         membro += "," + vidaMaxima + "," + vidaAtual;
+        double ataque = 0;
+        double defesa = 0;
+        switch (classe.toLowerCase()) {
+            case "guerreiro":
+                ataque = 20;
+                defesa = 15;
+                break;
+            case "mago":
+                ataque = 25;
+                defesa = 10;
+                break;
+            case "arqueiro":
+                ataque = 18;
+                defesa = 12;
+                break;
+            case "clérigo":
+                ataque = 15;
+                defesa = 20;
+                break;
+        }
+        membro += "," + ataque + "," + defesa;
         int id = Objects.hash(membro);
         String linha = id + "," + membro;
         try {
@@ -176,10 +196,13 @@ public class GuildaView extends VerticalLayout {
                 int id = Integer.parseInt(record.get("id"));
                 String nome = record.get("nome");
                 String classe = record.get("classe");
-                int nivel = Integer.parseInt(record.get("nivel")); // Faça algo com os dados, por exemplo, adicione
-                                                                   // à
-                                                                   // lista de membros
-                membros.add(new HeroResumo(id, nome, classe, nivel));
+                int nivel = Integer.parseInt(record.get("nivel"));
+                double vidaMaxima = Double.parseDouble(record.get("vidaMaxima"));
+                double vidaAtual = Double.parseDouble(record.get("vidaAtual"));
+                double ataque = Double.parseDouble(record.get("ataque"));
+                double defesa = Double.parseDouble(record.get("defesa"));
+
+                membros.add(new HeroResumo(id, nome, classe, nivel, vidaMaxima, vidaAtual, ataque, defesa));
             }
             grade.setItems(membros);
         } catch (Exception e) {
