@@ -41,15 +41,25 @@ public class GuildaView extends VerticalLayout {
             .setSkipHeaderRecord(true)
             .get();
     private final CsvSaveService service;
+    private static List<Heroi> guilda = new ArrayList<>();
 
-    public GuildaView(CsvSaveService service) {
+    public GuildaView(CsvSaveService service, List<Heroi> guilda) {
         this.service = service;
+        this.guilda = guilda;
         add(new H1("Guilda"));
 
         TextField nome = new TextField("Nome");
-        Select<String> classe = new Select<>();
+        Select<Classe> classe = new Select<>();
         classe.setLabel("Classe");
-        classe.setItems("Guerreiro", "Mago", "Arqueiro", "Clérigo");
+        classe.setItems(Classe.values());
+        HorizontalLayout gridLayout = new HorizontalLayout();
+
+        Grid<Heroi> gradeHerois = new Grid<>();
+        gradeHerois.addColumn(Heroi::getNome).setHeader("Nome");
+        gradeHerois.addColumn(Heroi::getClasse).setHeader("Classe");
+        gradeHerois.addColumn(Heroi::getNivel).setHeader("Nível");
+        gradeHerois.addColumn(Heroi::getInventarioPersonagem).setHeader("Inventário");
+        gradeHerois.setSelectionMode(Grid.SelectionMode.SINGLE);
 
         // List<HeroResumo> membros = new ArrayList<>();
         Grid<HeroResumo> grade = new Grid<>();
@@ -57,6 +67,9 @@ public class GuildaView extends VerticalLayout {
         grade.addColumn(HeroResumo::classe).setHeader("Classe");
         grade.addColumn(HeroResumo::nivel).setHeader("Nível");
         grade.setSelectionMode(Grid.SelectionMode.SINGLE);
+
+        gridLayout.add(grade, gradeHerois);
+        gridLayout.setWidthFull();
 
         Button adicionar = new Button("Adicionar membro", event -> {
             if (nome.isEmpty() || classe.getValue() == null) {
@@ -86,43 +99,57 @@ public class GuildaView extends VerticalLayout {
 
             carregarMembros(grade, formato);
         });
+
+        Button Listar = new Button("Listar membros");
+        Listar.addClickListener(event -> {
+            gradeHerois.setItems(guilda);
+            Notification.show("Membros listados com sucesso." + guilda);
+        });
         carregarMembros(grade, formato);
         HorizontalLayout btnLayout = new HorizontalLayout();
-        btnLayout.add(adicionar, remover);
-        add(nome, classe, btnLayout, grade);
+        btnLayout.add(adicionar, remover, Listar);
+        add(nome, classe, btnLayout, gridLayout);
     }
 
     // Implementação para adicionar um membro à guilda
-    public static void adicionarMembro(String nome, String classe) {
+    public static void adicionarMembro(String nome, Classe classe) {
         int nivel = 1; // Nível inicial do herói
         String membro = nome + "," + classe + "," + nivel;
         double vidaMaxima = 0;
         double ataque = 0;
         double defesa = 0;
-        switch (classe.toLowerCase()) {
-            case "guerreiro":
-                Guerreiro guerreiro = new Guerreiro(nivel);
+        switch (classe) {
+            case GUERREIRO:
+                Heroi guerreiro = new Guerreiro(nivel);
+                guerreiro.setNome(nome);
                 vidaMaxima = guerreiro.getVidaMaxima();
                 ataque = guerreiro.getAtaque();
                 defesa = guerreiro.getDefesa();
+                guilda.add(guerreiro);
                 break;
-            case "mago":
-                Mago mago = new Mago(nivel);
+            case MAGO:
+                Heroi mago = new Mago(nivel);
+                mago.setNome(nome);
                 vidaMaxima = mago.getVidaMaxima();
                 ataque = mago.getAtaque();
                 defesa = mago.getDefesa();
+                guilda.add(mago);
                 break;
-            case "arqueiro":
-                Arqueiro arqueiro = new Arqueiro(nivel);
+            case ARQUEIRO:
+                Heroi arqueiro = new Arqueiro(nivel);
+                arqueiro.setNome(nome);
                 vidaMaxima = arqueiro.getVidaMaxima();
                 ataque = arqueiro.getAtaque();
                 defesa = arqueiro.getDefesa();
+                guilda.add(arqueiro);
                 break;
-            case "clérigo":
-                Clerigo clerigo = new Clerigo(nivel);
+            case CLERIGO:
+                Heroi clerigo = new Clerigo(nivel);
+                clerigo.setNome(nome);
                 vidaMaxima = clerigo.getVidaMaxima();
                 ataque = clerigo.getAtaque();
                 defesa = clerigo.getDefesa();
+                guilda.add(clerigo);
                 break;
             default:
                 Notification.show("Classe inválida.");

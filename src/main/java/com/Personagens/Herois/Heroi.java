@@ -10,6 +10,7 @@ public abstract class Heroi extends Personagem {
     private InventarioPersonagem inventarioPersonagem;
     private double ouro;
     private int contadorAtaque;
+    private String nome;
 
     // METODOS DE NIVEL
 
@@ -24,6 +25,26 @@ public abstract class Heroi extends Personagem {
 
     public int getContadorAtaque() {
         return this.contadorAtaque;
+    }
+
+    public String getNome() {
+        return this.nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Classe getClasse() {
+        return this.classe;
+    }
+
+    public int getNivel() {
+        return this.nivel;
+    }
+
+    public InventarioPersonagem getInventarioPersonagem() {
+        return this.inventarioPersonagem;
     }
 
     // Faz o heroi receber experiencia, e ao chegar em 100, sobe o nivel em 1 e
