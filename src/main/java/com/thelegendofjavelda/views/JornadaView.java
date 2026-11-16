@@ -2,49 +2,119 @@ package com.thelegendofjavelda.views;
 
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.card.Card;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
-
+import com.vaadin.flow.server.streams.DownloadHandler;
 import com.thelegendofjavelda.persistence.CsvSaveService;
 
 @Route(value = "jornada", layout = MainLayout.class)
 public class JornadaView extends Div {
+    private int mapaExibido = 0;
     private final CsvSaveService service;
 
     public JornadaView(CsvSaveService service) {
+        this.mapaExibido = 0;
         this.service = service;
         add(new H1("Jornada"));
-        Div layout = new Div();
-        layout.getStyle().set("display", "grid")
+        VerticalLayout mainLayout = new VerticalLayout();
+
+        Button proxButton = new Button("Próxima Página");
+        Button prevButton = new Button("Página Anterior");
+        HorizontalLayout navButtons = new HorizontalLayout(prevButton, proxButton);
+
+        proxButton.addClickListener(event -> {
+            Notification.show("Indo para a próxima página...");
+            mapaExibido++;
+            mainLayout.removeAll();
+            mainLayout.add(atualizarMapa(mapaExibido), navButtons);
+        });
+        prevButton.addClickListener(event -> {
+            Notification.show("Voltando para a página anterior...");
+            mapaExibido--;
+            mainLayout.removeAll();
+            mainLayout.add(atualizarMapa(mapaExibido), navButtons);
+        });
+        mainLayout.add(atualizarMapa(mapaExibido), navButtons);
+
+        add(mainLayout);
+
+        // HorizontalLayout Hlayout = new HorizontalLayout();
+    }
+
+    public Div atualizarMapa(int mapaExibido) {
+        Div mapaLayout = new Div();
+        mapaLayout.getStyle().set("display", "grid")
                 .set("grid-template-columns", "1fr 1fr")
                 .set("gap", "20px")
                 .set("padding", "20px");
+        switch (mapaExibido) {
+            case 0:
+                Card Batalha1 = new Card();
+                DownloadHandler imageHandler = DownloadHandler.forClassResource(getClass(), "/images/01_defesa-da-vila.avif", "01_defesa-da-vila.avif");
+                Image imagem1 = new Image(imageHandler, "01_defesa-da-vila.avif");        Batalha1.setMedia(imagem1);
+                Batalha1.setTitle("Batalha 1");
+                Batalha1.add(new H1("Card exemplo para escolha de batalhas"));
 
-        Card Batalha1 = new Card();
-        Icon icone1 = new Icon(VaadinIcon.SWORD);
-        icone1.setSize("50px");
-        Batalha1.setMedia(icone1);
-        Batalha1.setTitle("Batalha 1");
-        Batalha1.add(new H1("Card exemplo para escolha de batalhas"));
+                Card Batalha2 = new Card();
+                DownloadHandler imageHandler2 = DownloadHandler.forClassResource(getClass(), "/images/02_ruinas-da-floresta.avif", "02_ruinas-da-floresta.avif");
+                Image imagem2 = new Image(imageHandler2, "02_ruinas-da-floresta.avif");
+                Batalha2.setMedia(imagem2);
+                Batalha2.setTitle("Batalha 2");
+                Batalha2.add(new H1("Card exemplo para escolha de batalhas"));
 
-        Card Batalha2 = new Card();
-        Icon icone2 = new Icon(VaadinIcon.SHIELD);
-        icone2.setSize("50px");
-        Batalha2.setMedia(icone2);
-        Batalha2.setTitle("Batalha 2");
-        Batalha2.add(new H1("Card exemplo para escolha de batalhas"));
+                Button batalha1btn = new Button("Iniciar Batalha 1");
+                Button batalha2btn = new Button("Iniciar Batalha 2");
+                Batalha1.addToFooter(batalha1btn);
+                Batalha2.addToFooter(batalha2btn);
 
-        layout.add(Batalha1, Batalha2);
+                batalha1btn.addClickListener(event -> iniciarBatalha());
+                batalha2btn.addClickListener(event -> iniciarBatalha());
+                mapaLayout.add(Batalha1, Batalha2);
+                return mapaLayout;
+            case 1:
+                Card Batalha3 = new Card();
+                DownloadHandler imageHandler3 = DownloadHandler.forClassResource(getClass(), "/images/03_dragao-em-loop-infinito.avif", "03_dragao-em-loop-infinito.avif");
+                Image imagem3 = new Image(imageHandler3, "03_dragao-em-loop-infinito.avif");
+                Batalha3.setMedia(imagem3);
+                Batalha3.setTitle("Batalha 3");
+                Batalha3.add(new H1("Card exemplo para escolha de batalhas"));
 
-        add(layout);
+                Card Batalha4 = new Card();
+                DownloadHandler imageHandler4 = DownloadHandler.forClassResource(getClass(), "/images/04_masmorras-do-heap.avif", "04_masmorras-do-heap.avif");
+                Image imagem4 = new Image(imageHandler4, "04_masmorras-do-heap.avif");
+                Batalha4.setMedia(imagem4);
+                Batalha4.setTitle("Batalha 4");
+                Batalha4.add(new H1("Card exemplo para escolha de batalhas"));
+                mapaLayout.add(Batalha3, Batalha4);
+                return mapaLayout;
+            case 2:
+                Card Batalha5 = new Card();
+                DownloadHandler imageHandler5 = DownloadHandler.forClassResource(getClass(), "/images/05_lich-nulo-batalha-final.avif", "05_lich-nulo-batalha-final.avif");
+                Image imagem5 = new Image(imageHandler5, "05_lich-nulo-batalha-final.avif");
+                Batalha5.setMedia(imagem5);
+                Batalha5.setTitle("Batalha 5");
+                Batalha5.add(new H1("Card exemplo para escolha de batalhas"));
+                mapaLayout.add(Batalha5);
+                return mapaLayout;
+            default:
+                Notification.show("Não há mais mapas para exibir.");
+                mapaExibido = 0; // Resetar para o primeiro mapa
+                atualizarMapa(mapaExibido);
+                return mapaLayout;
+        }
+    }
 
-        // HorizontalLayout Hlayout = new HorizontalLayout();
+    public void iniciarBatalha() {
+        Notification.show("Iniciando Batalha...");
     }
 
     public void beforeEnter(BeforeEnterEvent event) {

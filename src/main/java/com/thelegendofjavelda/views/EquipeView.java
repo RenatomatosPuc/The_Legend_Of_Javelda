@@ -138,7 +138,7 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
             }
             return membros;
         } catch (Exception e) {
-            Notification.show("Erro ao carregar membros: " + e.getMessage());
+            Notification.show("Erro ao carregar membros de: " + e.getMessage());
             return null;
         }
     }
