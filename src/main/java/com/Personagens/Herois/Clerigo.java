@@ -3,8 +3,18 @@ package com.Personagens.Herois;
 import com.Exceptions.UltimateOnRechargeException;
 
 public class Clerigo extends Heroi {
+    private String nome;
+
     public Clerigo(int n) {
         super(n, Classe.CLERIGO);
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getNome() {
+        return this.nome;
     }
 
     // Habilidade especial da o dobro de Dano, nao tem contexto em questao de lore

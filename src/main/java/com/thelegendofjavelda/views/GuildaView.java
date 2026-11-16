@@ -17,6 +17,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
+import org.jetbrains.kotlin.it.unimi.dsi.fastutil.booleans.A;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.Personagens.*;
+import com.Personagens.Herois.*;
 import com.thelegendofjavelda.persistence.CsvSaveService;
 
 @Route(value = "guilda", layout = MainLayout.class)
@@ -95,18 +97,32 @@ public class GuildaView extends VerticalLayout {
         int nivel = 1; // Nível inicial do herói
         String membro = nome + "," + classe + "," + nivel;
         double vidaMaxima = 0;
+        double ataque = 0;
+        double defesa = 0;
         switch (classe.toLowerCase()) {
             case "guerreiro":
-                vidaMaxima = 150; // depois mudar para getVidaMaxima() do heroi
+                Guerreiro guerreiro = new Guerreiro(nivel);
+                vidaMaxima = guerreiro.getVidaMaxima();
+                ataque = guerreiro.getAtaque();
+                defesa = guerreiro.getDefesa();
                 break;
             case "mago":
-                vidaMaxima = 80; // depois mudar para getVidaMaxima() do heroi
+                Mago mago = new Mago(nivel);
+                vidaMaxima = mago.getVidaMaxima();
+                ataque = mago.getAtaque();
+                defesa = mago.getDefesa();
                 break;
             case "arqueiro":
-                vidaMaxima = 100; // depois mudar para getVidaMaxima() do heroi
+                Arqueiro arqueiro = new Arqueiro(nivel);
+                vidaMaxima = arqueiro.getVidaMaxima();
+                ataque = arqueiro.getAtaque();
+                defesa = arqueiro.getDefesa();
                 break;
             case "clérigo":
-                vidaMaxima = 120; // depois mudar para getVidaMaxima() do heroi
+                Clerigo clerigo = new Clerigo(nivel);
+                vidaMaxima = clerigo.getVidaMaxima();
+                ataque = clerigo.getAtaque();
+                defesa = clerigo.getDefesa();
                 break;
             default:
                 Notification.show("Classe inválida.");
@@ -114,26 +130,6 @@ public class GuildaView extends VerticalLayout {
         }
         double vidaAtual = vidaMaxima; // Vida atual inicial igual à vida máxima
         membro += "," + vidaMaxima + "," + vidaAtual;
-        double ataque = 0;
-        double defesa = 0;
-        switch (classe.toLowerCase()) {
-            case "guerreiro":
-                ataque = 20;
-                defesa = 15;
-                break;
-            case "mago":
-                ataque = 25;
-                defesa = 10;
-                break;
-            case "arqueiro":
-                ataque = 18;
-                defesa = 12;
-                break;
-            case "clérigo":
-                ataque = 15;
-                defesa = 20;
-                break;
-        }
         membro += "," + ataque + "," + defesa;
         int id = Objects.hash(membro);
         String linha = id + "," + membro;

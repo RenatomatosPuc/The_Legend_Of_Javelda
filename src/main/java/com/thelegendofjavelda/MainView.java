@@ -31,12 +31,14 @@ public class MainView extends VerticalLayout {
 
     private H1 title;
     private Paragraph description;
-    private static final String width = "150px";
+    private static final String width = "250px";
     private static final String height = "50px";
 
     public MainView(CsvSaveService csvSaveService) {
+        MainView.this.setSizeFull();
+        addClassName("menu");
         title = new H1("The Legend of Javelda!");
-        
+
         description = new Paragraph("Escolha uma opção para começar sua jornada!");
 
         status = new Span();
@@ -68,12 +70,13 @@ public class MainView extends VerticalLayout {
         } else {
             continuar.setEnabled(false);
         }
-        
 
         ComboBox<Dificuldade> comboDificuldade = new ComboBox<>("Dificuldade");
         comboDificuldade.setLabel("Dificuldade");
         comboDificuldade.setPlaceholder("Selecione a dificuldade");
         comboDificuldade.setItems(Dificuldade.values());
+        comboDificuldade.setWidth(width);
+        comboDificuldade.setHeight(height);
 
         comboDificuldade.addValueChangeListener(event -> {
             Dificuldade dificuldadeSelecionada = event.getValue();
@@ -81,17 +84,17 @@ public class MainView extends VerticalLayout {
                 Notification n = new Notification();
                 HorizontalLayout layout = new HorizontalLayout();
                 Icon icon = VaadinIcon.INFO_CIRCLE.create();
-                layout.add(icon, new Text( "Dificuldade selecionada: " + dificuldadeSelecionada));
+                layout.add(icon, new Text("Dificuldade selecionada: " + dificuldadeSelecionada));
                 layout.setAlignItems(FlexComponent.Alignment.CENTER);
                 n.add(layout);
                 n.setPosition(Notification.Position.BOTTOM_START);
                 n.setThemeVariants(NotificationVariant.LUMO_PRIMARY);
-                n.setDuration(1000);
+                n.setDuration(2000);
                 n.open();
             }
         });
 
-        novoJogo.addClickListener(event -> {            
+        novoJogo.addClickListener(event -> {
             if (comboDificuldade.getValue() != null) {
                 if (csvSaveService.existeCampanha()) {
                     ConfirmDialog novoJogoDiag = confirmaNovoJogo();
@@ -121,11 +124,12 @@ public class MainView extends VerticalLayout {
 
         Button sair = new Button("Sair", event -> System.exit(0));
         sair.addThemeVariants(ButtonVariant.PRIMARY, ButtonVariant.ERROR);
-        
+
         VerticalLayout mainLayout = new VerticalLayout();
         mainLayout.add(title, description, continuar, novoJogo, comboDificuldade, sair);
         mainLayout.setAlignItems(Alignment.CENTER);
-        mainLayout.setSpacing(true);
+        mainLayout.getElement().getStyle().setGap("50px");
+        mainLayout.setSizeFull();
 
         add(mainLayout);
 

@@ -19,6 +19,7 @@ import java.util.List;
 import com.thelegendofjavelda.persistence.CsvSaveService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.grid.dnd.GridDropMode;
@@ -44,6 +45,7 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
     public final CsvSaveService service;
 
     public EquipeView(CsvSaveService service) {
+        addClassName("equipe-view");
         this.service = service;
         add(new H1("Equipe"));
 
@@ -53,6 +55,7 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
         HeaderRow gradeHeader = grade.prependHeaderRow();
         gradeHeader.join(grade.getColumns().get(0), grade.getColumns().get(1), grade.getColumns().get(2))
                 .setText("Guilda");
+        grade.addThemeVariants(GridVariant.ROW_STRIPES);
 
         Grid<HeroResumo> gradeEquipe = setUpGrid();
         HeaderRow gradeEquipeHeader = gradeEquipe.prependHeaderRow();
@@ -60,6 +63,7 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
                 .join(gradeEquipe.getColumns().get(0), gradeEquipe.getColumns().get(1), gradeEquipe.getColumns().get(2))
                 .setText("Equipe");
         gradeEquipe.setRowsDraggable(true);
+        gradeEquipe.addThemeVariants(GridVariant.ROW_STRIPES);
 
         ArrayList<HeroResumo> guilda = new ArrayList<>(carregarMembros(grade, formato, GUILDA_CSV));
         ArrayList<HeroResumo> equipe = new ArrayList<>(

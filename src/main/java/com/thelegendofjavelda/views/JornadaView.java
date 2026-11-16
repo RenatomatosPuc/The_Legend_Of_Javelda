@@ -8,6 +8,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.card.Card;
+import com.vaadin.flow.component.card.CardVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
@@ -21,27 +22,55 @@ public class JornadaView extends Div {
     private int mapaExibido = 0;
     private final CsvSaveService service;
 
+    private final H1 title = new H1("Jornada");
+
     public JornadaView(CsvSaveService service) {
+        addClassName("jornada-view");
         this.mapaExibido = 0;
         this.service = service;
-        add(new H1("Jornada"));
         VerticalLayout mainLayout = new VerticalLayout();
+        mainLayout.add(title);
 
         Button proxButton = new Button("Próxima Página");
         Button prevButton = new Button("Página Anterior");
         HorizontalLayout navButtons = new HorizontalLayout(prevButton, proxButton);
 
+        if (mapaExibido == 0) {
+            prevButton.setEnabled(false);
+        }
+        if (mapaExibido == 2) {
+            proxButton.setEnabled(false);
+        }
+
         proxButton.addClickListener(event -> {
-            Notification.show("Indo para a próxima página...");
             mapaExibido++;
             mainLayout.removeAll();
             mainLayout.add(atualizarMapa(mapaExibido), navButtons);
+            if (mapaExibido == 0) {
+                prevButton.setEnabled(false);
+            } else {
+                prevButton.setEnabled(true);
+            }
+            if (mapaExibido == 2) {
+                proxButton.setEnabled(false);
+            } else {
+                proxButton.setEnabled(true);
+            }
         });
         prevButton.addClickListener(event -> {
-            Notification.show("Voltando para a página anterior...");
             mapaExibido--;
             mainLayout.removeAll();
             mainLayout.add(atualizarMapa(mapaExibido), navButtons);
+            if (mapaExibido == 0) {
+                prevButton.setEnabled(false);
+            } else {
+                prevButton.setEnabled(true);
+            }
+            if (mapaExibido == 2) {
+                proxButton.setEnabled(false);
+            } else {
+                proxButton.setEnabled(true);
+            }
         });
         mainLayout.add(atualizarMapa(mapaExibido), navButtons);
 
@@ -59,14 +88,19 @@ public class JornadaView extends Div {
         switch (mapaExibido) {
             case 0:
                 Card Batalha1 = new Card();
-                DownloadHandler imageHandler = DownloadHandler.forClassResource(getClass(), "/images/01_defesa-da-vila.avif", "01_defesa-da-vila.avif");
-                Image imagem1 = new Image(imageHandler, "01_defesa-da-vila.avif");        Batalha1.setMedia(imagem1);
+                DownloadHandler imageHandler = DownloadHandler.forClassResource(getClass(),
+                        "/images/01_defesa-da-vila.avif", "01_defesa-da-vila.avif");
+                Image imagem1 = new Image(imageHandler, "01_defesa-da-vila.avif");
+                Batalha1.addThemeVariants(CardVariant.ELEVATED);
+                Batalha1.setMedia(imagem1);
                 Batalha1.setTitle("Batalha 1");
                 Batalha1.add(new H1("Card exemplo para escolha de batalhas"));
 
                 Card Batalha2 = new Card();
-                DownloadHandler imageHandler2 = DownloadHandler.forClassResource(getClass(), "/images/02_ruinas-da-floresta.avif", "02_ruinas-da-floresta.avif");
+                DownloadHandler imageHandler2 = DownloadHandler.forClassResource(getClass(),
+                        "/images/02_ruinas-da-floresta.avif", "02_ruinas-da-floresta.avif");
                 Image imagem2 = new Image(imageHandler2, "02_ruinas-da-floresta.avif");
+                Batalha2.addThemeVariants(CardVariant.ELEVATED);
                 Batalha2.setMedia(imagem2);
                 Batalha2.setTitle("Batalha 2");
                 Batalha2.add(new H1("Card exemplo para escolha de batalhas"));
@@ -82,34 +116,52 @@ public class JornadaView extends Div {
                 return mapaLayout;
             case 1:
                 Card Batalha3 = new Card();
-                DownloadHandler imageHandler3 = DownloadHandler.forClassResource(getClass(), "/images/03_dragao-em-loop-infinito.avif", "03_dragao-em-loop-infinito.avif");
+                DownloadHandler imageHandler3 = DownloadHandler.forClassResource(getClass(),
+                        "/images/03_dragao-em-loop-infinito.avif", "03_dragao-em-loop-infinito.avif");
                 Image imagem3 = new Image(imageHandler3, "03_dragao-em-loop-infinito.avif");
+                Batalha3.addThemeVariants(CardVariant.ELEVATED);
                 Batalha3.setMedia(imagem3);
                 Batalha3.setTitle("Batalha 3");
                 Batalha3.add(new H1("Card exemplo para escolha de batalhas"));
 
                 Card Batalha4 = new Card();
-                DownloadHandler imageHandler4 = DownloadHandler.forClassResource(getClass(), "/images/04_masmorras-do-heap.avif", "04_masmorras-do-heap.avif");
+                DownloadHandler imageHandler4 = DownloadHandler.forClassResource(getClass(),
+                        "/images/04_masmorras-do-heap.avif", "04_masmorras-do-heap.avif");
                 Image imagem4 = new Image(imageHandler4, "04_masmorras-do-heap.avif");
+                Batalha4.addThemeVariants(CardVariant.ELEVATED);
                 Batalha4.setMedia(imagem4);
                 Batalha4.setTitle("Batalha 4");
                 Batalha4.add(new H1("Card exemplo para escolha de batalhas"));
+
+                Button batalha3btn = new Button("Iniciar Batalha 3");
+                Button batalha4btn = new Button("Iniciar Batalha 4");
+                Batalha3.addToFooter(batalha3btn);
+                Batalha4.addToFooter(batalha4btn);
+
+                batalha3btn.addClickListener(event -> iniciarBatalha());
+                batalha4btn.addClickListener(event -> iniciarBatalha());
+
                 mapaLayout.add(Batalha3, Batalha4);
                 return mapaLayout;
             case 2:
                 Card Batalha5 = new Card();
-                DownloadHandler imageHandler5 = DownloadHandler.forClassResource(getClass(), "/images/05_lich-nulo-batalha-final.avif", "05_lich-nulo-batalha-final.avif");
+                DownloadHandler imageHandler5 = DownloadHandler.forClassResource(getClass(),
+                        "/images/05_lich-nulo-batalha-final.avif", "05_lich-nulo-batalha-final.avif");
                 Image imagem5 = new Image(imageHandler5, "05_lich-nulo-batalha-final.avif");
+                Batalha5.addThemeVariants(CardVariant.ELEVATED);
                 Batalha5.setMedia(imagem5);
                 Batalha5.setTitle("Batalha 5");
                 Batalha5.add(new H1("Card exemplo para escolha de batalhas"));
+
+                Button batalha5btn = new Button("Iniciar Batalha 5");
+                Batalha5.addToFooter(batalha5btn);
+                batalha5btn.addClickListener(event -> iniciarBatalha());
+
                 mapaLayout.add(Batalha5);
                 return mapaLayout;
             default:
-                Notification.show("Não há mais mapas para exibir.");
-                mapaExibido = 0; // Resetar para o primeiro mapa
-                atualizarMapa(mapaExibido);
-                return mapaLayout;
+                Notification.show("Não há mais mapas para exibir. " + mapaExibido);
+                return atualizarMapa(mapaExibido);
         }
     }
 
