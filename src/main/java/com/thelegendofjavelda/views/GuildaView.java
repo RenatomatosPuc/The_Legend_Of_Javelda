@@ -3,12 +3,15 @@ package com.thelegendofjavelda.views;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
@@ -26,7 +29,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
+import com.Arsenal.InventarioPersonagem;
 import com.Personagens.*;
 import com.Personagens.Herois.*;
 import com.thelegendofjavelda.persistence.CsvSaveService;
@@ -43,9 +48,8 @@ public class GuildaView extends VerticalLayout {
     private final CsvSaveService service;
     private static List<Heroi> guilda = new ArrayList<>();
 
-    public GuildaView(CsvSaveService service, List<Heroi> guilda) {
+    public GuildaView(CsvSaveService service) {
         this.service = service;
-        this.guilda = guilda;
         add(new H1("Guilda"));
 
         TextField nome = new TextField("Nome");
@@ -54,24 +58,25 @@ public class GuildaView extends VerticalLayout {
         classe.setItems(Classe.values());
         HorizontalLayout gridLayout = new HorizontalLayout();
 
-        Grid<Heroi> gradeHerois = new Grid<>();
+        Grid<Heroi> gradeHerois = new Grid<>(Heroi.class, false);
         gradeHerois.addColumn(Heroi::getNome).setHeader("Nome");
         gradeHerois.addColumn(Heroi::getClasse).setHeader("Classe");
         gradeHerois.addColumn(Heroi::getNivel).setHeader("Nível");
-        gradeHerois.addColumn(Heroi::getInventarioPersonagem).setHeader("Inventário");
+        gradeHerois.setItemDetailsRenderer(INVENTARIO_RENDERER());
         gradeHerois.setSelectionMode(Grid.SelectionMode.SINGLE);
 
         // List<HeroResumo> membros = new ArrayList<>();
-        Grid<HeroResumo> grade = new Grid<>();
-        grade.addColumn(HeroResumo::nome).setHeader("Nome");
-        grade.addColumn(HeroResumo::classe).setHeader("Classe");
-        grade.addColumn(HeroResumo::nivel).setHeader("Nível");
-        grade.setSelectionMode(Grid.SelectionMode.SINGLE);
-
-        gridLayout.add(grade, gradeHerois);
+        /*
+         * Grid<HeroResumo> grade = new Grid<>(HeroResumo.class, false);
+         * grade.addColumn(HeroResumo::nome).setHeader("Nome");
+         * grade.addColumn(HeroResumo::classe).setHeader("Classe");
+         * grade.addColumn(HeroResumo::nivel).setHeader("Nível");
+         * grade.setSelectionMode(Grid.SelectionMode.SINGLE);
+         */
+        gridLayout.add(gradeHerois);
         gridLayout.setWidthFull();
 
-        Button adicionar = new Button("Adicionar membro", event -> {
+        Button adicionar = new Button("Recrutar membro", event -> {
             if (nome.isEmpty() || classe.getValue() == null) {
                 Notification.show("Informe o nome e a classe.");
                 return;
@@ -80,32 +85,34 @@ public class GuildaView extends VerticalLayout {
             adicionarMembro(nome.getValue(), classe.getValue());
 
             nome.clear();
-            carregarMembros(grade, formato);
+            carregarGuilda(formato);
         });
 
-        Button remover = new Button("Remover membro");
+        Button remover = new Button("Dispensar membro");
         remover.addClickListener(event -> {
-            HeroResumo selecionado = grade.asSingleSelect().getValue();
+            Heroi selecionado = gradeHerois.asSingleSelect().getValue();
             if (selecionado == null) {
                 Notification.show("Selecione um membro para remover.");
                 return;
             }
 
-            if (removerMembro(selecionado.id(), formato)) {
+            if (removerMembro(selecionado.getId(), formato)) {
                 Notification.show("Membro removido com sucesso.");
             } else {
                 Notification.show("Erro ao remover membro.");
             }
 
-            carregarMembros(grade, formato);
+            carregarGuilda(formato);
         });
 
         Button Listar = new Button("Listar membros");
         Listar.addClickListener(event -> {
             gradeHerois.setItems(guilda);
-            Notification.show("Membros listados com sucesso." + guilda);
+            Notification
+                    .show("Membros listados com sucesso. " + carregarGuilda(formato).size() + " membros carregados.");
         });
-        carregarMembros(grade, formato);
+        carregarGuilda(formato);
+        guilda = carregarGuilda(formato);
         HorizontalLayout btnLayout = new HorizontalLayout();
         btnLayout.add(adicionar, remover, Listar);
         add(nome, classe, btnLayout, gridLayout);
@@ -118,47 +125,35 @@ public class GuildaView extends VerticalLayout {
         double vidaMaxima = 0;
         double ataque = 0;
         double defesa = 0;
+        Heroi heroi;
         switch (classe) {
             case GUERREIRO:
-                Heroi guerreiro = new Guerreiro(nivel);
-                guerreiro.setNome(nome);
-                vidaMaxima = guerreiro.getVidaMaxima();
-                ataque = guerreiro.getAtaque();
-                defesa = guerreiro.getDefesa();
-                guilda.add(guerreiro);
+                heroi = new Guerreiro(nivel);
                 break;
             case MAGO:
-                Heroi mago = new Mago(nivel);
-                mago.setNome(nome);
-                vidaMaxima = mago.getVidaMaxima();
-                ataque = mago.getAtaque();
-                defesa = mago.getDefesa();
-                guilda.add(mago);
+                heroi = new Mago(nivel);
                 break;
             case ARQUEIRO:
-                Heroi arqueiro = new Arqueiro(nivel);
-                arqueiro.setNome(nome);
-                vidaMaxima = arqueiro.getVidaMaxima();
-                ataque = arqueiro.getAtaque();
-                defesa = arqueiro.getDefesa();
-                guilda.add(arqueiro);
+                heroi = new Arqueiro(nivel);
                 break;
             case CLERIGO:
-                Heroi clerigo = new Clerigo(nivel);
-                clerigo.setNome(nome);
-                vidaMaxima = clerigo.getVidaMaxima();
-                ataque = clerigo.getAtaque();
-                defesa = clerigo.getDefesa();
-                guilda.add(clerigo);
+                heroi = new Clerigo(nivel);
                 break;
             default:
                 Notification.show("Classe inválida.");
                 return;
         }
+        heroi.setNome(nome);
+        vidaMaxima = heroi.getVidaMaxima();
+        ataque = heroi.getAtaque();
+        defesa = heroi.getDefesa();
+        guilda.add(heroi);
+
         double vidaAtual = vidaMaxima; // Vida atual inicial igual à vida máxima
         membro += "," + vidaMaxima + "," + vidaAtual;
         membro += "," + ataque + "," + defesa;
         int id = Objects.hash(membro);
+        heroi.setId(id);
         String linha = id + "," + membro;
         try {
             Files.writeString(GUILDA_CSV, linha + System.lineSeparator(), java.nio.file.StandardOpenOption.APPEND);
@@ -212,13 +207,13 @@ public class GuildaView extends VerticalLayout {
         }
     }
 
-    public static void carregarMembros(Grid<HeroResumo> grade, CSVFormat formato) {
+    public static void carregarMembros(Grid<Heroi> grade, CSVFormat formato) {
         if (!Files.exists(GUILDA_CSV)) {
             return;
         }
 
         try (CSVParser parser = CSVParser.parse(GUILDA_CSV, java.nio.charset.StandardCharsets.UTF_8, formato)) {
-            List<HeroResumo> membros = new ArrayList<>();
+            List<Heroi> membros = new ArrayList<>();
             for (CSVRecord record : parser) {
                 int id = Integer.parseInt(record.get("id"));
                 String nome = record.get("nome");
@@ -229,11 +224,101 @@ public class GuildaView extends VerticalLayout {
                 double ataque = Double.parseDouble(record.get("ataque"));
                 double defesa = Double.parseDouble(record.get("defesa"));
 
-                membros.add(new HeroResumo(id, nome, classe, nivel, vidaMaxima, vidaAtual, ataque, defesa));
+                /* membros.add(new Heroi(id, Classe.valueOf(classe))); */
             }
             grade.setItems(membros);
         } catch (Exception e) {
             Notification.show("Erro ao carregar membros da guilda: " + e.getMessage());
+        }
+    }
+
+    public List<Heroi> carregarGuilda(CSVFormat formato) {
+        if (!Files.exists(GUILDA_CSV)) {
+            return null;
+        }
+
+        try (CSVParser parser = CSVParser.parse(GUILDA_CSV, java.nio.charset.StandardCharsets.UTF_8, formato)) {
+            List<Heroi> membros = new ArrayList<>();
+            for (CSVRecord record : parser) {
+                String nome = record.get("nome");
+                String classe = record.get("classe");
+                int nivel = Integer.parseInt(record.get("nivel"));
+                double vidaMaxima = Double.parseDouble(record.get("vidaMaxima"));
+                double vidaAtual = Double.parseDouble(record.get("vidaAtual"));
+                double ataque = Double.parseDouble(record.get("ataque"));
+                double defesa = Double.parseDouble(record.get("defesa"));
+                Heroi heroi;
+                switch (Classe.valueOf(classe)) {
+                    case GUERREIRO:
+                        heroi = new Guerreiro(nivel);
+                        break;
+                    case MAGO:
+                        heroi = new Mago(nivel);
+                        break;
+                    case ARQUEIRO:
+                        heroi = new Arqueiro(nivel);
+                        break;
+                    case CLERIGO:
+                        heroi = new Clerigo(nivel);
+                        break;
+                    default:
+                        Notification.show("Classe inválida.");
+                        return null;
+                }
+                heroi.setNome(nome);
+                heroi.setNivel(nivel);
+                heroi.setVidaMaxima(vidaMaxima);
+                heroi.setVidaAtual(vidaAtual);
+                heroi.setAtaque(ataque);
+                heroi.setDefesa(defesa);
+
+                membros.add(heroi);
+            }
+            return membros;
+        } catch (Exception e) {
+            Notification.show("Erro ao carregar membros da guilda: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private static ComponentRenderer<InventarioFormLayout, Heroi> INVENTARIO_RENDERER() {
+        return new ComponentRenderer<>(InventarioFormLayout::new, InventarioFormLayout::setInventario);
+    }
+
+    private static class InventarioFormLayout extends FormLayout {
+        private final TextField arma = new TextField("Arma");
+        private final TextField armadura = new TextField("Armadura");
+        private final TextField item = new TextField("Item");
+
+        public InventarioFormLayout() {
+            Stream.of(arma, armadura, item).forEach(field -> {
+                field.setReadOnly(true);
+                add(field);
+            });
+
+            setResponsiveSteps(new ResponsiveStep("0", 3));
+            setColspan(arma, 3);
+            setColspan(armadura, 3);
+            setColspan(item, 3);
+        }
+
+        public void setInventario(Heroi heroi) {
+            try {
+                arma.setValue(
+                        String.valueOf(heroi.getInventarioPersonagem().getArma()) != null
+                                ? heroi.getInventarioPersonagem().getArma().getNome()
+                                : "");
+                armadura.setValue(
+                        String.valueOf(heroi.getInventarioPersonagem().getArmadura()) != null
+                                ? heroi.getInventarioPersonagem().getArmadura().getNome()
+                                : "");
+                item.setValue(
+                        String.valueOf(heroi.getInventarioPersonagem().getUtilitario()) != null
+                                ? heroi.getInventarioPersonagem().getUtilitario().getNome()
+                                : "");
+            } catch (Exception e) {
+                Notification.show("Erro ao carregar inventário: " + e.getMessage());
+            }
         }
     }
 

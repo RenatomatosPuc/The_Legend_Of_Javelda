@@ -11,6 +11,7 @@ public abstract class Heroi extends Personagem {
     private double ouro;
     private int contadorAtaque;
     private String nome;
+    private int id;
 
     // METODOS DE NIVEL
 
@@ -21,6 +22,20 @@ public abstract class Heroi extends Personagem {
         this.inventarioPersonagem = new InventarioPersonagem();
         this.ouro = 0;
         this.contadorAtaque = 0;
+        this.nome = "";
+        this.id = 0;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
     }
 
     public int getContadorAtaque() {
@@ -84,4 +99,5 @@ public abstract class Heroi extends Personagem {
      */
 
     public abstract double usarHabilidadeEspecial();
+
 }

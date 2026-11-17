@@ -11,14 +11,6 @@ public class Arqueiro extends Heroi {
         super.setVidaAtual(super.getVidaMaxima());
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getNome() {
-        return this.nome;
-    }
-
     // Habilidade especial da o dobro de Dano, nao tem contexto em questao de lore
     // do que faz.
     // (TEMPORARIO ATE O BALANCEAMENTO)

@@ -8,6 +8,7 @@ public class Guerreiro extends Heroi {
     // Construtor
     public Guerreiro(int n) {
         super(n, Classe.GUERREIRO);
+        super.setVidaMaxima(150 + (n - 1) * 10);
     }
 
     public void setNome(String nome) {

@@ -74,6 +74,10 @@ vaadin-grid::part(odd-row-cell) {
   background-color: #171c24;
   color: #d38f07;
 }
+vaadin-grid::part(details-cell) {
+  background-color: #171c24;
+  color: #d38f07;
+}
 
 vaadin-grid::part(cell):hover {
   background-color: #1c2636;

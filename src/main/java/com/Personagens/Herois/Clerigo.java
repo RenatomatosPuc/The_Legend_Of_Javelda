@@ -7,14 +7,7 @@ public class Clerigo extends Heroi {
 
     public Clerigo(int n) {
         super(n, Classe.CLERIGO);
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getNome() {
-        return this.nome;
+        super.setVidaMaxima(120 + (n - 1) * 10);
     }
 
     // Habilidade especial da o dobro de Dano, nao tem contexto em questao de lore

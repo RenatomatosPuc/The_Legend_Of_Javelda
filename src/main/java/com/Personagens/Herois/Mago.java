@@ -7,6 +7,7 @@ public class Mago extends Heroi {
 
     public Mago(int n) {
         super(n, Classe.MAGO);
+        super.setVidaMaxima(80 + (n - 1) * 10);
     }
 
     public void setNome(String nome) {
