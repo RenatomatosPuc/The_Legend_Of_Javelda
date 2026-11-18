@@ -20,17 +20,18 @@ public class CsvSaveService {
     private static final Path GUILDA_CSV = DATA.resolve("guilda.csv");
     private static final Path INVENTARIO_CSV = DATA.resolve("inventario.csv");
     private static final Path BATALHA_CSV = DATA.resolve("batalha.csv");
+    private static final Path INVENTARIO_HEROI_CSV = DATA.resolve("inventarioHeroi.csv");
 
     private static final String HEROIS_HEADER = "id,nome,classe,nivel,vidaMaxima,vidaAtual,ataque,defesa";
     private static final String GUILDA_HEADER = "id,nome,classe,nivel,vidaMaxima,vidaAtual,ataque,defesa";
-    private static final String INVENTARIO_HEADER = "id,tipo,nome,ataque,defesa,quantidade,heroi_id";
+    private static final String INVENTARIO_HEADER = "tipo,nome,ataque,defesa,quantidade,heroi_id";
     private static final String BATALHA_HEADER = "tipo,dificuldade,mapa_atual,batalha_atual,campanha_concluida,id_batalha,resultado";
     private static final Set<String> DIFICULDADES = Set.of("FACIL", "MEDIO", "DIFICIL");
     private Notification n = new Notification();
 
     public boolean existeCampanha() {
         return Files.isRegularFile(HEROIS_CSV) && Files.isRegularFile(GUILDA_CSV) && Files.isRegularFile(INVENTARIO_CSV)
-                && Files.isRegularFile(BATALHA_CSV);
+                && Files.isRegularFile(BATALHA_CSV) && Files.isRegularFile(INVENTARIO_HEROI_CSV);
     }
 
     public CampanhaSalva iniciarNovaCampanha(String dificuldade) {
@@ -49,6 +50,7 @@ public class CsvSaveService {
             Files.writeString(HEROIS_CSV, HEROIS_HEADER + System.lineSeparator());
             Files.writeString(GUILDA_CSV, GUILDA_HEADER + System.lineSeparator());
             Files.writeString(INVENTARIO_CSV, INVENTARIO_HEADER + System.lineSeparator());
+            Files.writeString(INVENTARIO_HEROI_CSV, INVENTARIO_HEADER + System.lineSeparator());
             Files.writeString(BATALHA_CSV, estadoInicial);
             n.show("Arquivos criados com sucesso em " + DATA);
             return new CampanhaSalva(dificuldade, 1, 1, false);
@@ -68,6 +70,7 @@ public class CsvSaveService {
             validarCabecalho(HEROIS_CSV, HEROIS_HEADER);
             validarCabecalho(GUILDA_CSV, GUILDA_HEADER);
             validarCabecalho(INVENTARIO_CSV, INVENTARIO_HEADER);
+            validarCabecalho(INVENTARIO_HEROI_CSV, INVENTARIO_HEADER);
             List<String> linhas = Files.readAllLines(BATALHA_CSV, StandardCharsets.UTF_8);
             validarPrimeiraLinha(BATALHA_CSV, linhas, BATALHA_HEADER);
             return lerEstadoCampanha(linhas);
