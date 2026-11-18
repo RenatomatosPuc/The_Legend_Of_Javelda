@@ -17,7 +17,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.streams.DownloadHandler;
 import com.thelegendofjavelda.persistence.CsvSaveService;
 
-@Route(value = "Jornada", layout = MainLayout.class)
+@Route(value = "jornada", layout = MainLayout.class)
 public class JornadaView extends Div implements BeforeEnterObserver {
     private int mapaExibido = 0;
     private final CsvSaveService service;
@@ -45,7 +45,7 @@ public class JornadaView extends Div implements BeforeEnterObserver {
         proxButton.addClickListener(event -> {
             mapaExibido++;
             mainLayout.removeAll();
-            mainLayout.add(atualizarMapa(mapaExibido), navButtons);
+            mainLayout.add(title, atualizarMapa(mapaExibido), navButtons);
             if (mapaExibido == 0) {
                 prevButton.setEnabled(false);
             } else {
@@ -60,7 +60,7 @@ public class JornadaView extends Div implements BeforeEnterObserver {
         prevButton.addClickListener(event -> {
             mapaExibido--;
             mainLayout.removeAll();
-            mainLayout.add(atualizarMapa(mapaExibido), navButtons);
+            mainLayout.add(title, atualizarMapa(mapaExibido), navButtons);
             if (mapaExibido == 0) {
                 prevButton.setEnabled(false);
             } else {
@@ -72,7 +72,7 @@ public class JornadaView extends Div implements BeforeEnterObserver {
                 proxButton.setEnabled(true);
             }
         });
-        mainLayout.add(atualizarMapa(mapaExibido), navButtons);
+        mainLayout.add(title, atualizarMapa(mapaExibido), navButtons);
 
         add(mainLayout);
 

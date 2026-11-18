@@ -27,4 +27,8 @@ public class ColecaoArma {
         this.colecaoArma.add(new Cajado("Cajado Simples", 10, 40, 30));
         this.colecaoArma.add(new Cajado("Cetro de Espirito", 13, 80, 50));
     }
+
+    public ArrayList<Arma> getColecaoArma() {
+        return this.colecaoArma;
+    }
 }
