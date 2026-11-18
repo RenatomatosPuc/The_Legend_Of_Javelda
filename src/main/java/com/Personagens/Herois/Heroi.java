@@ -2,6 +2,7 @@ package com.Personagens.Herois;
 
 import com.Personagens.Personagem;
 import com.Arsenal.*;
+import com.Exceptions.UltimateOnRechargeException;
 
 public abstract class Heroi extends Personagem {
     private Classe classe;
@@ -16,6 +17,7 @@ public abstract class Heroi extends Personagem {
     // METODOS DE NIVEL
 
     public Heroi(int n, Classe c) {
+        super("", 0, 0, 0, 0, n, esforcoInicial(c), 0, 0, true);
         this.classe = c;
         this.nivel = n;
         this.experiencia = 0;
@@ -90,6 +92,27 @@ public abstract class Heroi extends Personagem {
         return danoArma + super.getAtaque();
     }
 
+    @Override
+    public double atacar(Personagem target) {
+        double dano = atacar();
+        target.receberDano(dano);
+        return dano;
+    }
+
+    private static int esforcoInicial(Classe classe) {
+        switch (classe) {
+            case GUERREIRO:
+                return 4;
+            case ARQUEIRO:
+            case CLERIGO:
+                return 10;
+            case MAGO:
+                return 12;
+            default:
+                throw new IllegalArgumentException("Classe de heroi invalida: " + classe);
+        }
+    }
+
     // Usa o utilitario
     // E necessario criar os itens para implimentar esse metodo
     /*
@@ -99,5 +122,13 @@ public abstract class Heroi extends Personagem {
      */
 
     public abstract double usarHabilidadeEspecial();
+
+    protected void consumirEsforco() throws UltimateOnRechargeException {
+        if (getEsforco() <= 0) {
+            throw new UltimateOnRechargeException("Esforco insuficiente: habilidade especial cancelada.");
+        }
+
+        setEsforco(getEsforco() - 1);
+    }
 
 }

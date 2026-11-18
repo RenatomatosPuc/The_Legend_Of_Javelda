@@ -24,6 +24,7 @@ public class Guerreiro extends Heroi {
     @Override
     public double usarHabilidadeEspecial() {
         try {
+            consumirEsforco();
             return 0;
         } catch (UltimateOnRechargeException e) {
             System.out.println("Erro:" + e.getMessage());

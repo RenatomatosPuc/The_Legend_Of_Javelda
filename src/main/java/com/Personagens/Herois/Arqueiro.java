@@ -9,6 +9,7 @@ public class Arqueiro extends Heroi {
         super(n, Classe.ARQUEIRO);
         super.setVidaMaxima(100 + (n - 1) * 10);
         super.setVidaAtual(super.getVidaMaxima());
+        super.setEsforco(10);
     }
 
     // Nao tem contexto em questao de lore do que faz.
@@ -16,6 +17,7 @@ public class Arqueiro extends Heroi {
     @Override
     public double usarHabilidadeEspecial() {
         try {
+            consumirEsforco();
             return 0;
         } catch (UltimateOnRechargeException e) {
             System.out.println("Erro:" + e.getMessage());

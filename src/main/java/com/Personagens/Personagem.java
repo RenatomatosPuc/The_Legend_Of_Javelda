@@ -9,9 +9,12 @@ public abstract class Personagem implements Combatente {
     private double defesa;
     private int velocidade;
     private boolean estaVivo;
+    private int esforco;
+    private int experiencia;
 
-
-     public Personagem(String nome, int vidaMaxima, double defesa, double ataque, int velocidade, int nivel, int vidaAtual, boolean estaVivo) {
+  
+    public Personagem(String nome, int vidaMaxima, double defesa, double ataque, int velocidade, int nivel,int esforco, int experiencia,
+            int vidaAtual,boolean estaVivo) {
         this.nome = nome;
         this.vidaMaxima = vidaMaxima;
         this.vidaAtual = vidaAtual;
@@ -20,10 +23,30 @@ public abstract class Personagem implements Combatente {
         this.velocidade = velocidade;
         this.estaVivo = estaVivo;
         this.nivel = nivel;
+        this.esforco = esforco;
+        this.experiencia = experiencia;
     }
+
     @Override
     public double getAtaque() {
         return this.ataque;
+    }
+
+    public int getEsforco() {
+        return esforco;
+    }
+
+    public void setEsforco(int esforco) {
+        this.esforco = Math.max(esforco, 0);
+    }
+
+    public int getExperiencia() {
+        return experiencia;
+    }
+
+    @Override
+    public int getNivel() {
+        return this.nivel;
     }
 
     @Override

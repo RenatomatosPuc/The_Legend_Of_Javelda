@@ -13,7 +13,11 @@ public interface Combatente {
 
     boolean estaVivo();
 
-    double atacar();
+    double atacar(Personagem target);
 
     double receberDano(double danoRecebido);
+
+    int getNivel();
+
+    int getEsforco();
 }

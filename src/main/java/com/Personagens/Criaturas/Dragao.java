@@ -1,18 +1,39 @@
 package com.Personagens.Criaturas;
 
-public class Dragao {
+import com.Personagens.Personagem;
 
-    public class dragao extends Criatura {
-        public Dragao(String nome, int vidaMaxima, double defesa, double ataque, String rankPerigo, int velocidade, int nivel, int vidaAtual, boolean estaVivo) {
-            super(nome, vidaMaxima, defesa, ataque, rankPerigo, velocidade, nivel, vidaAtual, estaVivo);
-        }
-
-      
-        public void soltarLoot() {
-       System.out.println("O dragão soltou um olho de dragão!");
-        }
+public class Dragao extends Criatura {
+    public Dragao(String nome, int vidaMaxima, double defesa, double ataque, String rankPerigo, int velocidade,
+            int nivel, int vidaAtual, boolean estaVivo) {
+        super(nome, vidaMaxima, defesa, ataque, rankPerigo, velocidade, nivel, vidaAtual, estaVivo);
+        setEsforco(8);
     }
-    
 
+    public double atacar(Personagem target) {
+        try {
+            System.out.println("O dragão mordeu " + target.getNome() + " com um ataque de " + this.getAtaque() + " de dano!");
+            target.receberDano(this.getAtaque());
+        } catch (NullPointerException e) {
+            System.out.println("O dragão mordeu, mas ninguem pegou, alvo vazio");
+        }
+        return this.getAtaque();
+    }
 
+    public double ataqueEspecial(Personagem target) {
+        try {
+            if (!consumirEsforco()) {
+                return 0;
+            }
+            System.out.println("O dragão lançou um sopro de java de dano! em: " + target.getNome());
+            target.receberDano(this.getAtaque() + 20);
+        } catch (NullPointerException e) {
+            System.out.println("O dragão soprou,soprou, mas ninguem pegou, alvo vazio");
+        }
+        return this.getAtaque() + 20;
+    }
+
+    public void soltarLoot() {
+        System.out.println("O dragão soltou um olho de dragão!");
+    }
 }
+
