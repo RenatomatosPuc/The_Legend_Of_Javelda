@@ -3,8 +3,19 @@ package com.Personagens.Herois;
 import com.Exceptions.UltimateOnRechargeException;
 
 public class Mago extends Heroi {
+    private String nome;
+
     public Mago(int n) {
         super(n, Classe.MAGO);
+        super.setVidaMaxima(80 + (n - 1) * 10);
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getNome() {
+        return this.nome;
     }
 
     // Nao tem contexto em questao de lore do que faz.

@@ -21,4 +21,7 @@ public class GuildaService {
         return List.copyOf(membros);
     }
 
+    public void removerMembro(HeroResumo selecionado) {
+        membros.remove(selecionado);
+    }
 }

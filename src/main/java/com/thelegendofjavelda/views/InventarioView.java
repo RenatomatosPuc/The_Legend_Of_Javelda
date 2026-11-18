@@ -1,15 +1,23 @@
 package com.thelegendofjavelda.views;
 
+import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.thelegendofjavelda.persistence.CsvSaveService;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 
 @Route(value = "inventario", layout = MainLayout.class)
 public class InventarioView extends VerticalLayout {
-    public InventarioView() {
+    private final CsvSaveService service;
+
+    public InventarioView(CsvSaveService service) {
+        this.service = service;
         add(new H1("Inventário"));
 
         Grid<ArmaResumo> armas = new Grid<>();
@@ -18,8 +26,15 @@ public class InventarioView extends VerticalLayout {
         armas.setItems(
                 new ArmaResumo("Espada de treino", 5),
                 new ArmaResumo("Arco de madeira", 3));
+        armas.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS);
         add(armas);
 
+    }
+
+    public void beforeEnter(BeforeEnterEvent event) {
+        if (!service.existeCampanha()) {
+            event.rerouteTo("menu");
+        }
     }
 
 }

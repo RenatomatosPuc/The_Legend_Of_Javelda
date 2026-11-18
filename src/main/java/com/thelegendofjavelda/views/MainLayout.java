@@ -5,11 +5,9 @@ import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 
-
-
-@StyleSheet("styles.css")
 public class MainLayout extends AppLayout {
     public MainLayout() {
+        addClassName("main-layout");
         SideNav menu = new SideNav();
         menu.addItem(new SideNavItem("Menu", "/"));
         menu.addItem(new SideNavItem("Jornada", "/jornada"));
