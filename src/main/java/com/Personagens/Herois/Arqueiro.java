@@ -7,8 +7,7 @@ public class Arqueiro extends Heroi {
         super(n, Classe.ARQUEIRO);
     }
 
-    // Habilidade especial da o dobro de Dano, nao tem contexto em questao de lore
-    // do que faz.
+    // Nao tem contexto em questao de lore do que faz.
     // (TEMPORARIO ATE O BALANCEAMENTO)
     @Override
     public double usarHabilidadeEspecial() {
