@@ -4,15 +4,14 @@ import com.Personagens.Personagem;
 
 public abstract class Criatura extends Personagem {
 
-<<<<<<< Updated upstream
-=======
-private String RankPerigo;
+
+private String rankPerigo;
 
 
-public Criatura(String nome, int vida, double ataque, String RankPerigo, int  nivel) {
-    super(nome,vida,ataque,nivel);
-    this.RankPerigo = RankPerigo;
+public Criatura(String nome, int vidaMaxima, double defesa, double ataque, String rankPerigo, int velocidade, int nivel, int vidaAtual, boolean estaVivo) {
+    super(nome, vidaMaxima, defesa, ataque, velocidade, nivel, vidaAtual, estaVivo);
+    this.rankPerigo = rankPerigo;
 }
 public abstract void soltarLoot();
->>>>>>> Stashed changes
+
 }

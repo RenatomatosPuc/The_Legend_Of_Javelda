@@ -10,6 +10,17 @@ public abstract class Personagem implements Combatente {
     private int velocidade;
     private boolean estaVivo;
 
+
+     public Personagem(String nome, int vidaMaxima, double defesa, double ataque, int velocidade, int nivel, int vidaAtual, boolean estaVivo) {
+        this.nome = nome;
+        this.vidaMaxima = vidaMaxima;
+        this.vidaAtual = vidaAtual;
+        this.ataque = ataque;
+        this.defesa = defesa;
+        this.velocidade = velocidade;
+        this.estaVivo = estaVivo;
+        this.nivel = nivel;
+    }
     @Override
     public double getAtaque() {
         return this.ataque;
