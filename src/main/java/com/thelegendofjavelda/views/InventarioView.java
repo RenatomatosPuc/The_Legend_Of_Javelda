@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 
+import com.Arsenal.Equipavel;
 import com.Arsenal.InventarioJogador;
 import com.Arsenal.InventarioPersonagem;
 import com.thelegendofjavelda.persistence.CsvSaveService;
@@ -43,8 +44,8 @@ public class InventarioView extends VerticalLayout {
         Stream<InventarioJogador> inventarioGeral = Stream.of(new InventarioJogador());
 
         Grid<InventarioJogador> gridGeral = new Grid<>(InventarioJogador.class, false);
-        /* gridGeral.addColumn(InventarioJogador::getNome).setHeader("Nome");
-        gridGeral.addColumn(InventarioJogador::getAtaque).setHeader("Ataque"); */
+        gridGeral.addColumn(InventarioJogador::getNome).setHeader("Nome");
+        gridGeral.addColumn(InventarioJogador::getAtaque).setHeader("Ataque");
         gridGeral.setItems(
                 );
         gridGeral.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS);
@@ -73,16 +74,16 @@ public class InventarioView extends VerticalLayout {
 
         try (CSVParser parser = CSVParser.parse(INVENTARIO_CSV, java.nio.charset.StandardCharsets.UTF_8, formato)){
             List<Equipavel> inventarioGeral = new ArrayList<>();
-            /* for (var record : parser) {
-                inventarioGeral.add(new Equipavel(
-                        record.get("tipo"),
-                        record.get("nome"),
-                        record.get("ataque"),
-                        record.get("defesa"),
-                        record.get("quantidade"),
-                        record.get("heroi_id")
-                ));
-            } */
+             for (var record : parser) {
+                String nome = record.get("nome");
+                String tipo = record.get("tipo");
+                int ataque = Integer.parseInt(record.get("ataque"));
+                int defesa = Integer.parseInt(record.get("defesa"));
+                int quantidade = Integer.parseInt(record.get("quantidade"));
+                switch(tipo){
+
+                }
+            } 
 
         } catch (Exception e) {
             Notification.show("Erro ao carregar membros da guilda: " + e.getMessage());

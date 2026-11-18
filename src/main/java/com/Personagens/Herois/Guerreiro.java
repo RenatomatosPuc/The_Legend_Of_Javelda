@@ -19,8 +19,7 @@ public class Guerreiro extends Heroi {
         return this.nome;
     }
 
-    // Habilidade especial da o dobro de Dano, nao tem contexto em questao de lore
-    // do que faz.
+    // Nao tem contexto em questao de lore do que faz.
     // (TEMPORARIO ATE O BALANCEAMENTO)
     @Override
     public double usarHabilidadeEspecial() {

@@ -1,4 +1,6 @@
-package com.Arsenal;
+package com.Arsenal.Armas;
+
+import com.Arsenal.Equipavel;
 
 public class Arma implements Equipavel {
 

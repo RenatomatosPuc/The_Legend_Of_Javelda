@@ -1,4 +1,6 @@
-package com.Arsenal;
+package com.Arsenal.Armaduras;
+
+import com.Arsenal.Equipavel;
 
 public class Armadura implements Equipavel {
     private String nome;
