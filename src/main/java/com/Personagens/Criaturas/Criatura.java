@@ -4,7 +4,6 @@ import com.Personagens.Personagem;
 
 public abstract class Criatura extends Personagem {
 
-
 private String rankPerigo;
 
 
