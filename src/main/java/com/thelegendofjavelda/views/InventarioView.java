@@ -10,6 +10,7 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 
 @Route(value = "inventario", layout = MainLayout.class)
 public class InventarioView extends VerticalLayout {
@@ -25,6 +26,7 @@ public class InventarioView extends VerticalLayout {
         armas.setItems(
                 new ArmaResumo("Espada de treino", 5),
                 new ArmaResumo("Arco de madeira", 3));
+        armas.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS);
         add(armas);
 
     }

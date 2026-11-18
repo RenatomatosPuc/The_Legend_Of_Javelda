@@ -47,6 +47,14 @@ public abstract class Personagem implements Combatente {
         this.vidaAtual = vidaAtual;
     }
 
+    public void setAtaque(double ataque) {
+        this.ataque = ataque;
+    }
+
+    public void setDefesa(double defesa) {
+        this.defesa = defesa;
+    }
+
     @Override
     public boolean estaVivo() {
         if (this.vidaAtual >= 0)

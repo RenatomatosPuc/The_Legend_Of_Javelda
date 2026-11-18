@@ -3,6 +3,7 @@ package com.Personagens.Herois;
 import com.Exceptions.UltimateOnRechargeException;
 
 public class Arqueiro extends Heroi {
+    private String nome;
 
     public Arqueiro(int n) {
         super(n, Classe.ARQUEIRO);

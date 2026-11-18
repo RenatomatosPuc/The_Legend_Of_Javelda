@@ -2,6 +2,8 @@ package com.thelegendofjavelda.persistence;
 
 import org.springframework.stereotype.Service;
 
+import com.vaadin.flow.component.notification.Notification;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -19,11 +21,12 @@ public class CsvSaveService {
     private static final Path INVENTARIO_CSV = DATA.resolve("inventario.csv");
     private static final Path BATALHA_CSV = DATA.resolve("batalha.csv");
 
-    private static final String HEROIS_HEADER = "id,nome,classe,nivel,vida_maxima,vida_atual,ataque,defesa";
-    private static final String GUILDA_HEADER = "id,nome,classe,nivel,vida_maxima,vida_atual,ataque,defesa";
+    private static final String HEROIS_HEADER = "id,nome,classe,nivel,vidaMaxima,vidaAtual,ataque,defesa";
+    private static final String GUILDA_HEADER = "id,nome,classe,nivel,vidaMaxima,vidaAtual,ataque,defesa";
     private static final String INVENTARIO_HEADER = "id,tipo,nome,ataque,defesa,quantidade,heroi_id";
     private static final String BATALHA_HEADER = "tipo,dificuldade,mapa_atual,batalha_atual,campanha_concluida,id_batalha,resultado";
-    private static final Set<String> DIFICULDADES = Set.of("fácil", "médio", "difícil");
+    private static final Set<String> DIFICULDADES = Set.of("FACIL", "MEDIO", "DIFICIL");
+    private Notification n = new Notification();
 
     public boolean existeCampanha() {
         return Files.isRegularFile(HEROIS_CSV) && Files.isRegularFile(GUILDA_CSV) && Files.isRegularFile(INVENTARIO_CSV)
@@ -31,13 +34,14 @@ public class CsvSaveService {
     }
 
     public CampanhaSalva iniciarNovaCampanha(String dificuldade) {
-        if (dificuldade == null || !DIFICULDADES.contains(dificuldade.toLowerCase())) {
+        n.show("Iniciando nova campanha com dificuldade: " + dificuldade);
+        if (dificuldade == null || !DIFICULDADES.contains(dificuldade)) {
             throw new IllegalArgumentException("Escolha uma dificuldade valida: facil, normal ou dificil");
         }
 
         String estadoInicial = BATALHA_HEADER
                 + System.lineSeparator()
-                + "CAMPANHA," + dificuldade.toLowerCase() + ",1,1,false,0,0"
+                + "CAMPANHA," + dificuldade + ",1,1,false,0,0"
                 + System.lineSeparator();
 
         try {
@@ -46,7 +50,8 @@ public class CsvSaveService {
             Files.writeString(GUILDA_CSV, GUILDA_HEADER + System.lineSeparator());
             Files.writeString(INVENTARIO_CSV, INVENTARIO_HEADER + System.lineSeparator());
             Files.writeString(BATALHA_CSV, estadoInicial);
-            return new CampanhaSalva(dificuldade.toLowerCase(), 1, 1, false);
+            n.show("Arquivos criados com sucesso em " + DATA);
+            return new CampanhaSalva(dificuldade, 1, 1, false);
         } catch (IOException erro) {
             throw new UncheckedIOException(
                     "Não foi possivel criar os arquivos da campanha em " + DATA, erro);
