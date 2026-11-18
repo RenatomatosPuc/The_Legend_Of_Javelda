@@ -1,5 +1,9 @@
 package com.Arsenal;
 
+import com.Arsenal.Armaduras.Armadura;
+import com.Arsenal.Armas.Arma;
+import com.Arsenal.Itens.Utilitario;
+
 public class InventarioPersonagem {
 
     // Slots fixos: [0] = arma, [1] = armadura, [2] = utilitário

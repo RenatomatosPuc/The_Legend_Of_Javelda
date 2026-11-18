@@ -1,4 +1,6 @@
-package com.Arsenal;
+package com.Arsenal.Itens;
+
+import com.Arsenal.Equipavel;
 
 public class Utilitario implements Equipavel {
     private String nome;
