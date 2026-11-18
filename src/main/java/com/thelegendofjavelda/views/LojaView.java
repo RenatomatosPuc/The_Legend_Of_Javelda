@@ -59,6 +59,13 @@ public class LojaView extends VerticalLayout implements BeforeEnterObserver {
         acessarButton.addClassName("loja-card-button");
         acessarButton.addClickListener(event -> {
             Notification.show("Acesso à loja de " + titulo + " realizado com sucesso!");
+            if (titulo.equals("Armas")) {
+                getUI().ifPresent(ui -> ui.navigate(LojaArmas.class));
+            } else if (titulo.equals("Armaduras")) {
+                // Navegar para a loja de armaduras
+            } else if (titulo.equals("Utilitários")) {
+                // Navegar para a loja de utilitários
+            }
         });
         card.addToFooter(acessarButton);
         return card;
