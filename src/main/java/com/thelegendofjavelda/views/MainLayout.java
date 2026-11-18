@@ -14,6 +14,7 @@ public class MainLayout extends AppLayout {
         menu.addItem(new SideNavItem("Guilda", "/guilda"));
         menu.addItem(new SideNavItem("Equipe", "/equipe"));
         menu.addItem(new SideNavItem("Inventário", "/inventario"));
+        menu.addItem(new SideNavItem("Loja", "/loja"));
         addToDrawer(menu);
     }
 

@@ -17,8 +17,8 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.streams.DownloadHandler;
 import com.thelegendofjavelda.persistence.CsvSaveService;
 
-@Route(value = "jornada", layout = MainLayout.class)
-public class JornadaView extends Div {
+@Route(value = "Jornada", layout = MainLayout.class)
+public class JornadaView extends Div implements BeforeEnterObserver {
     private int mapaExibido = 0;
     private final CsvSaveService service;
 
@@ -171,7 +171,7 @@ public class JornadaView extends Div {
 
     public void beforeEnter(BeforeEnterEvent event) {
         if (!service.existeCampanha()) {
-            event.rerouteTo("menu");
+            event.rerouteTo("/");
         }
     }
 

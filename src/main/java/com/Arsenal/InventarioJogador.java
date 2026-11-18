@@ -8,4 +8,13 @@ public class InventarioJogador {
     public InventarioJogador() {
 
     }
+
+    public Equipavel getItem(String nome) {
+        for (Equipavel item : inventarioGeral) {
+            if (item.getNome().equals(nome)) {
+                return item;
+            }
+        }
+        return null;
+    }
 }

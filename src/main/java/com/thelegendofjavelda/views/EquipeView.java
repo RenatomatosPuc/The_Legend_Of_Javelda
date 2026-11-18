@@ -188,7 +188,7 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
 
     public void beforeEnter(BeforeEnterEvent event) {
         if (!service.existeCampanha()) {
-            event.rerouteTo("menu");
+            event.rerouteTo("/");
         }
     }
 
