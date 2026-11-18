@@ -324,7 +324,7 @@ public class GuildaView extends VerticalLayout {
 
     public void beforeEnter(BeforeEnterEvent event) {
         if (!service.existeCampanha()) {
-            event.rerouteTo("menu");
+            event.rerouteTo("/");
         }
     }
 }

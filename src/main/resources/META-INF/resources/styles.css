@@ -11,12 +11,12 @@ vaadin-grid::part(addEquipe) {
   color: #f2ebdd;
 }
 
-.jornada-view vaadin-card {
+vaadin-card {
   background-color: #252d38;
   color: #f2ebdd;
 }
 
-.jornada-view vaadin-button {
+vaadin-button {
   background-color: #c49a45;
   color: #171c24;
 }

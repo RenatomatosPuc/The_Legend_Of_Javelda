@@ -24,7 +24,7 @@ public class CsvSaveService {
 
     private static final String HEROIS_HEADER = "id,nome,classe,nivel,vidaMaxima,vidaAtual,ataque,defesa";
     private static final String GUILDA_HEADER = "id,nome,classe,nivel,vidaMaxima,vidaAtual,ataque,defesa";
-    private static final String INVENTARIO_HEADER = "tipo,nome,ataque,defesa,quantidade,heroi_id";
+    private static final String INVENTARIO_HEADER = "tipo,nome,ataque,defesa,cura,quantidade,durabilidade,heroi_id";
     private static final String BATALHA_HEADER = "tipo,dificuldade,mapa_atual,batalha_atual,campanha_concluida,id_batalha,resultado";
     private static final Set<String> DIFICULDADES = Set.of("FACIL", "MEDIO", "DIFICIL");
     private Notification n = new Notification();

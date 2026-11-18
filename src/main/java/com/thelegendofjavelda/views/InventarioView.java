@@ -43,13 +43,13 @@ public class InventarioView extends VerticalLayout {
         HorizontalLayout gridLayout = new HorizontalLayout();
         Stream<InventarioJogador> inventarioGeral = Stream.of(new InventarioJogador());
 
-        Grid<InventarioJogador> gridGeral = new Grid<>(InventarioJogador.class, false);
+        /* Grid<InventarioJogador> gridGeral = new Grid<>(InventarioJogador.class, false);
         gridGeral.addColumn(InventarioJogador::getNome).setHeader("Nome");
         gridGeral.addColumn(InventarioJogador::getAtaque).setHeader("Ataque");
         gridGeral.setItems(
                 );
         gridGeral.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS);
-        add(gridGeral);
+        add(gridGeral); */
 
         Grid<InventarioPersonagem> gridPersonagem = new Grid<>(InventarioPersonagem.class, false);
         HeaderRow headerRow = gridPersonagem.prependHeaderRow();
@@ -59,12 +59,6 @@ public class InventarioView extends VerticalLayout {
         headerRow.join(gridPersonagem.getColumns().get(0), gridPersonagem.getColumns().get(1), gridPersonagem.getColumns().get(2))
                 .setText("Inventário do Personagem");
 
-    }
-
-    public void beforeEnter(BeforeEnterEvent event) {
-        if (!service.existeCampanha()) {
-            event.rerouteTo("menu");
-        }
     }
 
     public InventarioJogador atualizarInventario(CSVFormat formato) {
@@ -80,6 +74,8 @@ public class InventarioView extends VerticalLayout {
                 int ataque = Integer.parseInt(record.get("ataque"));
                 int defesa = Integer.parseInt(record.get("defesa"));
                 int quantidade = Integer.parseInt(record.get("quantidade"));
+                int cura = Integer.parseInt(record.get("cura"));
+                int durabilidade = Integer.parseInt(record.get("durabilidade"));
                 switch(tipo){
 
                 }
@@ -89,6 +85,12 @@ public class InventarioView extends VerticalLayout {
             Notification.show("Erro ao carregar membros da guilda: " + e.getMessage());
         }
         return new InventarioJogador();
+    }
+
+    public void beforeEnter(BeforeEnterEvent event) {
+        if (!service.existeCampanha()) {
+            event.rerouteTo("/");
+        }
     }
 
 }
