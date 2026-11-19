@@ -8,6 +8,7 @@ public class Mago extends Heroi {
     public Mago(int n) {
         super(n, Classe.MAGO);
         super.setVidaMaxima(80 + (n - 1) * 10);
+        super.setEsforco(12);
     }
 
     public void setNome(String nome) {
@@ -23,6 +24,7 @@ public class Mago extends Heroi {
     @Override
     public double usarHabilidadeEspecial() {
         try {
+            consumirEsforco();
             return 0;
         } catch (UltimateOnRechargeException e) {
             System.out.println("Erro:" + e.getMessage());
