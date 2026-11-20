@@ -12,7 +12,8 @@ public abstract class Criatura extends Personagem {
         this.rankPerigo = rankPerigo;
     }
 
-    public Criatura(String nome, int vidaMaxima, double defesa, double ataque, String rankPerigo, int velocidade,int esforco, int experiencia,
+    public Criatura(String nome, int vidaMaxima, double defesa, double ataque, String rankPerigo, int velocidade,
+            int esforco, int experiencia,
             int nivel, int vidaAtual, boolean estaVivo) {
         super(nome, vidaMaxima, defesa, ataque, velocidade, nivel, esforco, experiencia, vidaAtual, estaVivo);
         this.rankPerigo = rankPerigo;
@@ -28,8 +29,7 @@ public abstract class Criatura extends Personagem {
         return true;
     }
 
-    public abstract void soltarLoot();
-
+    public abstract void soltarLoot(Personagem target);
 
     public String getRankPerigo() {
         return this.rankPerigo;

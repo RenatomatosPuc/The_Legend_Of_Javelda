@@ -1,6 +1,7 @@
 package com.Personagens.Herois;
 
 import com.Exceptions.UltimateOnRechargeException;
+import com.Personagens.Criaturas.Criatura;
 
 public class Arqueiro extends Heroi {
     private String nome;
@@ -15,7 +16,7 @@ public class Arqueiro extends Heroi {
     // Nao tem contexto em questao de lore do que faz.
     // (TEMPORARIO ATE O BALANCEAMENTO)
     @Override
-    public double usarHabilidadeEspecial() {
+    public double usarHabilidadeEspecial(Criatura target) {
         try {
             consumirEsforco();
             return 0;

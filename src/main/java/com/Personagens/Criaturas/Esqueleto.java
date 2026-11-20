@@ -18,23 +18,29 @@ public class Esqueleto extends Criatura {
     }
 
     public double ataqueEspecial(Personagem target) {
-        
-        try{
-        if (!consumirEsforco()) {
+
+        try {
+            if (!consumirEsforco()) {
+                return 0;
+            }
+            System.out.println("O esqueleto precisao de um morto : " + target.getNome());
+            target.receberDano(this.getAtaque() + 5);
+            return this.getAtaque() + 5;
+        } catch (NullPointerException e) {
+            System.out.println("O esqueleto precisao de um morto, mas ninguem pegou, alvo vazio");
             return 0;
         }
-        System.out.println("O esqueleto precisao de um morto : " + target.getNome());
-        target.receberDano(this.getAtaque()+5);
-        return this.getAtaque() + 5;
-    }
-    catch(NullPointerException e){
-        System.out.println("O esqueleto precisao de um morto, mas ninguem pegou, alvo vazio");
-        return 0;
-    }
     }
 
-    public void soltarLoot() {
-        System.out.println("O esqueleto soltou dropou um item!");
+    public void soltarLoot(Personagem target) {
+        System.out.println("O esqueleto dropou um item!");
+        target.receberExperiencia(this.getExperiencia());
+    }
+
+    // metodo temperario para que pare de dar erro por causa do metodo
+    // usarHabilidadeEspecial da classe Combatente
+    public double usarHabilidadeEspecial(Criatura target) {
+        return ataqueEspecial(target);
     }
 
 }
