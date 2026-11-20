@@ -33,7 +33,10 @@ public class Dragao extends Criatura {
     }
 
     public void soltarLoot() {
-        System.out.println("O dragão soltou um olho de dragão!");
+        //personagem recebe a esperiencia do dragao e dropa um item
+
+        System.out.println("O dragão soltou um olho de dragão!" + " e o jogador recebeu " + this.getExperiencia() + " de experiência!");
+        target.receberExperiencia(this.getExperiencia());
     }
 }
 

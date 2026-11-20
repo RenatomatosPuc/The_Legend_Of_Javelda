@@ -30,4 +30,8 @@ public abstract class Criatura extends Personagem {
 
     public abstract void soltarLoot();
 
+
+    public String getRankPerigo() {
+        return this.rankPerigo;
+    }
 }
