@@ -17,4 +17,8 @@ public class ColecaoArmadura {
         this.colecaoArmadura.add(new Armadura("Armadura de Sangue de Dragao", 30, 70));
         this.colecaoArmadura.add(new Armadura("Armadura de SemiDeus", 50, 100));
     }
+
+    public ArrayList<Armadura> getColecaoArmadura() {
+        return this.colecaoArmadura;
+    }
 }

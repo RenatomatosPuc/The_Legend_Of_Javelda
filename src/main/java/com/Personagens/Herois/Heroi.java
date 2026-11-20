@@ -1,6 +1,7 @@
 package com.Personagens.Herois;
 
 import com.Personagens.Personagem;
+import com.Personagens.Criaturas.Criatura;
 import com.Arsenal.*;
 import com.Exceptions.UltimateOnRechargeException;
 
@@ -121,7 +122,7 @@ public abstract class Heroi extends Personagem {
      * }
      */
 
-    public abstract double usarHabilidadeEspecial();
+    public abstract double usarHabilidadeEspecial(Criatura target);
 
     protected void consumirEsforco() throws UltimateOnRechargeException {
         if (getEsforco() <= 0) {
@@ -129,6 +130,10 @@ public abstract class Heroi extends Personagem {
         }
 
         setEsforco(getEsforco() - 1);
+    }
+
+    protected void addOuro(double quantidade) {
+        this.ouro += quantidade;
     }
 
 }

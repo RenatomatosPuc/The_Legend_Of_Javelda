@@ -11,7 +11,8 @@ public class Dragao extends Criatura {
 
     public double atacar(Personagem target) {
         try {
-            System.out.println("O dragão mordeu " + target.getNome() + " com um ataque de " + this.getAtaque() + " de dano!");
+            System.out.println(
+                    "O dragão mordeu " + target.getNome() + " com um ataque de " + this.getAtaque() + " de dano!");
             target.receberDano(this.getAtaque());
         } catch (NullPointerException e) {
             System.out.println("O dragão mordeu, mas ninguem pegou, alvo vazio");
@@ -32,11 +33,17 @@ public class Dragao extends Criatura {
         return this.getAtaque() + 20;
     }
 
-    public void soltarLoot() {
-        //personagem recebe a esperiencia do dragao e dropa um item
+    public void soltarLoot(Personagem target) {
+        // personagem recebe a esperiencia do dragao e dropa um item
 
-        System.out.println("O dragão soltou um olho de dragão!" + " e o jogador recebeu " + this.getExperiencia() + " de experiência!");
+        System.out.println("O dragão soltou um olho de dragão!" + " e o jogador recebeu " + this.getExperiencia()
+                + " de experiência!");
         target.receberExperiencia(this.getExperiencia());
     }
-}
 
+    // metodo temperario para que pare de dar erro por causa do metodo
+    // usarHabilidadeEspecial da classe Combatente
+    public double usarHabilidadeEspecial(Criatura target) {
+        return ataqueEspecial(target);
+    }
+}
