@@ -132,4 +132,8 @@ public abstract class Heroi extends Personagem {
         setEsforco(getEsforco() - 1);
     }
 
+    protected void addOuro(double quantidade) {
+        this.ouro += quantidade;
+    }
+
 }
