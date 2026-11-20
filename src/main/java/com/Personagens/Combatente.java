@@ -1,5 +1,7 @@
 package com.Personagens;
 
+import com.Personagens.Criaturas.Criatura;
+
 public interface Combatente {
     String getNome();
 
@@ -20,4 +22,6 @@ public interface Combatente {
     int getNivel();
 
     int getEsforco();
+
+    double usarHabilidadeEspecial(Criatura target);
 }
