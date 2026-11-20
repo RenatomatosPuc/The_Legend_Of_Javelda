@@ -63,6 +63,7 @@ public class LojaView extends VerticalLayout implements BeforeEnterObserver {
                 getUI().ifPresent(ui -> ui.navigate(LojaArmas.class));
             } else if (titulo.equals("Armaduras")) {
                 // Navegar para a loja de armaduras
+                getUI().ifPresent(ui -> ui.navigate(LojaArmaduras.class));
             } else if (titulo.equals("Utilitários")) {
                 // Navegar para a loja de utilitários
             }
