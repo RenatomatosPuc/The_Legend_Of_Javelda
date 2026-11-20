@@ -25,7 +25,7 @@ public class LojaArmaduras extends VerticalLayout {
 
     public Grid<Armadura> criarGrid() {
         Grid<Armadura> grid = new Grid<>(Armadura.class);
-        grid.setColumns("nome", "ataque", "durabilidade");
+        grid.setColumns("nome", "defesa", "durabilidade");
         grid.addClassName("loja-grid");
         return grid;
     }
