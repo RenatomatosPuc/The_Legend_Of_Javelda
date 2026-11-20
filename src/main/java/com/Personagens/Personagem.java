@@ -96,6 +96,13 @@ public abstract class Personagem implements Combatente {
         return false;
     }
 
+    public double receberExperiencia(int experienciaRecebida) {
+        this.experiencia += experienciaRecebida;
+        return this.experiencia;
+    }
+
+    
+
     @Override
     public double receberDano(double danoRecebido) { // da o dano e retorna a vida atual
         if (danoRecebido > this.defesa * 0.25)
