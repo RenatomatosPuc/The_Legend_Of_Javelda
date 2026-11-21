@@ -1,10 +1,12 @@
 package com.Personagens.Criaturas;
 
+import com.Personagens.Combatente;
 import com.Personagens.Personagem;
 
 public abstract class Criatura extends Personagem {
 
     private String rankPerigo;
+    private double xpConcedido;
 
     public Criatura(String nome, int vidaMaxima, double defesa, double ataque, String rankPerigo, int velocidade,
             int nivel, int vidaAtual, boolean estaVivo) {
@@ -16,6 +18,7 @@ public abstract class Criatura extends Personagem {
             int nivel, int vidaAtual, boolean estaVivo) {
         super(nome, vidaMaxima, defesa, ataque, velocidade, nivel, esforco, experiencia, vidaAtual, estaVivo);
         this.rankPerigo = rankPerigo;
+        this.xpConcedido = 0;
     }
 
     protected boolean consumirEsforco() {
@@ -33,5 +36,10 @@ public abstract class Criatura extends Personagem {
 
     public String getRankPerigo() {
         return this.rankPerigo;
+    }
+
+    public double ataqueEspecial(Combatente target) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'ataqueEspecial'");
     }
 }

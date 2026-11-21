@@ -1,32 +1,31 @@
 package com.Personagens.Herois;
 
 import com.Personagens.Personagem;
-import com.Arsenal.*;
+import com.Personagens.Criaturas.Criatura;
+import com.Personagens.Combatente;
+import com.Arsenal.InventarioPersonagem;
 import com.Exceptions.UltimateOnRechargeException;
 
-public abstract class Heroi extends Personagem {
+public abstract class Heroi extends Personagem implements Combatente {
     private Classe classe;
-    private int nivel;
     private double experiencia;
     private InventarioPersonagem inventarioPersonagem;
     private double ouro;
     private int contadorAtaque;
-    private String nome;
     private int id;
 
-    // METODOS DE NIVEL
-
     public Heroi(int n, Classe c) {
+        // Passa o nível e o esforço inicial para a classe mãe (Personagem)
         super("", 0, 0, 0, 0, n, esforcoInicial(c), 0, 0, true);
         this.classe = c;
-        this.nivel = n;
         this.experiencia = 0;
         this.inventarioPersonagem = new InventarioPersonagem();
         this.ouro = 0;
         this.contadorAtaque = 0;
-        this.nome = "";
         this.id = 0;
     }
+
+    // GETTERS E SETTERS DE IDENTIFICAÇÃO
 
     public void setId(int id) {
         this.id = id;
@@ -36,67 +35,82 @@ public abstract class Heroi extends Personagem {
         return this.id;
     }
 
-    public void setNivel(int nivel) {
-        this.nivel = nivel;
+    public Classe getClasse() {
+        return this.classe;
     }
 
     public int getContadorAtaque() {
         return this.contadorAtaque;
     }
 
-    public String getNome() {
-        return this.nome;
+    public double getOuro() {
+        return this.ouro;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Classe getClasse() {
-        return this.classe;
-    }
-
-    public int getNivel() {
-        return this.nivel;
+    public void adicionarOuro(double quantidade) {
+        this.ouro += quantidade;
     }
 
     public InventarioPersonagem getInventarioPersonagem() {
         return this.inventarioPersonagem;
     }
 
-    // Faz o heroi receber experiencia, e ao chegar em 100, sobe o nivel em 1 e
-    // reduz exp em 100 e retorna a exp atual do jogador
+    // MÉTODOS DE EXPERIÊNCIA E NÍVEL
+
+    @Override
     public double ganharExperiencia(double experienciaGanha) {
-        this.experiencia = this.experiencia + experienciaGanha;
-        if (experiencia >= 100) {
-            this.experiencia = this.experiencia - 100;
+        this.experiencia += experienciaGanha;
+        while (this.experiencia >= 100) {
+            this.experiencia -= 100;
             subirNivel();
+            System.out.println("O herói " + getNome() + " subiu para o nível " + getNivel() + "!");
         }
         return this.experiencia;
     }
 
-    // Aumenta o nivel em 1
+    @Override
     public void subirNivel() {
-        this.nivel = this.nivel + 1;
+        setNivel(getNivel() + 1);
+        // Bónus de atributo ao subir de nível
+        setVidaMaxima(getVidaMaxima() + 15);
+        setVidaAtual(getVidaMaxima()); // Restaura a vida ao subir de nível
+        setAtaque(getAtaque() + 3);
+        setDefesa(getDefesa() + 2);
     }
 
-    // METODOS DE ACOES
+    // MÉTODOS DE AÇÕES DE COMBATE
 
-    // Calcula o poder da arma mais a forca do personagem e retorna o dano causado
-    public double atacar() {
+    // Dano base considerando a arma equipada
+    public double calcularDanoBase() {
         double danoArma = 0;
-        if (inventarioPersonagem.getArma() != null) {
+        if (inventarioPersonagem != null && inventarioPersonagem.getArma() != null) {
             danoArma = inventarioPersonagem.getArma().getAtaque();
         }
         this.contadorAtaque++;
-        return danoArma + super.getAtaque();
+        return danoArma + getAtaque();
     }
 
     @Override
-    public double atacar(Personagem target) {
-        double dano = atacar();
+    public double atacar(Combatente target) {
+        if (target == null || !target.estaVivo()) {
+            System.out.println(getNome() + " tentou atacar, mas não há um alvo válido!");
+            return 0;
+        }
+
+        double dano = calcularDanoBase();
+        System.out.println(getNome() + " atacou " + target.getNome() + " causando " + dano + " de dano!");
         target.receberDano(dano);
         return dano;
+    }
+
+    @Override
+    public abstract double usarHabilidadeEspecial(Combatente target);
+
+    protected void consumirEsforco() throws UltimateOnRechargeException {
+        if (getEsforco() <= 0) {
+            throw new UltimateOnRechargeException("Esforço insuficiente: habilidade especial cancelada.");
+        }
+        setEsforco(getEsforco() - 1);
     }
 
     private static int esforcoInicial(Classe classe) {
@@ -109,26 +123,12 @@ public abstract class Heroi extends Personagem {
             case MAGO:
                 return 12;
             default:
-                throw new IllegalArgumentException("Classe de heroi invalida: " + classe);
+                throw new IllegalArgumentException("Classe de herói inválida: " + classe);
         }
     }
 
-    // Usa o utilitario
-    // E necessario criar os itens para implimentar esse metodo
-    /*
-     * public void usarItem() {
-     * inventarioPersonagem.getUtilitario().usarUtilitario();
-     * }
-     */
-
-    public abstract double usarHabilidadeEspecial();
-
-    protected void consumirEsforco() throws UltimateOnRechargeException {
-        if (getEsforco() <= 0) {
-            throw new UltimateOnRechargeException("Esforco insuficiente: habilidade especial cancelada.");
-        }
-
-        setEsforco(getEsforco() - 1);
+    public double usarHabilidadeEspecial(Criatura target) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'usarHabilidadeEspecial'");
     }
-
 }

@@ -1,5 +1,5 @@
 package com.Personagens.Herois;
-
+import com.Personagens.Combatente;
 import com.Exceptions.UltimateOnRechargeException;
 
 public class Clerigo extends Heroi {
@@ -8,12 +8,16 @@ public class Clerigo extends Heroi {
     public Clerigo(int n) {
         super(n, Classe.CLERIGO);
         super.setVidaMaxima(120 + (n - 1) * 10);
+        super.setAtaque(10 + (n - 1) * 2);
+        super.setDefesa(8 + (n - 1) * 1);
+        super.setEsforco(8);
+        
     }
 
     // Nao tem contexto em questao de lore do que faz.
     // (TEMPORARIO ATE O BALANCEAMENTO)
     @Override
-    public double usarHabilidadeEspecial() {
+    public double usarHabilidadeEspecial(Combatente target) {
         try {
             consumirEsforco();
             return 0;

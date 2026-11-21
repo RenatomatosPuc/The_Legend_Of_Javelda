@@ -1,5 +1,8 @@
 package com.Personagens;
 
+import com.Arsenal.InventarioPersonagem;
+import com.Personagens.Criaturas.Criatura;
+
 public abstract class Personagem implements Combatente {
     private String nome;
     private int nivel;
@@ -12,9 +15,9 @@ public abstract class Personagem implements Combatente {
     private int esforco;
     private int experiencia;
 
-  
-    public Personagem(String nome, int vidaMaxima, double defesa, double ataque, int velocidade, int nivel,int esforco, int experiencia,
-            int vidaAtual,boolean estaVivo) {
+    public Personagem(String nome, int vidaMaxima, double defesa, double ataque, int velocidade, int nivel, int esforco,
+            int experiencia,
+            int vidaAtual, boolean estaVivo) {
         this.nome = nome;
         this.vidaMaxima = vidaMaxima;
         this.vidaAtual = vidaAtual;
@@ -101,16 +104,36 @@ public abstract class Personagem implements Combatente {
         return this.experiencia;
     }
 
-    
-
     @Override
     public double receberDano(double danoRecebido) { // da o dano e retorna a vida atual
-        if (danoRecebido > this.defesa * 0.25)
-            return this.vidaAtual = this.vidaAtual + this.defesa - danoRecebido; // a defesa reduz o dano em 1 quarto
-                                                                                 // dela. Ou seja,
-                                                                                 // ao ter 40 de defesa, tanka 10 de
-                                                                                 // dano;
-        return this.vidaAtual - 1;
+        double danoNegado = danoRecebido - this.defesa * 0.25;
+        if (danoRecebido > this.defesa * 0.25) {
+            this.vidaAtual = this.vidaAtual - danoNegado;
+            return this.vidaAtual; // a defesa reduz o dano em 1 quarto
+        } else {
+            this.vidaAtual = this.vidaAtual - 0;
+        }
+
+        if (this.vidaAtual <= 0) {
+            this.vidaAtual = 0;
+            this.estaVivo = false;
+        }
+        return this.vidaAtual; // dano;
+    }
+
+    public InventarioPersonagem getInventarioPersonagem() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getInventarioPersonagem'");
+    }
+
+    public double usarHabilidadeEspecial(Combatente target) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'usarHabilidadeEspecial'");
+    }
+
+    public double usarHabilidadeEspecial(Criatura target) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'usarHabilidadeEspecial'");
     }
 
     // public abstract Batalha acao();

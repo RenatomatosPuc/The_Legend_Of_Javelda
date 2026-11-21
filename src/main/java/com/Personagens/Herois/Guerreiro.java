@@ -1,5 +1,5 @@
 package com.Personagens.Herois;
-
+import com.Personagens.Combatente;
 import com.Exceptions.UltimateOnRechargeException;
 
 public class Guerreiro extends Heroi {
@@ -9,6 +9,9 @@ public class Guerreiro extends Heroi {
     public Guerreiro(int n) {
         super(n, Classe.GUERREIRO);
         super.setVidaMaxima(150 + (n - 1) * 10);
+        super.setAtaque(20 + (n - 1) * 2);
+        super.setDefesa(10 + (n - 1) * 1);
+        super.setEsforco(12);
     }
 
     public void setNome(String nome) {
@@ -22,7 +25,7 @@ public class Guerreiro extends Heroi {
     // Nao tem contexto em questao de lore do que faz.
     // (TEMPORARIO ATE O BALANCEAMENTO)
     @Override
-    public double usarHabilidadeEspecial() {
+    public double usarHabilidadeEspecial(Combatente target) {
         try {
             consumirEsforco();
             return 0;
