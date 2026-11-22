@@ -84,7 +84,7 @@ public abstract class Heroi extends Personagem {
     // METODOS DE ACOES
 
     // Calcula o poder da arma mais a forca do personagem e retorna o dano causado
-    public double atacar() {
+    public double danoAtaque() {
         double danoArma = 0;
         if (inventarioPersonagem.getArma() != null) {
             danoArma = inventarioPersonagem.getArma().getAtaque();
@@ -95,7 +95,7 @@ public abstract class Heroi extends Personagem {
 
     @Override
     public double atacar(Personagem target) {
-        double dano = atacar();
+        double dano = danoAtaque();
         target.receberDano(dano);
         return dano;
     }
@@ -115,12 +115,10 @@ public abstract class Heroi extends Personagem {
     }
 
     // Usa o utilitario
-    // E necessario criar os itens para implimentar esse metodo
-    /*
-     * public void usarItem() {
-     * inventarioPersonagem.getUtilitario().usarUtilitario();
-     * }
-     */
+
+    public void usarItem(Personagem alvo) {
+        inventarioPersonagem.getUtilitario().usarUtilitario(alvo);
+    }
 
     public abstract double usarHabilidadeEspecial(Criatura target);
 
