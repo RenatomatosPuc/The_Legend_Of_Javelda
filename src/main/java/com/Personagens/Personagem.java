@@ -92,6 +92,14 @@ public abstract class Personagem implements Combatente {
         this.defesa = defesa;
     }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setNivel(int n) {
+        this.nivel = n;
+    }
+
     @Override
     public boolean estaVivo() {
         if (this.vidaAtual >= 0)
@@ -99,7 +107,7 @@ public abstract class Personagem implements Combatente {
         return false;
     }
 
-    public double receberExperiencia(int experienciaRecebida) {
+    public double receberExperiencia(double experienciaRecebida) {
         this.experiencia += experienciaRecebida;
         return this.experiencia;
     }

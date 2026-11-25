@@ -31,6 +31,14 @@ public abstract class Heroi extends Personagem implements Combatente {
         this.id = id;
     }
 
+    public void setNome(String nome) {
+        super.setNome(nome);
+    }
+
+    public void setNivel(int n) {
+        super.setNivel(n);
+    }
+
     public int getId() {
         return this.id;
     }
@@ -58,7 +66,7 @@ public abstract class Heroi extends Personagem implements Combatente {
     // MÉTODOS DE EXPERIÊNCIA E NÍVEL
 
     @Override
-    public double ganharExperiencia(double experienciaGanha) {
+    public double receberExperiencia(double experienciaGanha) {
         this.experiencia += experienciaGanha;
         while (this.experiencia >= 100) {
             this.experiencia -= 100;
@@ -68,7 +76,6 @@ public abstract class Heroi extends Personagem implements Combatente {
         return this.experiencia;
     }
 
-    @Override
     public void subirNivel() {
         setNivel(getNivel() + 1);
         // Bónus de atributo ao subir de nível

@@ -1,33 +1,34 @@
 package com.Arsenal.Itens;
 
 import com.Arsenal.Equipavel;
+import com.Personagens.Personagem;
+import com.Exceptions.NoUsageLeftException;
 
-public class Utilitario implements Equipavel {
-    private String nome;
-    private double uso;
-    private int slotInventario = 2;
+public abstract class Utilitario implements Equipavel {
+    protected String nome;
+    protected int uso;
+    protected int slotInventario = 2;
+    protected int duracao;
 
-    public Utilitario(String nome, double uso) {
+    public Utilitario(String nome, int uso, int duracao) {
         this.nome = nome;
         this.uso = uso;
+        this.duracao = duracao;
     }
 
     public String getNome() {
-        return nome;
+        return this.nome;
     }
 
-    public double getUso() {
-        return uso;
+    public void usarUtilitario(Personagem alvo) {
+        if (this.uso > 0) {
+            this.uso--;
+        } else {
+            throw new NoUsageLeftException();
+        }
     }
-
-    // Usa o utilitario
-    // E necessario criar os itens para implimentar esse metodo
-    /*
-     * public void usarUtilitario()
-     */
 
     public int getSlotInventario() {
         return this.slotInventario;
     }
-
 }

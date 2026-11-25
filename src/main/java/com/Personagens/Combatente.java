@@ -28,8 +28,4 @@ public interface Combatente {
     double usarHabilidadeEspecial(Combatente target);
 
     double atacar(Combatente target);
-
-    double usarHabilidadeEspecial(Criatura target);
-
-    double ataqueEspecial(Combatente target);
 }
