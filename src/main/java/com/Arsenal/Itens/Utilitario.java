@@ -17,11 +17,7 @@ public abstract class Utilitario implements Equipavel {
     }
 
     public String getNome() {
-        return nome;
-    }
-
-    public double getUso() {
-        return uso;
+        return this.nome;
     }
 
     public void usarUtilitario(Personagem alvo) {
@@ -35,5 +31,4 @@ public abstract class Utilitario implements Equipavel {
     public int getSlotInventario() {
         return this.slotInventario;
     }
-
 }

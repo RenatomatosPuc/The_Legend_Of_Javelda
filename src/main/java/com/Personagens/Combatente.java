@@ -1,8 +1,10 @@
 package com.Personagens;
 
+import com.Arsenal.InventarioPersonagem;
 import com.Personagens.Criaturas.Criatura;
 
 public interface Combatente {
+    // Identificação e Estatísticas Base
     String getNome();
 
     double getVidaAtual();
@@ -13,15 +15,17 @@ public interface Combatente {
 
     double getDefesa();
 
-    boolean estaVivo();
-
-    double atacar(Personagem target);
-
-    double receberDano(double danoRecebido);
+    int getVelocidade();
 
     int getNivel();
 
     int getEsforco();
 
-    double usarHabilidadeEspecial(Criatura target);
+    boolean estaVivo();
+
+    double receberDano(double danoRecebido);
+
+    double usarHabilidadeEspecial(Combatente target);
+
+    double atacar(Combatente target);
 }

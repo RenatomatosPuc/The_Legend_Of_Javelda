@@ -25,5 +25,4 @@ public abstract class PocaoAtaque extends Utilitario {
             System.out.println("Erro: " + e.getMessage());
         }
     }
-
 }
