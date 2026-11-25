@@ -87,8 +87,7 @@ public abstract class Heroi extends Personagem implements Combatente {
 
     // MÉTODOS DE AÇÕES DE COMBATE
 
-    // Dano base considerando a arma equipada
-    public double calcularDanoBase() {
+    public double danoAtaque() {
         double danoArma = 0;
         if (inventarioPersonagem != null && inventarioPersonagem.getArma() != null) {
             danoArma = inventarioPersonagem.getArma().getAtaque();
@@ -104,10 +103,10 @@ public abstract class Heroi extends Personagem implements Combatente {
             return 0;
         }
 
-        double dano = calcularDanoBase();
+        double dano = danoAtaque();
         System.out.println(getNome() + " atacou " + target.getNome() + " causando " + dano + " de dano!");
-        target.receberDano(dano);
         return dano;
+
     }
 
     @Override
@@ -133,9 +132,10 @@ public abstract class Heroi extends Personagem implements Combatente {
                 throw new IllegalArgumentException("Classe de herói inválida: " + classe);
         }
     }
+    // Usa o utilitario
 
-    public double usarHabilidadeEspecial(Criatura target) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'usarHabilidadeEspecial'");
+    public void usarItem(Personagem alvo) {
+        inventarioPersonagem.getUtilitario().usarUtilitario(alvo);
     }
+
 }

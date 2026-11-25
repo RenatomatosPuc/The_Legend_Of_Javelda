@@ -29,5 +29,4 @@ public abstract class PocaoCura extends Utilitario {
             System.out.println("Erro: " + e.getMessage());
         }
     }
-
 }
