@@ -3,30 +3,24 @@ package com.Batalha;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.jetbrains.kotlin.it.unimi.dsi.fastutil.ints.p;
-
 import com.Personagens.Herois.Heroi;
 
-public class Party {
+public class Equipe {
 
     private List<Heroi> herois;
 
-    public Party() {
+    public Equipe() {
         this.herois = new ArrayList<>();
     }
-
 
     public void adicionarHeroi(Heroi heroi) {
         this.herois.add(heroi);
     }
 
-   
     public List<Heroi> getHerois() {
         return this.herois;
     }
 
-    
     public int getQuantidade() {
         return herois.size();
     }
@@ -45,11 +39,10 @@ public class Party {
             return;
         }
 
-        
-
         System.out.println("=== Party ===");
         for (Heroi heroi : herois) {
-            System.out.println("Nome: " + heroi.getNome() + ", Classe: " + heroi.getClasse() + ", Nível: " + heroi.getNivel() + ", Experiência: " + heroi.getExperiencia());
+            System.out.println("Nome: " + heroi.getNome() + ", Classe: " + heroi.getClasse() + ", Nível: "
+                    + heroi.getNivel() + ", Experiência: " + heroi.getExperiencia());
         }
     }
 
@@ -65,13 +58,12 @@ public class Party {
         for (Heroi heroi : herois) {
 
             if (heroi.estaVivo()) {
-                heroi.ganharExperiencia(xpTotal);
+                heroi.receberExperiencia(xpTotal);
                 heroisVivos++;
             }
         }
 
         System.out.println(
-            heroisVivos + " herói(s) receberam " + xpTotal + " de experiência cada."
-        );
+                heroisVivos + " herói(s) receberam " + xpTotal + " de experiência cada.");
     }
 }

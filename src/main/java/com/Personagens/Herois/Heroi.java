@@ -33,6 +33,14 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
         this.id = id;
     }
 
+    public void setNome(String nome) {
+        super.setNome(nome);
+    }
+
+    public void setNivel(int n) {
+        super.setNivel(n);
+    }
+
     public int getId() {
         return this.id;
     }
@@ -71,8 +79,12 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
     // EXPERIÊNCIA
 
     @Override
+<<<<<<< HEAD
     public double ganharExperiencia(double experienciaGanha) {
 
+=======
+    public double receberExperiencia(double experienciaGanha) {
+>>>>>>> 48d4b1c0ffd70b5cbae3ffcb1acbed9062b78479
         this.experiencia += experienciaGanha;
 
         while (this.experiencia >= 100) {
@@ -90,7 +102,6 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
         return this.experiencia;
     }
 
-    @Override
     public void subirNivel() {
 
         setNivel(getNivel() + 1);
@@ -106,8 +117,12 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
 
     // COMBATE
 
+<<<<<<< HEAD
     public double calcularDanoBase() {
 
+=======
+    public double danoAtaque() {
+>>>>>>> 48d4b1c0ffd70b5cbae3ffcb1acbed9062b78479
         double danoArma = 0;
 
         if (inventarioPersonagem != null &&
@@ -133,6 +148,7 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
             return 0;
         }
 
+<<<<<<< HEAD
         double dano = calcularDanoBase();
 
         System.out.println(
@@ -142,7 +158,12 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
 
         target.receberDano(dano);
 
+=======
+        double dano = danoAtaque();
+        System.out.println(getNome() + " atacou " + target.getNome() + " causando " + dano + " de dano!");
+>>>>>>> 48d4b1c0ffd70b5cbae3ffcb1acbed9062b78479
         return dano;
+
     }
 
     
@@ -186,4 +207,14 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
                 );
         }
     }
+<<<<<<< HEAD
 }
+=======
+    // Usa o utilitario
+
+    public void usarItem(Personagem alvo) {
+        inventarioPersonagem.getUtilitario().usarUtilitario(alvo);
+    }
+
+}
+>>>>>>> 48d4b1c0ffd70b5cbae3ffcb1acbed9062b78479

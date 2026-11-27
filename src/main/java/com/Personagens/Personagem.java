@@ -133,6 +133,7 @@ public abstract class Personagem implements Combatente {
         this.defesa = defesa;
     }
 
+<<<<<<< HEAD
     public void setEsforco(int esforco) {
         this.esforco = Math.max(esforco, 0);
     }
@@ -152,6 +153,25 @@ public abstract class Personagem implements Combatente {
             this.experiencia += experienciaRecebida;
         }
 
+=======
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setNivel(int n) {
+        this.nivel = n;
+    }
+
+    @Override
+    public boolean estaVivo() {
+        if (this.vidaAtual >= 0)
+            return true;
+        return false;
+    }
+
+    public double receberExperiencia(double experienciaRecebida) {
+        this.experiencia += experienciaRecebida;
+>>>>>>> 48d4b1c0ffd70b5cbae3ffcb1acbed9062b78479
         return this.experiencia;
     }
 

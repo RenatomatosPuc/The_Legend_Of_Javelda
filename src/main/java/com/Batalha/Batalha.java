@@ -1,198 +1,162 @@
-
 package com.Batalha;
 
 import com.Personagens.Criaturas.Criatura;
 import com.Personagens.Herois.Heroi;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Batalha {
 
-    private Party partyOriginal;
-    private List<Heroi> party;
-    private List<Criatura> criaturas;
+    private Equipe equipeOriginal;
+    private final List<Heroi> party;
+    private final List<Criatura> criaturas;
+    private final List<String> log = new ArrayList<>();
 
     private double xpTotal;
+    private boolean xpDistribuido = false;
 
-    // CONSTRUTOR COM PARTY
-    public Batalha(Party party, List<Criatura> criaturas) {
-
-        if (party == null || criaturas == null) {
-            throw new IllegalArgumentException(
-                "Party e criaturas não podem ser nulas."
-            );
+    public Batalha(Equipe equipe, List<Criatura> criaturas) {
+        if (equipe == null || criaturas == null) {
+            throw new IllegalArgumentException("Equipe e criaturas não podem ser nulas.");
         }
-
-        this.partyOriginal = party;
-        this.party = party.getHerois();
+        this.equipeOriginal = equipe;
+        this.party = new ArrayList<>(equipe.getHerois());
         this.criaturas = new ArrayList<>(criaturas);
-        this.xpTotal = 0;
     }
 
-    // CONSTRUTOR PARA COMPATIBILIDADE COM LISTAS ANTIGAS
-    public Batalha(List<Heroi> party, List<Criatura> criaturas) {
-
-        if (party == null || criaturas == null) {
-            throw new IllegalArgumentException(
-                "Party e criaturas não podem ser nulas."
-            );
+    public Batalha(List<Heroi> herois, List<Criatura> criaturas) {
+        if (herois == null || criaturas == null) {
+            throw new IllegalArgumentException("Heróis e criaturas não podem ser nulos.");
         }
-
-        this.partyOriginal = null;
-        this.party = party;
+        this.party = new ArrayList<>(herois);
         this.criaturas = new ArrayList<>(criaturas);
-        this.xpTotal = 0;
     }
 
-    // INICIAR BATALHA
+
+    public boolean terminou() {
+        return party.isEmpty() || criaturas.isEmpty();
+    }
+
+    public boolean equipeVenceu() {
+        return terminou() && !party.isEmpty();
+    }
+
+    public List<Heroi> getHerois() {
+        return Collections.unmodifiableList(party);
+    }
+
+    public List<Criatura> getCriaturas() {
+        return Collections.unmodifiableList(criaturas);
+    }
+
+    public double getXpTotal() {
+        return xpTotal;
+    }
+
+    public List<String> getLog() {
+        return Collections.unmodifiableList(log);
+    }
+
+    // Roda a batalha inteira (útil no console)
     public void iniciarBatalha() {
-
-        if (party.isEmpty()) {
-            System.out.println("Não existem heróis para lutar!");
+        if (terminou()) {
+            registrar("Não há combate possível.");
             return;
         }
-
-        if (criaturas.isEmpty()) {
-            System.out.println("Não existem criaturas para enfrentar!");
-            return;
+        registrar("A BATALHA COMEÇOU!");
+        while (!terminou()) {
+            executarRodada();
         }
-
-        System.out.println("\n================================");
-        System.out.println("        A BATALHA COMEÇOU!");
-        System.out.println("================================");
-
-        while (!party.isEmpty() && !criaturas.isEmpty()) {
-
-            // TURNO DOS HERÓIS
-            System.out.println("\n========== TURNO DOS HERÓIS ==========");
-
-            for (Heroi heroi : new ArrayList<>(party)) {
-
-                if (criaturas.isEmpty()) {
-                    break;
-                }
-
-                if (!heroi.estaVivo()) {
-                    party.remove(heroi);
-                    continue;
-                }
-
-                Criatura criatura = criaturas.get(0);
-
-                heroi.atacar(criatura);
-
-                // VERIFICAR MORTE DA CRIATURA
-                if (!criatura.estaVivo()) {
-
-                    System.out.println(
-                        "\n" + criatura.getNome() + " foi derrotada!"
-                    );
-
-                    // XP CONCEDIDO PELA CRIATURA
-                    double xpRecebido = criatura.getXp();
-
-                    xpTotal += xpRecebido;
-
-                    System.out.println(
-                        "Experiência obtida: " + xpRecebido + " XP"
-                    );
-
-                    // ENTREGA DO LOOT
-                    criatura.soltarLoot();
-
-                    criaturas.remove(criatura);
-                }
-            }
-
-         
-            if (criaturas.isEmpty() || party.isEmpty()) {
-                break;
-            }
-
-            System.out.println("\n========== TURNO DAS CRIATURAS ==========");
-
-            for (Criatura criatura : new ArrayList<>(criaturas)) {
-
-                if (party.isEmpty()) {
-                    break;
-                }
-
-                Heroi heroi = party.get(0);
-
-                criatura.atacar(heroi);
-
-          
-                if (!heroi.estaVivo()) {
-
-                    System.out.println(
-                        "\n" + heroi.getNome() + " foi derrotado!"
-                    );
-
-                    party.remove(heroi);
-                }
-            }
-        }
-
-        // RESULTADO DA BATALHA
-        System.out.println("\n================================");
-
-        if (party.isEmpty()) {
-
-            System.out.println("A EQUIPE FOI DERROTADA!");
-
-            System.out.println(
-                "As criaturas continuam ameaçando Javária."
-            );
-
-        } else {
-
-            System.out.println("A EQUIPE VENCEU A BATALHA!");
-
-            System.out.println(
-                "Os sobreviventes conseguiram derrotar os inimigos."
-            );
-
-            distribuirExperiencia();
-        }
-
-        System.out.println("================================");
     }
 
-    // DISTRIBUIR XP
-    private void distribuirExperiencia() {
+    // Uma rodada: o Vaadin pode chamar isso a cada clique
+    public void executarRodada() {
+        if (terminou()) {
+            finalizar();
+            return;
+        }
+        turnoHerois();
+        if (!terminou()) {
+            turnoCriaturas();
+        }
+        if (terminou()) {
+            finalizar();
+        }
+    }
 
-        System.out.println("\n========== RECOMPENSA DE XP ==========");
+    private void turnoHerois() {
+        registrar("=== TURNO DOS HERÓIS ===");
 
-        if (xpTotal <= 0) {
+        for (Heroi heroi : new ArrayList<>(party)) {
+            if (criaturas.isEmpty()) break;
 
-            System.out.println(
-                "Nenhuma experiência foi concedida pelas criaturas."
-            );
+            if (!heroi.estaVivo()) {
+                party.remove(heroi);
+                continue;
+            }
 
+            Criatura alvo = criaturas.get(0);
+            double dano = heroi.atacar(alvo);
+            registrar(heroi.getNome() + " atacou " + alvo.getNome()
+                    + " causando " + dano + " de dano.");
+
+            if (!alvo.estaVivo()) {
+                double xp = alvo.getXp();
+                xpTotal += xp;
+                registrar(alvo.getNome() + " foi derrotada! (+" + xp + " XP)");
+                alvo.soltarLoot();
+                criaturas.remove(alvo);
+            }
+        }
+    }
+
+    private void turnoCriaturas() {
+        registrar("=== TURNO DAS CRIATURAS ===");
+
+        for (Criatura criatura : new ArrayList<>(criaturas)) {
+            if (party.isEmpty()) break;
+
+            Heroi alvo = party.get(0);
+            double dano = criatura.atacar(alvo);
+            registrar(criatura.getNome() + " atacou " + alvo.getNome()
+                    + " causando " + dano + " de dano.");
+
+            if (!alvo.estaVivo()) {
+                registrar(alvo.getNome() + " foi derrotado!");
+                party.remove(alvo);
+            }
+        }
+    }
+
+    private void finalizar() {
+        if (xpDistribuido) return;
+        xpDistribuido = true;
+
+        if (party.isEmpty()) {
+            registrar("A EQUIPE FOI DERROTADA!");
             return;
         }
 
-        if (partyOriginal != null) {
+        registrar("A EQUIPE VENCEU A BATALHA!");
 
-            // Cada herói vivo recebe o XP integral
-            partyOriginal.ganharExperienciaGrupo(xpTotal);
+        if (xpTotal <= 0) return;
 
+        if (equipeOriginal != null) {
+            equipeOriginal.ganharExperienciaGrupo(xpTotal);
         } else {
-
             for (Heroi heroi : party) {
-
                 if (heroi.estaVivo()) {
-                    heroi.ganharExperiencia(xpTotal);
+                    heroi.receberExperiencia(xpTotal);
                 }
             }
-
-            System.out.println(
-                "Cada herói sobrevivente recebeu "
-                + xpTotal + " XP."
-            );
         }
+        registrar("Cada herói sobrevivente recebeu " + xpTotal + " XP.");
+    }
 
-        System.out.println("XP total obtido dos inimigos: " + xpTotal);
+    private void registrar(String mensagem) {
+        log.add(mensagem);
+        System.out.println(mensagem);
     }
 }
