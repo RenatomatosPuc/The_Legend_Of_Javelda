@@ -198,25 +198,25 @@ public class JornadaView extends Div implements BeforeEnterObserver {
         Notification.show("Iniciando Batalha...");
         switch (batalhaId) {
             case 1:
-                getUI().ifPresent(ui -> ui.navigate("batalha1"));
+                getUI().ifPresent(ui -> ui.navigate("batalha_1"));
                 break;
             case 2:
-                getUI().ifPresent(ui -> ui.navigate("batalha2"));
+                getUI().ifPresent(ui -> ui.navigate("batalha_2"));
                 break;
             case 3:
-                getUI().ifPresent(ui -> ui.navigate("batalha3"));
+                getUI().ifPresent(ui -> ui.navigate("batalha_3"));
                 break;
             case 4:
-                getUI().ifPresent(ui -> ui.navigate("batalha4"));
+                getUI().ifPresent(ui -> ui.navigate("batalha_4"));
                 break;
             case 5:
-                getUI().ifPresent(ui -> ui.navigate("batalha5"));
+                getUI().ifPresent(ui -> ui.navigate("batalha_5"));
                 break;
             case 6:
-                getUI().ifPresent(ui -> ui.navigate("batalha6"));
+                getUI().ifPresent(ui -> ui.navigate("batalha_6"));
                 break;
             case 7:
-                getUI().ifPresent(ui -> ui.navigate("batalha7"));
+                getUI().ifPresent(ui -> ui.navigate("batalha_7"));
                 break;
             default:
                 Notification.show("Batalha inválida.");

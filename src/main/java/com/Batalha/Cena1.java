@@ -138,23 +138,21 @@ public class Cena1 {
 
                 case 1:
 
-                    Arqueiro arqueiro = new Arqueiro(1);
-                    arqueiro.setNome(nome);
+                    Arqueiro arqueiro = new Arqueiro(1, nome);
                     heroi = arqueiro;
 
                     break;
 
                 case 2:
 
-                    Clerigo clerigo = new Clerigo(1);
-                    clerigo.setNome(nome);
+                    Clerigo clerigo = new Clerigo(1, nome);
                     heroi = clerigo;
 
                     break;
 
                 case 3:
 
-                    Mago mago = new Mago(1);
+                    Mago mago = new Mago(1, nome);
                     mago.setNome(nome);
                     heroi = mago;
 
@@ -162,8 +160,7 @@ public class Cena1 {
 
                 case 4:
 
-                    Guerreiro guerreiro = new Guerreiro(1);
-                    guerreiro.setNome(nome);
+                    Guerreiro guerreiro = new Guerreiro(1, nome);
                     heroi = guerreiro;
 
                     break;
@@ -190,10 +187,9 @@ public class Cena1 {
         for (Heroi heroi : party.getHerois()) {
 
             System.out.println(
-                "Nome: " + heroi.getNome()
-                + " | Classe: " + heroi.getClasse()
-                + " | Nível: " + heroi.getNivel()
-            );
+                    "Nome: " + heroi.getNome()
+                            + " | Classe: " + heroi.getClasse()
+                            + " | Nível: " + heroi.getNivel());
         }
 
         System.out.println("\nUm mensageiro invade o salão.");
@@ -238,8 +234,7 @@ public class Cena1 {
             }
 
             System.out.println(
-                "Escolha um número entre " + minimo + " e " + maximo + "."
-            );
+                    "Escolha um número entre " + minimo + " e " + maximo + ".");
         }
     }
 }

@@ -67,9 +67,9 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
         ArrayList<Heroi> equipe = new ArrayList<>();
         try {
             equipe.addAll(
-                    carregarMembros(HEROIS_CSV));
+                    service.carregarHerois(HEROIS_CSV));
             guilda.addAll(
-                    carregarMembros(GUILDA_CSV));
+                    service.carregarHerois(GUILDA_CSV));
         } catch (IOException e) {
             Notification.show("Erro ao carregar membros da guilda: " + e.getMessage());
         }
@@ -126,69 +126,6 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
         add(salvarButton, gradesLayout);
     }
 
-    public static List<Heroi> carregarMembros(Path arquivoCsv) throws IOException {
-        if (!Files.exists(arquivoCsv)) {
-            return List.of();
-        }
-
-        List<String> linhas = Files.readAllLines(arquivoCsv, java.nio.charset.StandardCharsets.UTF_8);
-
-        String cabecalhoEsperado = "id,nome,classe,nivel,vidaMaxima,vidaAtual,ataque,defesa";
-        if (linhas.isEmpty() || !linhas.get(0).equals(cabecalhoEsperado)) {
-            throw new IOException("Cabeçalho inválido no arquivo: " + arquivoCsv);
-        }
-
-        List<Heroi> membros = new ArrayList<>();
-        for (int i = 1; i < linhas.size(); i++) {
-            String linha = linhas.get(i);
-            if (linha.isBlank()) {
-                continue;
-            }
-            String[] campos = linha.split(",", -1);
-            if (campos.length != 8) {
-                throw new IOException("Formato inválido na linha " + (i + 1) + " do arquivo: " + arquivoCsv);
-            }
-            try {
-                int id = Integer.parseInt(campos[0]);
-                String nome = campos[1];
-                String classe = campos[2];
-                int nivel = Integer.parseInt(campos[3]);
-                double vidaMaxima = Double.parseDouble(campos[4]);
-                double vidaAtual = Double.parseDouble(campos[5]);
-                double ataque = Double.parseDouble(campos[6]);
-                double defesa = Double.parseDouble(campos[7]);
-                Heroi heroi;
-                switch (Classe.valueOf(classe)) {
-                    case GUERREIRO:
-                        heroi = new Guerreiro(nivel, nome);
-                        break;
-                    case MAGO:
-                        heroi = new Mago(nivel, nome);
-                        break;
-                    case ARQUEIRO:
-                        heroi = new Arqueiro(nivel, nome);
-                        break;
-                    case CLERIGO:
-                        heroi = new Clerigo(nivel, nome);
-                        break;
-                    default:
-                        Notification.show("Classe inválida.");
-                        return List.of();
-                }
-                heroi.setNivel(nivel);
-                heroi.setVidaMaxima(vidaMaxima);
-                heroi.setVidaAtual(vidaAtual);
-                heroi.setAtaque(ataque);
-                heroi.setDefesa(defesa);
-                heroi.setId(id);
-                membros.add(heroi);
-            } catch (NumberFormatException e) {
-                throw new IOException("Erro ao analisar número no arquivo: " + arquivoCsv + " na linha " + (i + 1), e);
-            }
-        }
-        return membros;
-    }
-
     private static void salvarEquipe(List<Heroi> listaEquipe) {
         try (BufferedWriter writer = Files.newBufferedWriter(
                 HEROIS_CSV,
@@ -227,6 +164,15 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
         grade.addColumn(Heroi::getAtaque).setHeader("Ataque");
         grade.addColumn(Heroi::getDefesa).setHeader("Defesa");
         return grade;
+    }
+
+    public List<Heroi> getEquipe() {
+        try {
+            return service.carregarHerois(HEROIS_CSV);
+        } catch (IOException e) {
+            Notification.show("Erro ao carregar membros da equipe: " + e.getMessage());
+            return List.of();
+        }
     }
 
     public void beforeEnter(BeforeEnterEvent event) {

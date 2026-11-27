@@ -77,7 +77,7 @@ public class GuildaView extends VerticalLayout {
 
             nome.clear();
             try {
-                carregarGuilda();
+                service.carregarHerois(GUILDA_CSV);
             } catch (IOException e) {
                 Notification.show("Não foi possível carregar a Guilda: " + e.getMessage());
             }
@@ -101,7 +101,7 @@ public class GuildaView extends VerticalLayout {
             }
 
             try {
-                carregarGuilda();
+                guilda = service.carregarHerois(GUILDA_CSV);
             } catch (IOException e) {
                 Notification.show("Não foi possível carregar a Guilda: " + e.getMessage());
             }
@@ -112,8 +112,7 @@ public class GuildaView extends VerticalLayout {
             gradeHerois.setItems(guilda);
         });
         try {
-            carregarGuilda();
-            guilda = carregarGuilda();
+            guilda = service.carregarHerois(GUILDA_CSV);
         } catch (IOException e) {
             Notification.show("Não foi possível carregar a Guilda: " + e.getMessage());
         }
@@ -203,78 +202,6 @@ public class GuildaView extends VerticalLayout {
             return false;
         }
         return true;
-    }
-
-    public static List<Heroi> carregarGuilda() throws IOException {
-        if (!Files.exists(GUILDA_CSV)) {
-            return List.of();
-        }
-
-        List<String> linhas = Files.readAllLines(GUILDA_CSV, java.nio.charset.StandardCharsets.UTF_8);
-
-        if (linhas.isEmpty()) {
-            Notification.show("Arquivo da guilda está vazio.");
-            return List.of();
-        }
-
-        String cabecalho = "id,nome,classe,nivel,vidaMaxima,vidaAtual,ataque,defesa";
-
-        if (!linhas.get(0).equals(cabecalho)) {
-            Notification.show("Cabeçalho do arquivo da guilda está incorreto.");
-            return List.of();
-        }
-
-        List<Heroi> membros = new ArrayList<>();
-        for (int i = 1; i < linhas.size(); i++) {
-            String linha = linhas.get(i);
-
-            if (linha.isBlank()) {
-                continue; // Pula linhas em branco
-            }
-            String[] campos = linha.split(",", -1);
-
-            if (campos.length != 8) {
-                Notification.show("Linha " + (i + 1) + " do arquivo da guilda está corrompida.");
-                continue; // Pula linhas com número incorreto de campos
-            }
-            String idTexto = campos[0];
-            int id = Integer.parseInt(idTexto);
-            String nome = campos[1];
-            String classe = campos[2];
-            int nivel = Integer.parseInt(campos[3]);
-            double vidaMaxima = Double.parseDouble(campos[4]);
-            double vidaAtual = Double.parseDouble(campos[5]);
-            double ataque = Double.parseDouble(campos[6]);
-            double defesa = Double.parseDouble(campos[7]);
-
-            Heroi heroi;
-            switch (Classe.valueOf(classe)) {
-                case GUERREIRO:
-                    heroi = new Guerreiro(nivel, nome);
-                    break;
-                case MAGO:
-                    heroi = new Mago(nivel, nome);
-                    break;
-                case ARQUEIRO:
-                    heroi = new Arqueiro(nivel, nome);
-                    break;
-                case CLERIGO:
-                    heroi = new Clerigo(nivel, nome);
-                    break;
-                default:
-                    Notification.show("Classe inválida.");
-                    return List.of();
-            }
-            heroi.setNivel(nivel);
-            heroi.setVidaMaxima(vidaMaxima);
-            heroi.setVidaAtual(vidaAtual);
-            heroi.setAtaque(ataque);
-            heroi.setDefesa(defesa);
-            heroi.setId(id);
-            membros.add(heroi);
-        }
-        return membros;
-
     }
 
     private static ComponentRenderer<InventarioFormLayout, Heroi> INVENTARIO_RENDERER() {

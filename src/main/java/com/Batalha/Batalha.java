@@ -1,8 +1,10 @@
 package com.Batalha;
+
 import com.Personagens.Criaturas.Criatura;
 import com.Personagens.Herois.Heroi;
 import java.util.ArrayList;
 import java.util.List;
+
 public class Batalha {
 
     private List<Heroi> party;
@@ -46,5 +48,4 @@ public class Batalha {
         }
     }
 
-    
 }

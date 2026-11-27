@@ -2,6 +2,12 @@ package com.thelegendofjavelda.persistence;
 
 import org.springframework.stereotype.Service;
 
+import com.Personagens.Herois.Arqueiro;
+import com.Personagens.Herois.Classe;
+import com.Personagens.Herois.Clerigo;
+import com.Personagens.Herois.Guerreiro;
+import com.Personagens.Herois.Heroi;
+import com.Personagens.Herois.Mago;
 import com.vaadin.flow.component.notification.Notification;
 
 import java.io.IOException;
@@ -9,9 +15,11 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Logger;
 
 @Service
 public class CsvSaveService {
@@ -27,6 +35,7 @@ public class CsvSaveService {
     private static final String INVENTARIO_HEADER = "tipo,nome,ataque,defesa,cura,quantidade,durabilidade,heroi_id";
     private static final String BATALHA_HEADER = "tipo,dificuldade,mapa_atual,batalha_atual,campanha_concluida,id_batalha,resultado";
     private static final Set<String> DIFICULDADES = Set.of("FACIL", "MEDIO", "DIFICIL");
+    private static final Logger LOGGER = Logger.getLogger(CsvSaveService.class.getName());
     private Notification n = new Notification();
 
     public boolean existeCampanha() {
@@ -132,6 +141,56 @@ public class CsvSaveService {
             throw new IllegalStateException(
                     "Campo " + campo + " inválido na linha " + (linha + 1) + " de " + BATALHA_CSV, e);
         }
+    }
+
+    public List<Heroi> carregarHerois(Path arquivoCSV) throws IOException {
+        if (!Files.exists(arquivoCSV)) {
+            return List.of();
+        }
+        List<String> linhas = Files.readAllLines(arquivoCSV, StandardCharsets.UTF_8);
+        validarCabecalho(arquivoCSV, HEROIS_HEADER);
+
+        List<Heroi> membros = new ArrayList<>();
+
+        for (int i = 1; i < linhas.size(); i++) {
+            String linha = linhas.get(i);
+            if (linha.isBlank()) {
+                continue;
+            }
+            String[] campos = linha.split(",", -1);
+            if (campos.length != 8) {
+                throw new IOException("Formato inválido na linha " + (i + 1) + " do arquivo: " + arquivoCSV);
+            }
+            try {
+                int id = Integer.parseInt(campos[0]);
+                String nome = campos[1];
+                String classe = campos[2];
+                int nivel = Integer.parseInt(campos[3]);
+                double vidaMaxima = Double.parseDouble(campos[4]);
+                double vidaAtual = Double.parseDouble(campos[5]);
+                double ataque = Double.parseDouble(campos[6]);
+                double defesa = Double.parseDouble(campos[7]);
+                Heroi heroi = switch (classe) {
+                    case "ARQUEIRO" -> new Arqueiro(nivel, nome);
+                    case "CLERIGO" -> new Clerigo(nivel, nome);
+                    case "MAGO" -> new Mago(nivel, nome);
+                    case "GUERREIRO" -> new Guerreiro(nivel, nome);
+                    default ->
+                        throw new IllegalStateException("Classe inválida na linha " + (i + 1) + " de " + arquivoCSV);
+                };
+                heroi.setNivel(nivel);
+                heroi.setVidaMaxima(vidaMaxima);
+                heroi.setVidaAtual(vidaAtual);
+                heroi.setAtaque(ataque);
+                heroi.setDefesa(defesa);
+                heroi.setId(id);
+                membros.add(heroi);
+            } catch (NumberFormatException e) {
+                LOGGER.warning("Linha " + (i + 1) + " ignorada em "
+                        + arquivoCSV + ": " + e.getMessage());
+            }
+        }
+        return membros;
     }
 
     private boolean booleano(String valor, int linha) {
