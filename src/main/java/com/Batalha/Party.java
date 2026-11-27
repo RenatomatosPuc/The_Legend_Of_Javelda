@@ -4,8 +4,6 @@ package com.Batalha;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jetbrains.kotlin.it.unimi.dsi.fastutil.ints.p;
-
 import com.Personagens.Herois.Heroi;
 
 public class Party {
@@ -65,7 +63,7 @@ public class Party {
         for (Heroi heroi : herois) {
 
             if (heroi.estaVivo()) {
-                heroi.ganharExperiencia(xpTotal);
+                heroi.receberExperiencia(xpTotal);
                 heroisVivos++;
             }
         }
