@@ -17,10 +17,6 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,10 +36,6 @@ public class GuildaView extends VerticalLayout {
     private static final Path DATA = Path.of("data");
     private static final Path GUILDA_CSV = DATA.resolve("guilda.csv");
 
-    private final CSVFormat formato = CSVFormat.DEFAULT.builder()
-            .setHeader()
-            .setSkipHeaderRecord(true)
-            .get();
     private final CsvSaveService service;
     private static List<Heroi> guilda = new ArrayList<>();
 
