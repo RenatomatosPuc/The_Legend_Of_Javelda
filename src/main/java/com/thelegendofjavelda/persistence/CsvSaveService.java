@@ -193,6 +193,15 @@ public class CsvSaveService {
         return membros;
     }
 
+    public List<Heroi> getEquipe() {
+        try {
+            return carregarHerois(HEROIS_CSV);
+        } catch (IOException e) {
+            Notification.show("Erro ao carregar membros da equipe: " + e.getMessage());
+            return List.of();
+        }
+    }
+
     private boolean booleano(String valor, int linha) {
         if (valor.equalsIgnoreCase("true")) {
             return true;
