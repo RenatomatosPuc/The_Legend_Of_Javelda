@@ -121,10 +121,7 @@ public class GuildaView extends VerticalLayout {
     // Implementação para adicionar um membro à guilda
     public static void adicionarMembro(String nome, Classe classe) {
         int nivel = 1; // Nível inicial do herói
-        String membro = nome + "," + classe + "," + nivel;
-        double vidaMaxima = 0;
-        double ataque = 0;
-        double defesa = 0;
+        String membro = nome + ",";
         Heroi heroi;
         switch (classe) {
             case GUERREIRO:
@@ -144,13 +141,13 @@ public class GuildaView extends VerticalLayout {
                 return;
         }
         heroi.setNome(nome);
-        vidaMaxima = heroi.getVidaMaxima();
-        ataque = heroi.getAtaque();
-        defesa = heroi.getDefesa();
+        double vidaMaxima = heroi.getVidaMaxima();
+        double ataque = heroi.getAtaque();
+        double defesa = heroi.getDefesa();
         guilda.add(heroi);
 
         double vidaAtual = vidaMaxima; // Vida atual inicial igual à vida máxima
-        membro += "," + vidaMaxima + "," + vidaAtual;
+        membro += classe + "," + nivel + "," + vidaMaxima + "," + vidaAtual;
         membro += "," + ataque + "," + defesa;
         int id = Objects.hash(membro);
         heroi.setId(id);
