@@ -79,22 +79,21 @@ public class Cena5 {
         // CRIATURAS ENCONTRADAS
         if (dificuldade == Dificuldade.FACIL) {
 
-            Goblin goblin = new Goblin(1);
+            Goblin goblin = new Goblin();
             goblin.setNome("Goblin Deformado");
 
             criaturas.add(goblin);
 
             Esqueleto esqueleto = new Esqueleto(
-                "Guardião Esquecido",
-                70,
-                7,
-                14,
-                "Comum",
-                6,
-                1,
-                70,
-                true
-            );
+                    "Guardião Esquecido",
+                    70,
+                    7,
+                    14,
+                    "Comum",
+                    6,
+                    1,
+                    70,
+                    true);
 
             criaturas.add(esqueleto);
 
@@ -102,48 +101,44 @@ public class Cena5 {
 
             for (int i = 1; i <= 2; i++) {
 
-                Goblin goblin = new Goblin(2);
+                Criatura goblin = new Goblin();
                 goblin.setNome("Goblin Corrompido " + i);
 
                 criaturas.add(goblin);
             }
 
             criaturas.add(
-                new Esqueleto(
-                    "Guardião Esquecido",
-                    90,
-                    10,
-                    18,
-                    "Comum",
-                    7,
-                    2,
-                    90,
-                    true
-                )
-            );
+                    new Esqueleto(
+                            "Guardião Esquecido",
+                            90,
+                            10,
+                            18,
+                            "Comum",
+                            7,
+                            2,
+                            90,
+                            true));
 
         } else {
 
             for (int i = 1; i <= 2; i++) {
 
-                Goblin goblin = new Goblin(3);
+                Criatura goblin = new Goblin();
                 goblin.setNome("Goblin sem Referência " + i);
 
                 criaturas.add(goblin);
 
                 criaturas.add(
-                    new Esqueleto(
-                        "Esqueleto Fora de Escopo " + i,
-                        110,
-                        13,
-                        23,
-                        "Perigoso",
-                        8,
-                        3,
-                        110,
-                        true
-                    )
-                );
+                        new Esqueleto(
+                                "Esqueleto Fora de Escopo " + i,
+                                110,
+                                13,
+                                23,
+                                "Perigoso",
+                                8,
+                                3,
+                                110,
+                                true));
             }
         }
 
@@ -199,8 +194,7 @@ public class Cena5 {
             }
 
             System.out.println(
-                "Escolha um número entre " + minimo + " e " + maximo + "."
-            );
+                    "Escolha um número entre " + minimo + " e " + maximo + ".");
         }
     }
 }

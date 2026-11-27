@@ -1,5 +1,6 @@
 package com.Personagens.Criaturas;
 
+import com.Personagens.Combatente;
 import com.Personagens.Personagem;
 
 public class Esqueleto extends Criatura {
@@ -18,23 +19,28 @@ public class Esqueleto extends Criatura {
     }
 
     public double ataqueEspecial(Personagem target) {
-        
-        try{
-        if (!consumirEsforco()) {
+
+        try {
+            if (!consumirEsforco()) {
+                return 0;
+            }
+            System.out.println("O esqueleto precisao de um morto : " + target.getNome());
+            target.receberDano(this.getAtaque() + 5);
+            return this.getAtaque() + 5;
+        } catch (NullPointerException e) {
+            System.out.println("O esqueleto precisao de um morto, mas ninguem pegou, alvo vazio");
             return 0;
         }
-        System.out.println("O esqueleto precisao de um morto : " + target.getNome());
-        target.receberDano(this.getAtaque()+5);
-        return this.getAtaque() + 5;
-    }
-    catch(NullPointerException e){
-        System.out.println("O esqueleto precisao de um morto, mas ninguem pegou, alvo vazio");
-        return 0;
-    }
     }
 
     public void soltarLoot() {
         System.out.println("O esqueleto soltou dropou um item!");
+    }
+
+    @Override
+    public double atacar(Combatente target) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'atacar'");
     }
 
 }

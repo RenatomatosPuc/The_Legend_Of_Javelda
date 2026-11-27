@@ -13,8 +13,8 @@ public class Dragao extends Criatura {
 
     // Construtor simplificado para balanceamento rápido (Boss Nível 5+)
     public Dragao(String nome, int nivel) {
-        super(nome, 300 + (nivel - 1) * 50, 25 + (nivel - 1) * 5, 35 + (nivel - 1) * 6, 
-              "S", 9, nivel, 300 + (nivel - 1) * 50, true);
+        super(nome, 300 + (nivel - 1) * 50, 25 + (nivel - 1) * 5, 35 + (nivel - 1) * 6,
+                "S", 9, nivel, 300 + (nivel - 1) * 50, true);
         setEsforco(8);
     }
 
@@ -26,7 +26,8 @@ public class Dragao extends Criatura {
         }
 
         double danoCausado = getAtaque();
-        System.out.println(" O Dragão " + getNome() + " mordeu " + target.getNome() + " causando " + danoCausado + " de dano!");
+        System.out.println(
+                " O Dragão " + getNome() + " mordeu " + target.getNome() + " causando " + danoCausado + " de dano!");
         target.receberDano(danoCausado);
         return danoCausado;
     }
@@ -40,13 +41,18 @@ public class Dragao extends Criatura {
         try {
             consumirEsforco();
             double danoSopro = getAtaque() + 20;
-            System.out.println("🔥 O Dragão " + getNome() + " lançou um SOPRO DE JAVA em " + target.getNome() + " causando " + danoSopro + " de dano!");
+            System.out.println("🔥 O Dragão " + getNome() + " lançou um SOPRO DE JAVA em " + target.getNome()
+                    + " causando " + danoSopro + " de dano!");
             target.receberDano(danoSopro);
             return danoSopro;
         } catch (UltimateOnRechargeException e) {
             System.out.println("O Dragão tentou usar o sopro, mas está sem esforço!");
             return 0;
         }
+    }
+
+    public double getXpConcedido() {
+        return getNivel() * 15; // Exemplo: XP concedido é 15 vezes o nível do Dragão
     }
 
     @Override

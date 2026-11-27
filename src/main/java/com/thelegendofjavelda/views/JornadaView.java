@@ -38,7 +38,7 @@ public class JornadaView extends Div implements BeforeEnterObserver {
         if (mapaExibido == 0) {
             prevButton.setEnabled(false);
         }
-        if (mapaExibido == 2) {
+        if (mapaExibido == 3) {
             proxButton.setEnabled(false);
         }
 
@@ -51,7 +51,7 @@ public class JornadaView extends Div implements BeforeEnterObserver {
             } else {
                 prevButton.setEnabled(true);
             }
-            if (mapaExibido == 2) {
+            if (mapaExibido == 3) {
                 proxButton.setEnabled(false);
             } else {
                 proxButton.setEnabled(true);
@@ -66,7 +66,7 @@ public class JornadaView extends Div implements BeforeEnterObserver {
             } else {
                 prevButton.setEnabled(true);
             }
-            if (mapaExibido == 2) {
+            if (mapaExibido == 3) {
                 proxButton.setEnabled(false);
             } else {
                 proxButton.setEnabled(true);
@@ -89,8 +89,8 @@ public class JornadaView extends Div implements BeforeEnterObserver {
             case 0:
                 Card Batalha1 = new Card();
                 DownloadHandler imageHandler = DownloadHandler.forClassResource(getClass(),
-                        "/images/batalha_1.avif", "batalha_1.avif");
-                Image imagem1 = new Image(imageHandler, "batalha_1.avif");
+                        "/images/batalhas/cena_1.avif", "cena_1.avif");
+                Image imagem1 = new Image(imageHandler, "cena_1.avif");
                 Batalha1.addThemeVariants(CardVariant.ELEVATED);
                 Batalha1.setMedia(imagem1);
                 Batalha1.setTitle("Batalha 1");
@@ -98,8 +98,8 @@ public class JornadaView extends Div implements BeforeEnterObserver {
 
                 Card Batalha2 = new Card();
                 DownloadHandler imageHandler2 = DownloadHandler.forClassResource(getClass(),
-                        "/images/batalha_2.avif", "batalha_2.avif");
-                Image imagem2 = new Image(imageHandler2, "batalha_2.avif");
+                        "/images/batalhas/cena_2.avif", "cena_2.avif");
+                Image imagem2 = new Image(imageHandler2, "cena_2.avif");
                 Batalha2.addThemeVariants(CardVariant.ELEVATED);
                 Batalha2.setMedia(imagem2);
                 Batalha2.setTitle("Batalha 2");
@@ -117,8 +117,8 @@ public class JornadaView extends Div implements BeforeEnterObserver {
             case 1:
                 Card Batalha3 = new Card();
                 DownloadHandler imageHandler3 = DownloadHandler.forClassResource(getClass(),
-                        "/images/batalha_3.avif", "batalha_3.avif");
-                Image imagem3 = new Image(imageHandler3, "batalha_3.avif");
+                        "/images/batalhas/cena_3.avif", "cena_3.avif");
+                Image imagem3 = new Image(imageHandler3, "cena_3.avif");
                 Batalha3.addThemeVariants(CardVariant.ELEVATED);
                 Batalha3.setMedia(imagem3);
                 Batalha3.setTitle("Batalha 3");
@@ -126,8 +126,8 @@ public class JornadaView extends Div implements BeforeEnterObserver {
 
                 Card Batalha4 = new Card();
                 DownloadHandler imageHandler4 = DownloadHandler.forClassResource(getClass(),
-                        "/images/batalha_4.avif", "batalha_4.avif");
-                Image imagem4 = new Image(imageHandler4, "batalha_4.avif");
+                        "/images/batalhas/cena_4.avif", "cena_4.avif");
+                Image imagem4 = new Image(imageHandler4, "cena_4.avif");
                 Batalha4.addThemeVariants(CardVariant.ELEVATED);
                 Batalha4.setMedia(imagem4);
                 Batalha4.setTitle("Batalha 4");
@@ -143,11 +143,12 @@ public class JornadaView extends Div implements BeforeEnterObserver {
 
                 mapaLayout.add(Batalha3, Batalha4);
                 return mapaLayout;
+
             case 2:
                 Card Batalha5 = new Card();
                 DownloadHandler imageHandler5 = DownloadHandler.forClassResource(getClass(),
-                        "/images/batalha_5.avif", "batalha_5.avif");
-                Image imagem5 = new Image(imageHandler5, "batalha_5.avif");
+                        "/images/batalhas/cena_5.avif", "cena_5.avif");
+                Image imagem5 = new Image(imageHandler5, "cena_5.avif");
                 Batalha5.addThemeVariants(CardVariant.ELEVATED);
                 Batalha5.setMedia(imagem5);
                 Batalha5.setTitle("Batalha 5");
@@ -156,8 +157,36 @@ public class JornadaView extends Div implements BeforeEnterObserver {
                 Button batalha5btn = new Button("Iniciar Batalha 5");
                 Batalha5.addToFooter(batalha5btn);
                 batalha5btn.addClickListener(event -> iniciarBatalha(5));
+                Card Batalha6 = new Card();
+                DownloadHandler imageHandler6 = DownloadHandler.forClassResource(getClass(),
+                        "/images/batalhas/cena_6.avif", "cena_6.avif");
+                Image imagem6 = new Image(imageHandler6, "cena_6.avif");
+                Batalha6.addThemeVariants(CardVariant.ELEVATED);
+                Batalha6.setMedia(imagem6);
+                Batalha6.setTitle("Batalha 6");
+                Batalha6.add(new H1("Card exemplo para escolha de batalhas"));
 
-                mapaLayout.add(Batalha5);
+                Button batalha6btn = new Button("Iniciar Batalha 6");
+                Batalha6.addToFooter(batalha6btn);
+                batalha6btn.addClickListener(event -> iniciarBatalha(6));
+
+                mapaLayout.add(Batalha5, Batalha6);
+                return mapaLayout;
+            case 3:
+                Card Batalha7 = new Card();
+                DownloadHandler imageHandler7 = DownloadHandler.forClassResource(getClass(),
+                        "/images/batalhas/cena_7.avif", "cena_7.avif");
+                Image imagem7 = new Image(imageHandler7, "cena_7.avif");
+                Batalha7.addThemeVariants(CardVariant.ELEVATED);
+                Batalha7.setMedia(imagem7);
+                Batalha7.setTitle("Batalha 7");
+                Batalha7.add(new H1("Card exemplo para escolha de batalhas"));
+
+                Button batalha7btn = new Button("Iniciar Batalha 7");
+                Batalha7.addToFooter(batalha7btn);
+                batalha7btn.addClickListener(event -> iniciarBatalha(7));
+
+                mapaLayout.add(Batalha7);
                 return mapaLayout;
             default:
                 Notification.show("Não há mais mapas para exibir. " + mapaExibido);
@@ -182,6 +211,12 @@ public class JornadaView extends Div implements BeforeEnterObserver {
                 break;
             case 5:
                 getUI().ifPresent(ui -> ui.navigate("batalha5"));
+                break;
+            case 6:
+                getUI().ifPresent(ui -> ui.navigate("batalha6"));
+                break;
+            case 7:
+                getUI().ifPresent(ui -> ui.navigate("batalha7"));
                 break;
             default:
                 Notification.show("Batalha inválida.");
