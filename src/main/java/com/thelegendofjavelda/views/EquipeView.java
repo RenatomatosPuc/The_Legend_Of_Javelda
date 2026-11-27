@@ -4,11 +4,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.csv.CSVRecord;
-
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,10 +34,6 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
     private static final Path HEROIS_CSV = DATA.resolve("heroes.csv");
     private HeroResumo arrastado;
 
-    private final CSVFormat formato = CSVFormat.DEFAULT.builder()
-            .setHeader()
-            .setSkipHeaderRecord(true)
-            .get();
     public final CsvSaveService service;
 
     public EquipeView(CsvSaveService service) {
@@ -65,9 +57,16 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
         gradeEquipe.setRowsDraggable(true);
         gradeEquipe.addThemeVariants(GridVariant.ROW_STRIPES);
 
-        ArrayList<HeroResumo> guilda = new ArrayList<>(carregarMembros(grade, formato, GUILDA_CSV));
-        ArrayList<HeroResumo> equipe = new ArrayList<>(
-                carregarMembros(gradeEquipe, formato, HEROIS_CSV));
+        ArrayList<HeroResumo> guilda = new ArrayList<>();
+        ArrayList<HeroResumo> equipe = new ArrayList<>();
+        try {
+            equipe.addAll(
+                    carregarMembros(HEROIS_CSV));
+            guilda.addAll(
+                    carregarMembros(GUILDA_CSV));
+        } catch (IOException e) {
+            Notification.show("Erro ao carregar membros da guilda: " + e.getMessage());
+        }
         GridListDataView<HeroResumo> gradeView = grade.setItems(guilda);
         GridListDataView<HeroResumo> gradeEquipeView = gradeEquipe.setItems(equipe);
         grade.addDragStartListener(e -> {
@@ -78,7 +77,7 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
         grade.addDropListener(e -> {
             gradeView.addItem(arrastado);
             gradeEquipeView.removeItem(arrastado);
-            salvarEquipe(gradeEquipeView.getItems().toList(), formato);
+            salvarEquipe(gradeEquipeView.getItems().toList());
         });
         grade.addDragEndListener(e -> {
             arrastado = null;
@@ -111,7 +110,7 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
                 return;
             }
 
-            salvarEquipe(gradeEquipeView.getItems().toList(), formato);
+            salvarEquipe(gradeEquipeView.getItems().toList());
             grade.setPartNameGenerator(item -> gradeEquipeView.getItems().toList().contains(item) ? "addEquipe" : null);
             grade.getDataProvider().refreshAll();
         });
@@ -121,57 +120,71 @@ public class EquipeView extends VerticalLayout implements BeforeEnterObserver {
         add(salvarButton, gradesLayout);
     }
 
-    public static List<HeroResumo> carregarMembros(Grid<HeroResumo> grade,
-            CSVFormat formato, Path arquivoCsv) {
+    public static List<HeroResumo> carregarMembros(Path arquivoCsv) throws IOException {
         if (!Files.exists(arquivoCsv)) {
-            return null;
+            return List.of();
         }
 
-        try (CSVParser parser = CSVParser.parse(arquivoCsv, java.nio.charset.StandardCharsets.UTF_8, formato)) {
-            List<HeroResumo> membros = new ArrayList<>();
-            for (CSVRecord record : parser) {
-                int id = Integer.parseInt(record.get("id"));
-                String nome = record.get("nome");
-                String classe = record.get("classe");
-                int nivel = Integer.parseInt(record.get("nivel"));
-                double vidaMaxima = Double.parseDouble(record.get("vidaMaxima"));
-                double vidaAtual = Double.parseDouble(record.get("vidaAtual"));
-                double ataque = Double.parseDouble(record.get("ataque"));
-                double defesa = Double.parseDouble(record.get("defesa"));
-                membros.add(new HeroResumo(id, nome, classe, nivel, vidaMaxima, vidaAtual, ataque, defesa));
-            }
-            return membros;
-        } catch (Exception e) {
-            Notification.show("Erro ao carregar membros de: " + e.getMessage());
-            return null;
+        List<String> linhas = Files.readAllLines(arquivoCsv, java.nio.charset.StandardCharsets.UTF_8);
+
+        String cabecalhoEsperado = "id,nome,classe,nivel,vidaMaxima,vidaAtual,ataque,defesa";
+        if (linhas.isEmpty() || !linhas.get(0).equals(cabecalhoEsperado)) {
+            throw new IOException("Cabeçalho inválido no arquivo: " + arquivoCsv);
         }
+
+        List<HeroResumo> membros = new ArrayList<>();
+        for (int i = 1; i < linhas.size(); i++) {
+            String linha = linhas.get(i);
+            if (linha.isBlank()) {
+                continue;
+            }
+            String[] campos = linha.split(",", -1);
+            if (campos.length != 8) {
+                throw new IOException("Formato inválido na linha " + (i + 1) + " do arquivo: " + arquivoCsv);
+            }
+            try {
+                int id = Integer.parseInt(campos[0]);
+                String nome = campos[1];
+                String classe = campos[2];
+                int nivel = Integer.parseInt(campos[3]);
+                double vidaMaxima = Double.parseDouble(campos[4]);
+                double vidaAtual = Double.parseDouble(campos[5]);
+                double ataque = Double.parseDouble(campos[6]);
+                double defesa = Double.parseDouble(campos[7]);
+                membros.add(new HeroResumo(id, nome, classe, nivel, vidaMaxima, vidaAtual, ataque, defesa));
+            } catch (NumberFormatException e) {
+                throw new IOException("Erro ao analisar número no arquivo: " + arquivoCsv + " na linha " + (i + 1), e);
+            }
+        }
+        return membros;
     }
 
-    private static void salvarEquipe(List<HeroResumo> listaEquipe, CSVFormat formato) {
-        if (!Files.exists(HEROIS_CSV)) {
-            Notification.show("Arquivo da Equipe não encontrado.");
+    private static void salvarEquipe(List<HeroResumo> listaEquipe) {
+        try (BufferedWriter writer = Files.newBufferedWriter(
+                HEROIS_CSV,
+                java.nio.charset.StandardCharsets.UTF_8,
+                java.nio.file.StandardOpenOption.CREATE,
+                java.nio.file.StandardOpenOption.TRUNCATE_EXISTING,
+                java.nio.file.StandardOpenOption.WRITE)) {
+            writer.write("id,nome,classe,nivel,vidaMaxima,vidaAtual,ataque,defesa");
+            writer.newLine();
+            for (HeroResumo heroi : listaEquipe) {
+                writer.write(heroi.id() + "," +
+                        heroi.nome() + "," +
+                        heroi.classe() + "," +
+                        heroi.nivel() + "," +
+                        heroi.vidaMaxima() + "," +
+                        heroi.vidaAtual() + "," +
+                        heroi.ataque() + "," +
+                        heroi.defesa());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            Notification.show("Não foi possível salvar a Equipe: " + e.getMessage());
             return;
         }
 
-        try (CSVPrinter printer = new CSVPrinter(
-                Files.newBufferedWriter(
-                        HEROIS_CSV,
-                        java.nio.charset.StandardCharsets.UTF_8,
-                        java.nio.file.StandardOpenOption.CREATE,
-                        java.nio.file.StandardOpenOption.TRUNCATE_EXISTING,
-                        java.nio.file.StandardOpenOption.WRITE),
-                formato)) {
-
-            printer.printRecord("id", "nome", "classe", "nivel", "vidaMaxima", "vidaAtual", "ataque", "defesa");
-
-            for (HeroResumo heroi : listaEquipe) {
-                printer.printRecord(heroi.id(), heroi.nome(), heroi.classe(), heroi.nivel(), heroi.vidaMaxima(),
-                        heroi.vidaAtual(), heroi.ataque(), heroi.defesa());
-            }
-            Notification.show("Equipe salva com sucesso.");
-        } catch (IOException e) {
-            Notification.show("Não foi possível salvar a Equipe: " + e.getMessage());
-        }
+        Notification.show("Equipe salva com sucesso.");
     }
 
     private static Grid<HeroResumo> setUpGrid() {
