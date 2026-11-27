@@ -1,4 +1,5 @@
 package com.Personagens.Herois;
+
 import com.Personagens.Combatente;
 import com.Exceptions.UltimateOnRechargeException;
 
@@ -6,15 +7,12 @@ public class Guerreiro extends Heroi {
     private String nome;
 
     // Construtor
-    public Guerreiro(int n) {
+    public Guerreiro(int n, String nome) {
         super(n, Classe.GUERREIRO);
         super.setVidaMaxima(150 + (n - 1) * 10);
         super.setAtaque(20 + (n - 1) * 2);
         super.setDefesa(10 + (n - 1) * 1);
         super.setEsforco(12);
-    }
-
-    public void setNome(String nome) {
         this.nome = nome;
     }
 

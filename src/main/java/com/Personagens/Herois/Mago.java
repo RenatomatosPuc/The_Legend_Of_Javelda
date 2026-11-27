@@ -7,15 +7,12 @@ import com.Personagens.Criaturas.Criatura;
 public class Mago extends Heroi {
     private String nome;
 
-    public Mago(int n) {
+    public Mago(int n, String nome) {
         super(n, Classe.MAGO);
         super.setVidaMaxima(80 + (n - 1) * 10);
         super.setAtaque(15 + (n - 1) * 2);
         super.setDefesa(5 + (n - 1) * 1);
         super.setEsforco(12);
-    }
-
-    public void setNome(String nome) {
         this.nome = nome;
     }
 

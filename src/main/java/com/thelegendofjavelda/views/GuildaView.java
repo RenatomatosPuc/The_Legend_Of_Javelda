@@ -129,16 +129,16 @@ public class GuildaView extends VerticalLayout {
         Heroi heroi;
         switch (classe) {
             case GUERREIRO:
-                heroi = new Guerreiro(nivel);
+                heroi = new Guerreiro(nivel, nome);
                 break;
             case MAGO:
-                heroi = new Mago(nivel);
+                heroi = new Mago(nivel, nome);
                 break;
             case ARQUEIRO:
-                heroi = new Arqueiro(nivel);
+                heroi = new Arqueiro(nivel, nome);
                 break;
             case CLERIGO:
-                heroi = new Clerigo(nivel);
+                heroi = new Clerigo(nivel, nome);
                 break;
             default:
                 Notification.show("Classe inválida.");
@@ -250,16 +250,16 @@ public class GuildaView extends VerticalLayout {
             Heroi heroi;
             switch (Classe.valueOf(classe)) {
                 case GUERREIRO:
-                    heroi = new Guerreiro(nivel);
+                    heroi = new Guerreiro(nivel, nome);
                     break;
                 case MAGO:
-                    heroi = new Mago(nivel);
+                    heroi = new Mago(nivel, nome);
                     break;
                 case ARQUEIRO:
-                    heroi = new Arqueiro(nivel);
+                    heroi = new Arqueiro(nivel, nome);
                     break;
                 case CLERIGO:
-                    heroi = new Clerigo(nivel);
+                    heroi = new Clerigo(nivel, nome);
                     break;
                 default:
                     Notification.show("Classe inválida.");
