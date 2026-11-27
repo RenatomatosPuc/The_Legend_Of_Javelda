@@ -30,12 +30,12 @@ public class LojaView extends VerticalLayout implements BeforeEnterObserver {
         VerticalLayout mainLayout = new VerticalLayout();
 
         Card cardArmas = criarCard("Armas", "Compre armas para aumentar o ataque do seu personagem.",
-                "/images/loja/Armas.png", "Armas.png");
+                "/images/Loja/Armas.png", "Armas.png");
         Card cardArmaduras = criarCard("Armaduras", "Compre armaduras para aumentar a defesa do seu personagem.",
-                "/images/loja/armaduras.png", "armaduras.png");
+                "/images/Loja/armaduras.png", "armaduras.png");
         Card cardUtilitarios = criarCard("Utilitários",
                 "Compre itens utilitários para curar ou aumentar a durabilidade dos equipamentos do seu personagem.",
-                "/images/loja/itens.png", "itens.png");
+                "/images/Loja/itens.png", "itens.png");
         cardLayout.add(cardArmas, cardArmaduras, cardUtilitarios);
         mainLayout.add(title, cardLayout);
         add(mainLayout);
