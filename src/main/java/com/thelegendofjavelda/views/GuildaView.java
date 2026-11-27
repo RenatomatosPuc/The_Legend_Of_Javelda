@@ -265,7 +265,6 @@ public class GuildaView extends VerticalLayout {
                     Notification.show("Classe inválida.");
                     return List.of();
             }
-            heroi.setNome(nome);
             heroi.setNivel(nivel);
             heroi.setVidaMaxima(vidaMaxima);
             heroi.setVidaAtual(vidaAtual);
