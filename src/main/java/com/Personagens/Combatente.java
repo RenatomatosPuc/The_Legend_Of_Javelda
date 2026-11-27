@@ -1,21 +1,31 @@
 package com.Personagens;
 
-public interface Combatente {
-    String getNome();
+import com.Arsenal.InventarioPersonagem;
+import com.Personagens.Criaturas.Criatura;
 
-    // Guilda getGuilda();
+public interface Combatente {
+    // Identificação e Estatísticas Base
+    String getNome();
 
     double getVidaAtual();
 
     double getVidaMaxima();
 
+    double getAtaque();
+
+    double getDefesa();
+
+    int getVelocidade();
+
+    int getNivel();
+
+    int getEsforco();
+
     boolean estaVivo();
 
     double receberDano(double danoRecebido);
 
-    // Arma getArmamento();
+    double usarHabilidadeEspecial(Combatente target);
 
-    // Armadura getArmadura();
-
-    // Batalha Acao();
+    double atacar(Combatente target);
 }

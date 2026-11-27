@@ -1,0 +1,186 @@
+vaadin-grid::part(addEquipe) {
+    background: rgba(0, 255, 0, 0.432);
+}
+
+/* html, body, #outlet {
+  background-color: #344569;
+} */
+
+.jornada-view {
+  background-color: #171c24;
+  color: #f2ebdd;
+}
+
+vaadin-card {
+  background-color: #252d38;
+  color: #f2ebdd;
+}
+
+vaadin-button {
+  background-color: #c49a45;
+  color: #171c24;
+}
+
+.main-layout {
+  min-height: 100vh;
+  background-color: #171c24;
+}
+
+
+vaadin-app-layout.main-layout::part(drawer),
+vaadin-app-layout.main-layout::part(content) {
+  background-color: #171c24;
+}
+
+vaadin-app-layout.main-layout::part(drawer) {
+  background-color: #252d38;
+}
+
+
+vaadin-side-nav-item {
+  color: #d38f07;
+}
+
+vaadin-side-nav-item:hover {
+  background-color: #171c24;
+  color: #d38f07;
+}
+vaadin-side-nav-item[current] {
+  background-color: #171c24;
+  color: #d38f07;
+}
+
+vaadin-side-nav-item::part(content), 
+vaadin-side-nav-item::part(label) {
+  color: #d38f07;
+}
+
+vaadin-grid {
+  background-color: #252d38;
+  color: #d38f07;
+}
+
+vaadin-grid::part(header-cell) {
+  background-color: #171c24;
+  color: #d38f07;
+}
+
+vaadin-grid::part(even-row-cell) {
+  background-color: #252d38;
+  color: #d38f07;
+}
+
+vaadin-grid::part(odd-row-cell) {
+  background-color: #171c24;
+  color: #d38f07;
+}
+vaadin-grid::part(details-cell) {
+  background-color: #171c24;
+  color: #d38f07;
+}
+
+vaadin-grid::part(cell):hover {
+  background-color: #1c2636;
+  color: #d38f07;
+}
+
+vaadin-select::part(input-field) {
+  background-color: #252d38;
+  color: #d38f07;
+}
+
+vaadin-select::part(label) {
+  color: #d38f07;
+}
+
+vaadin-select-item {
+  background-color: #252d38;
+  color: #d38f07;
+}
+
+vaadin-select:hover {
+  background-color: #171c24;
+  color: #d38f07;
+}
+
+vaadin-select-item:hover {
+  background-color: #171c24;
+  color: #d38f07;
+}
+
+vaadin-text-field::part(input-field) {
+  background-color: #252d38;
+  color: #d38f07;
+}
+
+vaadin-text-field::part(label) {
+  color: #d38f07;
+}
+
+vaadin-text-field:hover {
+  background-color: #171c24;
+  color: #d38f07;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #d38f07;
+}
+
+vaadin-button {
+  background-color: #c49a45;
+  color: #171c24;
+  text-transform: capitalize;
+  font-weight: bold;
+}
+vaadin-button:hover {
+  background-color: #d38f07;
+  color: #171c24;
+}
+
+vaadin-button[disabled]{
+    background-color: #252d38;
+    color: #d38f07;
+}
+
+.menu {
+  background-color: #171c24;
+  color: #d38f07;
+}
+
+.menu vaadin-combo-box::part(input-field) {
+  background-color: #252d38;
+  color: #d38f07;
+}
+
+.menu vaadin-combo-box::part(label) {
+  color: #d38f07;
+}
+
+.menu vaadin-combo-box:hover {
+  background-color: #171c24;
+  color: #d38f07;
+}
+
+.menu vaadin-combo-box-item {
+  background-color: #252d38;
+  color: #d38f07;
+}
+
+.menu vaadin-combo-box-item:hover {
+  background-color: #171c24;
+  color: #d38f07;
+}
+
+vaadin-confirm-dialog::part(header),
+vaadin-confirm-dialog::part(overlay) {
+  background-color: #171c24;
+  color: #d38f07;
+  font-weight: bold;
+}
+
+vaadin-confirm-dialog > [slot="confirm-button"] {
+    background-color: #C6131B;
+    color: #ffffff;
+    font-weight: bold;
+}
+

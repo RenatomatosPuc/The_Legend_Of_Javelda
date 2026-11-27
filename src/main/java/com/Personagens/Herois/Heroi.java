@@ -1,7 +1,141 @@
 package com.Personagens.Herois;
 
 import com.Personagens.Personagem;
+import com.Personagens.Criaturas.Criatura;
+import com.Personagens.Combatente;
+import com.Arsenal.InventarioPersonagem;
+import com.Exceptions.UltimateOnRechargeException;
 
-public abstract class Heroi extends Personagem {
+public abstract class Heroi extends Personagem implements Combatente {
+    private Classe classe;
+    private double experiencia;
+    private InventarioPersonagem inventarioPersonagem;
+    private double ouro;
+    private int contadorAtaque;
+    private int id;
+
+    public Heroi(int n, Classe c) {
+        // Passa o nível e o esforço inicial para a classe mãe (Personagem)
+        super("", 0, 0, 0, 0, n, esforcoInicial(c), 0, 0, true);
+        this.classe = c;
+        this.experiencia = 0;
+        this.inventarioPersonagem = new InventarioPersonagem();
+        this.ouro = 0;
+        this.contadorAtaque = 0;
+        this.id = 0;
+    }
+
+    // GETTERS E SETTERS DE IDENTIFICAÇÃO
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNome(String nome) {
+        super.setNome(nome);
+    }
+
+    public void setNivel(int n) {
+        super.setNivel(n);
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public Classe getClasse() {
+        return this.classe;
+    }
+
+    public int getContadorAtaque() {
+        return this.contadorAtaque;
+    }
+
+    public double getOuro() {
+        return this.ouro;
+    }
+
+    public void adicionarOuro(double quantidade) {
+        this.ouro += quantidade;
+    }
+
+    public InventarioPersonagem getInventarioPersonagem() {
+        return this.inventarioPersonagem;
+    }
+
+    // MÉTODOS DE EXPERIÊNCIA E NÍVEL
+
+    @Override
+    public double receberExperiencia(double experienciaGanha) {
+        this.experiencia += experienciaGanha;
+        while (this.experiencia >= 100) {
+            this.experiencia -= 100;
+            subirNivel();
+            System.out.println("O herói " + getNome() + " subiu para o nível " + getNivel() + "!");
+        }
+        return this.experiencia;
+    }
+
+    public void subirNivel() {
+        setNivel(getNivel() + 1);
+        // Bónus de atributo ao subir de nível
+        setVidaMaxima(getVidaMaxima() + 15);
+        setVidaAtual(getVidaMaxima()); // Restaura a vida ao subir de nível
+        setAtaque(getAtaque() + 3);
+        setDefesa(getDefesa() + 2);
+    }
+
+    // MÉTODOS DE AÇÕES DE COMBATE
+
+    public double danoAtaque() {
+        double danoArma = 0;
+        if (inventarioPersonagem != null && inventarioPersonagem.getArma() != null) {
+            danoArma = inventarioPersonagem.getArma().getAtaque();
+        }
+        this.contadorAtaque++;
+        return danoArma + getAtaque();
+    }
+
+    @Override
+    public double atacar(Combatente target) {
+        if (target == null || !target.estaVivo()) {
+            System.out.println(getNome() + " tentou atacar, mas não há um alvo válido!");
+            return 0;
+        }
+
+        double dano = danoAtaque();
+        System.out.println(getNome() + " atacou " + target.getNome() + " causando " + dano + " de dano!");
+        return dano;
+
+    }
+
+    @Override
+    public abstract double usarHabilidadeEspecial(Combatente target);
+
+    protected void consumirEsforco() throws UltimateOnRechargeException {
+        if (getEsforco() <= 0) {
+            throw new UltimateOnRechargeException("Esforço insuficiente: habilidade especial cancelada.");
+        }
+        setEsforco(getEsforco() - 1);
+    }
+
+    private static int esforcoInicial(Classe classe) {
+        switch (classe) {
+            case GUERREIRO:
+                return 4;
+            case ARQUEIRO:
+            case CLERIGO:
+                return 10;
+            case MAGO:
+                return 12;
+            default:
+                throw new IllegalArgumentException("Classe de herói inválida: " + classe);
+        }
+    }
+    // Usa o utilitario
+
+    public void usarItem(Personagem alvo) {
+        inventarioPersonagem.getUtilitario().usarUtilitario(alvo);
+    }
 
 }
