@@ -286,55 +286,6 @@ public class GuildaView extends VerticalLayout {
 
     }
 
-    public List<Heroi> carregarGuilda(CSVFormat formato) {
-        if (!Files.exists(GUILDA_CSV)) {
-            return null;
-        }
-
-        try (CSVParser parser = CSVParser.parse(GUILDA_CSV, java.nio.charset.StandardCharsets.UTF_8, formato)) {
-            List<Heroi> membros = new ArrayList<>();
-            for (CSVRecord record : parser) {
-                String nome = record.get("nome");
-                String classe = record.get("classe");
-                int nivel = Integer.parseInt(record.get("nivel"));
-                double vidaMaxima = Double.parseDouble(record.get("vidaMaxima"));
-                double vidaAtual = Double.parseDouble(record.get("vidaAtual"));
-                double ataque = Double.parseDouble(record.get("ataque"));
-                double defesa = Double.parseDouble(record.get("defesa"));
-                Heroi heroi;
-                switch (Classe.valueOf(classe)) {
-                    case GUERREIRO:
-                        heroi = new Guerreiro(nivel);
-                        break;
-                    case MAGO:
-                        heroi = new Mago(nivel);
-                        break;
-                    case ARQUEIRO:
-                        heroi = new Arqueiro(nivel);
-                        break;
-                    case CLERIGO:
-                        heroi = new Clerigo(nivel);
-                        break;
-                    default:
-                        Notification.show("Classe inválida.");
-                        return null;
-                }
-                heroi.setNome(nome);
-                heroi.setNivel(nivel);
-                heroi.setVidaMaxima(vidaMaxima);
-                heroi.setVidaAtual(vidaAtual);
-                heroi.setAtaque(ataque);
-                heroi.setDefesa(defesa);
-
-                membros.add(heroi);
-            }
-            return membros;
-        } catch (Exception e) {
-            Notification.show("Erro ao carregar membros da guilda: " + e.getMessage());
-            return null;
-        }
-    }
-
     private static ComponentRenderer<InventarioFormLayout, Heroi> INVENTARIO_RENDERER() {
         return new ComponentRenderer<>(InventarioFormLayout::new, InventarioFormLayout::setInventario);
     }
