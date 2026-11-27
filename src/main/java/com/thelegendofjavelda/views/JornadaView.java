@@ -89,8 +89,8 @@ public class JornadaView extends Div implements BeforeEnterObserver {
             case 0:
                 Card Batalha1 = new Card();
                 DownloadHandler imageHandler = DownloadHandler.forClassResource(getClass(),
-                        "/images/01_defesa-da-vila.avif", "01_defesa-da-vila.avif");
-                Image imagem1 = new Image(imageHandler, "01_defesa-da-vila.avif");
+                        "/images/batalha_1.avif", "batalha_1.avif");
+                Image imagem1 = new Image(imageHandler, "batalha_1.avif");
                 Batalha1.addThemeVariants(CardVariant.ELEVATED);
                 Batalha1.setMedia(imagem1);
                 Batalha1.setTitle("Batalha 1");
@@ -98,8 +98,8 @@ public class JornadaView extends Div implements BeforeEnterObserver {
 
                 Card Batalha2 = new Card();
                 DownloadHandler imageHandler2 = DownloadHandler.forClassResource(getClass(),
-                        "/images/02_ruinas-da-floresta.avif", "02_ruinas-da-floresta.avif");
-                Image imagem2 = new Image(imageHandler2, "02_ruinas-da-floresta.avif");
+                        "/images/batalha_2.avif", "batalha_2.avif");
+                Image imagem2 = new Image(imageHandler2, "batalha_2.avif");
                 Batalha2.addThemeVariants(CardVariant.ELEVATED);
                 Batalha2.setMedia(imagem2);
                 Batalha2.setTitle("Batalha 2");
@@ -110,15 +110,15 @@ public class JornadaView extends Div implements BeforeEnterObserver {
                 Batalha1.addToFooter(batalha1btn);
                 Batalha2.addToFooter(batalha2btn);
 
-                batalha1btn.addClickListener(event -> iniciarBatalha());
-                batalha2btn.addClickListener(event -> iniciarBatalha());
+                batalha1btn.addClickListener(event -> iniciarBatalha(1));
+                batalha2btn.addClickListener(event -> iniciarBatalha(2));
                 mapaLayout.add(Batalha1, Batalha2);
                 return mapaLayout;
             case 1:
                 Card Batalha3 = new Card();
                 DownloadHandler imageHandler3 = DownloadHandler.forClassResource(getClass(),
-                        "/images/03_dragao-em-loop-infinito.avif", "03_dragao-em-loop-infinito.avif");
-                Image imagem3 = new Image(imageHandler3, "03_dragao-em-loop-infinito.avif");
+                        "/images/batalha_3.avif", "batalha_3.avif");
+                Image imagem3 = new Image(imageHandler3, "batalha_3.avif");
                 Batalha3.addThemeVariants(CardVariant.ELEVATED);
                 Batalha3.setMedia(imagem3);
                 Batalha3.setTitle("Batalha 3");
@@ -126,8 +126,8 @@ public class JornadaView extends Div implements BeforeEnterObserver {
 
                 Card Batalha4 = new Card();
                 DownloadHandler imageHandler4 = DownloadHandler.forClassResource(getClass(),
-                        "/images/04_masmorras-do-heap.avif", "04_masmorras-do-heap.avif");
-                Image imagem4 = new Image(imageHandler4, "04_masmorras-do-heap.avif");
+                        "/images/batalha_4.avif", "batalha_4.avif");
+                Image imagem4 = new Image(imageHandler4, "batalha_4.avif");
                 Batalha4.addThemeVariants(CardVariant.ELEVATED);
                 Batalha4.setMedia(imagem4);
                 Batalha4.setTitle("Batalha 4");
@@ -138,16 +138,16 @@ public class JornadaView extends Div implements BeforeEnterObserver {
                 Batalha3.addToFooter(batalha3btn);
                 Batalha4.addToFooter(batalha4btn);
 
-                batalha3btn.addClickListener(event -> iniciarBatalha());
-                batalha4btn.addClickListener(event -> iniciarBatalha());
+                batalha3btn.addClickListener(event -> iniciarBatalha(3));
+                batalha4btn.addClickListener(event -> iniciarBatalha(4));
 
                 mapaLayout.add(Batalha3, Batalha4);
                 return mapaLayout;
             case 2:
                 Card Batalha5 = new Card();
                 DownloadHandler imageHandler5 = DownloadHandler.forClassResource(getClass(),
-                        "/images/05_lich-nulo-batalha-final.avif", "05_lich-nulo-batalha-final.avif");
-                Image imagem5 = new Image(imageHandler5, "05_lich-nulo-batalha-final.avif");
+                        "/images/batalha_5.avif", "batalha_5.avif");
+                Image imagem5 = new Image(imageHandler5, "batalha_5.avif");
                 Batalha5.addThemeVariants(CardVariant.ELEVATED);
                 Batalha5.setMedia(imagem5);
                 Batalha5.setTitle("Batalha 5");
@@ -155,7 +155,7 @@ public class JornadaView extends Div implements BeforeEnterObserver {
 
                 Button batalha5btn = new Button("Iniciar Batalha 5");
                 Batalha5.addToFooter(batalha5btn);
-                batalha5btn.addClickListener(event -> iniciarBatalha());
+                batalha5btn.addClickListener(event -> iniciarBatalha(5));
 
                 mapaLayout.add(Batalha5);
                 return mapaLayout;
@@ -165,8 +165,27 @@ public class JornadaView extends Div implements BeforeEnterObserver {
         }
     }
 
-    public void iniciarBatalha() {
+    public void iniciarBatalha(int batalhaId) {
         Notification.show("Iniciando Batalha...");
+        switch (batalhaId) {
+            case 1:
+                getUI().ifPresent(ui -> ui.navigate("batalha1"));
+                break;
+            case 2:
+                getUI().ifPresent(ui -> ui.navigate("batalha2"));
+                break;
+            case 3:
+                getUI().ifPresent(ui -> ui.navigate("batalha3"));
+                break;
+            case 4:
+                getUI().ifPresent(ui -> ui.navigate("batalha4"));
+                break;
+            case 5:
+                getUI().ifPresent(ui -> ui.navigate("batalha5"));
+                break;
+            default:
+                Notification.show("Batalha inválida.");
+        }
     }
 
     public void beforeEnter(BeforeEnterEvent event) {

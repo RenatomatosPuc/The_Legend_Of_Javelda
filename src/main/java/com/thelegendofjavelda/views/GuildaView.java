@@ -5,6 +5,7 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.select.Select;
@@ -18,9 +19,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
-import org.jetbrains.kotlin.it.unimi.dsi.fastutil.booleans.A;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -85,7 +84,11 @@ public class GuildaView extends VerticalLayout {
             adicionarMembro(nome.getValue(), classe.getValue());
 
             nome.clear();
-            carregarGuilda(formato);
+            try {
+                carregarGuilda();
+            } catch (IOException e) {
+                Notification.show("Não foi possível carregar a Guilda: " + e.getMessage());
+            }
         });
 
         Button remover = new Button("Dispensar membro");
@@ -96,23 +99,32 @@ public class GuildaView extends VerticalLayout {
                 return;
             }
 
-            if (removerMembro(selecionado.getId(), formato)) {
-                Notification.show("Membro removido com sucesso.");
-            } else {
-                Notification.show("Erro ao remover membro.");
+            try {
+                if (removerMembro(selecionado.getId())) {
+                    Notification.show("Membro removido com sucesso.")
+                            .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                }
+            } catch (IOException e) {
+                Notification.show("Não foi possível atualizar a Guilda: " + e.getMessage());
             }
 
-            carregarGuilda(formato);
+            try {
+                carregarGuilda();
+            } catch (IOException e) {
+                Notification.show("Não foi possível carregar a Guilda: " + e.getMessage());
+            }
         });
 
         Button Listar = new Button("Listar membros");
         Listar.addClickListener(event -> {
             gradeHerois.setItems(guilda);
-            Notification
-                    .show("Membros listados com sucesso. " + carregarGuilda(formato).size() + " membros carregados.");
         });
-        carregarGuilda(formato);
-        guilda = carregarGuilda(formato);
+        try {
+            carregarGuilda();
+            guilda = carregarGuilda();
+        } catch (IOException e) {
+            Notification.show("Não foi possível carregar a Guilda: " + e.getMessage());
+        }
         HorizontalLayout btnLayout = new HorizontalLayout();
         btnLayout.add(adicionar, remover, Listar);
         add(nome, classe, btnLayout, gridLayout);
@@ -159,74 +171,119 @@ public class GuildaView extends VerticalLayout {
         }
     }
 
-    public static boolean removerMembro(int selecionadoId, CSVFormat formato) {
-        List<List<String>> restantes = new ArrayList<>();
-        boolean encontrado = false;
-        try (CSVParser parser = CSVParser.parse(GUILDA_CSV, java.nio.charset.StandardCharsets.UTF_8, formato)) {
-            for (CSVRecord record : parser) {
-                int id = Integer.parseInt(record.get("id"));
-                if (id == selecionadoId) {
-                    encontrado = true;
-                    continue; // Pula o membro a ser removido
-                }
-                List<String> campos = new ArrayList<>();
-                for (String campo : record) {
-                    campos.add(campo);
-                }
-                restantes.add(campos);
-            }
-        } catch (IOException e) {
-            Notification.show("Não foi possível ler a Guilda: " + e.getMessage());
+    static boolean removerMembro(int selecionadoId) throws IOException {
+        List<String> linhas = Files.readAllLines(GUILDA_CSV, java.nio.charset.StandardCharsets.UTF_8);
+
+        if (linhas.isEmpty()) {
+            Notification.show("Arquivo da guilda está vazio.");
             return false;
+        }
+
+        String cabecalho = "id,nome,classe,nivel,vidaMaxima,vidaAtual,ataque,defesa";
+
+        if (!linhas.get(0).equals(cabecalho)) {
+            Notification.show("Cabeçalho do arquivo da guilda está incorreto.");
+            return false;
+        }
+
+        List<String> linhasMantidas = new ArrayList<>();
+        linhasMantidas.add(linhas.get(0)); // Preserva o cabeçalho
+        boolean encontrado = false;
+        for (int i = 1; i < linhas.size(); i++) {
+            String linha = linhas.get(i);
+            int fimDoId = linha.indexOf(',');
+            String textoId = linha.substring(0, fimDoId);
+            int id = Integer.parseInt(textoId);
+            if (id == selecionadoId) {
+                encontrado = true;
+                continue; // Pula o membro a ser removido
+            }
+            linhasMantidas.add(linha);
         }
         if (!encontrado) {
             Notification.show("Membro não encontrado.");
             return false;
         }
-        try (CSVPrinter printer = new CSVPrinter(
-                Files.newBufferedWriter(
-                        GUILDA_CSV,
-                        java.nio.charset.StandardCharsets.UTF_8,
-                        java.nio.file.StandardOpenOption.CREATE,
-                        java.nio.file.StandardOpenOption.TRUNCATE_EXISTING,
-                        java.nio.file.StandardOpenOption.WRITE),
-                formato)) {
-
-            printer.printRecord("id", "nome", "classe", "nivel", "vidaMaxima", "vidaAtual", "ataque", "defesa");
-
-            for (List<String> campos : restantes) {
-                printer.printRecord(campos);
-            }
-            return true;
+        try {
+            Files.write(GUILDA_CSV, linhasMantidas, java.nio.charset.StandardCharsets.UTF_8);
         } catch (IOException e) {
             Notification.show("Não foi possível atualizar a Guilda: " + e.getMessage());
             return false;
         }
+        return true;
     }
 
-    public static void carregarMembros(Grid<Heroi> grade, CSVFormat formato) {
+    public static List<Heroi> carregarGuilda() throws IOException {
         if (!Files.exists(GUILDA_CSV)) {
-            return;
+            return List.of();
         }
 
-        try (CSVParser parser = CSVParser.parse(GUILDA_CSV, java.nio.charset.StandardCharsets.UTF_8, formato)) {
-            List<Heroi> membros = new ArrayList<>();
-            for (CSVRecord record : parser) {
-                int id = Integer.parseInt(record.get("id"));
-                String nome = record.get("nome");
-                String classe = record.get("classe");
-                int nivel = Integer.parseInt(record.get("nivel"));
-                double vidaMaxima = Double.parseDouble(record.get("vidaMaxima"));
-                double vidaAtual = Double.parseDouble(record.get("vidaAtual"));
-                double ataque = Double.parseDouble(record.get("ataque"));
-                double defesa = Double.parseDouble(record.get("defesa"));
+        List<String> linhas = Files.readAllLines(GUILDA_CSV, java.nio.charset.StandardCharsets.UTF_8);
 
-                /* membros.add(new Heroi(id, Classe.valueOf(classe))); */
+        if (linhas.isEmpty()) {
+            Notification.show("Arquivo da guilda está vazio.");
+            return List.of();
+        }
+
+        String cabecalho = "id,nome,classe,nivel,vidaMaxima,vidaAtual,ataque,defesa";
+
+        if (!linhas.get(0).equals(cabecalho)) {
+            Notification.show("Cabeçalho do arquivo da guilda está incorreto.");
+            return List.of();
+        }
+
+        List<Heroi> membros = new ArrayList<>();
+        for (int i = 1; i < linhas.size(); i++) {
+            String linha = linhas.get(i);
+
+            if (linha.isBlank()) {
+                continue; // Pula linhas em branco
             }
-            grade.setItems(membros);
-        } catch (Exception e) {
-            Notification.show("Erro ao carregar membros da guilda: " + e.getMessage());
+            String[] campos = linha.split(",", -1);
+
+            if (campos.length != 8) {
+                Notification.show("Linha " + (i + 1) + " do arquivo da guilda está corrompida.");
+                continue; // Pula linhas com número incorreto de campos
+            }
+            String idTexto = campos[0];
+            int id = Integer.parseInt(idTexto);
+            String nome = campos[1];
+            String classe = campos[2];
+            int nivel = Integer.parseInt(campos[3]);
+            double vidaMaxima = Double.parseDouble(campos[4]);
+            double vidaAtual = Double.parseDouble(campos[5]);
+            double ataque = Double.parseDouble(campos[6]);
+            double defesa = Double.parseDouble(campos[7]);
+
+            Heroi heroi;
+            switch (Classe.valueOf(classe)) {
+                case GUERREIRO:
+                    heroi = new Guerreiro(nivel);
+                    break;
+                case MAGO:
+                    heroi = new Mago(nivel);
+                    break;
+                case ARQUEIRO:
+                    heroi = new Arqueiro(nivel);
+                    break;
+                case CLERIGO:
+                    heroi = new Clerigo(nivel);
+                    break;
+                default:
+                    Notification.show("Classe inválida.");
+                    return List.of();
+            }
+            heroi.setNome(nome);
+            heroi.setNivel(nivel);
+            heroi.setVidaMaxima(vidaMaxima);
+            heroi.setVidaAtual(vidaAtual);
+            heroi.setAtaque(ataque);
+            heroi.setDefesa(defesa);
+            heroi.setId(id);
+            membros.add(heroi);
         }
+        return membros;
+
     }
 
     public List<Heroi> carregarGuilda(CSVFormat formato) {

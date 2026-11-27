@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.Personagens.Criaturas.Criatura;
-import com.Personagens.Criaturas.LichNulo;
+import com.Personagens.Criaturas.Lich_Null;
 
 public class Cena7 {
 
@@ -73,7 +73,7 @@ public class Cena7 {
         System.out.println("\n\"Que a última revisão comece.\"");
 
         // PREPARAÇÃO DO CHEFE
-        LichNulo lich = new LichNulo();
+        Lich_Null lich = new Lich_Null();
 
         List<Criatura> inimigos = new ArrayList<>();
 
@@ -220,8 +220,7 @@ public class Cena7 {
             }
 
             System.out.println(
-                "Escolha um número entre " + minimo + " e " + maximo + "."
-            );
+                    "Escolha um número entre " + minimo + " e " + maximo + ".");
         }
     }
 }
