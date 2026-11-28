@@ -88,7 +88,7 @@ public class Cena5 {
         // CRIATURAS ENCONTRADAS
         if (dificuldade == Dificuldade.FACIL) {
 
-            Goblin goblin = new Goblin();
+            Goblin goblin = new Goblin(1);
             goblin.setNome("Goblin Deformado");
 
             criaturas.add(goblin);
@@ -110,7 +110,7 @@ public class Cena5 {
 
             for (int i = 1; i <= 2; i++) {
 
-                Criatura goblin = new Goblin();
+                Criatura goblin = new Goblin(2);
                 goblin.setNome("Goblin Corrompido " + i);
 
                 criaturas.add(goblin);
@@ -132,7 +132,7 @@ public class Cena5 {
 
             for (int i = 1; i <= 2; i++) {
 
-                Criatura goblin = new Goblin();
+                Criatura goblin = new Goblin(3);
                 goblin.setNome("Goblin sem Referência " + i);
 
                 criaturas.add(goblin);
