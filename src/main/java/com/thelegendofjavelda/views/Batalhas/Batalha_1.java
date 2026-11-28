@@ -27,10 +27,12 @@ public class Batalha_1 extends Div {
         fundo.addClassName("arena-fundo");
 
         Div painelInimigo = criarPainelVida("Nome", 100);
-        Image spriteInimigo = new Image("images/Batalha/inimigo.png", "Inimigo");
+        Image spriteInimigo = new Image("images/Batalha/sprite_goblin.png", "sprite_goblin");
+        painelInimigo.addClassName("placa-inimigo");
 
         Div painelEquipe = criarPainelVida("Nome", 100);
-        Image spriteEquipe = new Image("images/Batalha/heroi.png", "Herói");
+        Image spriteEquipe = new Image("images/Batalha/sprite_equipe.png", "sprite_equipe");
+        painelEquipe.addClassName("grupo-equipe");
 
         arena.add(fundo, painelInimigo, spriteInimigo, spriteEquipe, painelEquipe);
 
