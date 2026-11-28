@@ -18,11 +18,10 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.streams.DownloadHandler;
 
-@Route(value = "batalha_1")
-public class Batalha_1 extends Div {
+@Route(value = "batalha_1", layout = BatalhaLayout.class)
+public class Batalha_1 extends BatalhaLayout {
     VerticalLayout tela = new VerticalLayout();
     Div arena = new Div();
-    DownloadHandler arenaHandler;
     DownloadHandler spriteHandler;
     DownloadHandler spriteEquipeHandler;
     ProgressBar barraInimigo;
@@ -39,10 +38,6 @@ public class Batalha_1 extends Div {
 
         tela.addClassName("tela-batalha");
         arena.addClassName("arena");
-        arenaHandler = DownloadHandler.forClassResource(getClass(), "/images/arena/arena.png", "arena.png");
-        Image fundo = new Image(arenaHandler, "arena.png");
-        fundo.addClassName("arena-fundo");
-        fundo.setSizeFull();
 
         Div painelInimigo = criarPainelInimigo("Nome", 100);
         spriteHandler = DownloadHandler.forClassResource(getClass(), "/images/arena/sprite_goblin.png",
@@ -58,10 +53,11 @@ public class Batalha_1 extends Div {
         spriteEquipe.addClassName("grupo-equipe");
         painelEquipe.addClassName("placa-equipe");
 
-        arena.add(fundo, painelInimigo, spriteInimigo, spriteEquipe, painelEquipe);
+        arena.add(painelInimigo, spriteInimigo, spriteEquipe, painelEquipe);
 
         Div mensagem = new Div();
         mensagem.setText("mensagem atual");
+        mensagem.addClassName("mensagem-batalha");
 
         Div painelEscolhas = new Div();
         painelEscolhas.addClassName("painel-escolhas");
@@ -78,8 +74,9 @@ public class Batalha_1 extends Div {
         painelEscolhas.add(btn3);
 
         arena.add(painelEscolhas);
+        arena.add(mensagem);
 
-        tela.add(arena, mensagem);
+        tela.add(arena);
 
         add(tela);
 
