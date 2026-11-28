@@ -2,6 +2,7 @@ package com.thelegendofjavelda.persistence;
 
 import org.springframework.stereotype.Service;
 
+import com.Batalha.Dificuldade;
 import com.Personagens.Herois.Arqueiro;
 import com.Personagens.Herois.Classe;
 import com.Personagens.Herois.Clerigo;
@@ -118,7 +119,7 @@ public class CsvSaveService {
             if (encontrada != null) {
                 throw new IllegalStateException("Arquivo " + BATALHA_CSV + " corrompido ou com formato inválido.");
             }
-            String dificuldade = campos[1];
+            String dificuldade = campos[2];
             if (!DIFICULDADES.contains(dificuldade)) {
                 throw new IllegalStateException("Arquivo " + BATALHA_CSV + " corrompido ou com formato inválido.");
             }
@@ -194,15 +195,6 @@ public class CsvSaveService {
         return membros;
     }
 
-    public List<Heroi> getEquipe() {
-        try {
-            return carregarHerois(HEROIS_CSV);
-        } catch (IOException e) {
-            Notification.show("Erro ao carregar membros da equipe: " + e.getMessage());
-            return List.of();
-        }
-    }
-
     private boolean booleano(String valor, int linha) {
         if (valor.equalsIgnoreCase("true")) {
             return true;
@@ -212,4 +204,18 @@ public class CsvSaveService {
         }
         throw new IllegalStateException("campanha_concluida inválido na linha " + (linha + 1) + " de " + BATALHA_CSV);
     }
+
+    public List<Heroi> getEquipe() {
+        try {
+            return carregarHerois(HEROIS_CSV);
+        } catch (IOException e) {
+            Notification.show("Erro ao carregar membros da equipe: " + e.getMessage());
+            return List.of();
+        }
+    }
+
+    public Dificuldade getDificuldade() {
+        return carregarCampanha().map(c -> Dificuldade.valueOf(c.dificuldade())).orElse(Dificuldade.FACIL);
+    }
+
 }
