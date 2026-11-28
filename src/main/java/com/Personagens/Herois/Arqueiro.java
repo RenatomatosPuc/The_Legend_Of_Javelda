@@ -20,6 +20,7 @@ public class Arqueiro extends Heroi {
         super.setAtaque(15 + (n - 1) * 2);
         super.setDefesa(5 + (n - 1) * 1);
         super.setEsforco(10);
+        this.nome = nome;
     }
 
     public void setNome(String nome) {

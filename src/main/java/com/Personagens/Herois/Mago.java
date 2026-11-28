@@ -36,7 +36,6 @@ public class Mago extends Heroi {
         return this.nome;
     }
 
-   
     @Override
     public double usarHabilidadeEspecial(Combatente target) {
 
@@ -57,9 +56,8 @@ public class Mago extends Heroi {
             target.receberDano(dano);
 
             System.out.println(
-                "Bola de Fogo acertou " + target.getNome()
-                + " e causou " + dano + " de dano!"
-            );
+                    "Bola de Fogo acertou " + target.getNome()
+                            + " e causou " + dano + " de dano!");
 
             return dano;
 

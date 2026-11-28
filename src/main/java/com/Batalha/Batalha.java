@@ -34,7 +34,6 @@ public class Batalha {
         this.criaturas = new ArrayList<>(criaturas);
     }
 
-
     public boolean terminou() {
         return party.isEmpty() || criaturas.isEmpty();
     }
@@ -90,7 +89,8 @@ public class Batalha {
         registrar("=== TURNO DOS HERÓIS ===");
 
         for (Heroi heroi : new ArrayList<>(party)) {
-            if (criaturas.isEmpty()) break;
+            if (criaturas.isEmpty())
+                break;
 
             if (!heroi.estaVivo()) {
                 party.remove(heroi);
@@ -116,7 +116,8 @@ public class Batalha {
         registrar("=== TURNO DAS CRIATURAS ===");
 
         for (Criatura criatura : new ArrayList<>(criaturas)) {
-            if (party.isEmpty()) break;
+            if (party.isEmpty())
+                break;
 
             Heroi alvo = party.get(0);
             double dano = criatura.atacar(alvo);
@@ -131,7 +132,8 @@ public class Batalha {
     }
 
     private void finalizar() {
-        if (xpDistribuido) return;
+        if (xpDistribuido)
+            return;
         xpDistribuido = true;
 
         if (party.isEmpty()) {
@@ -141,7 +143,8 @@ public class Batalha {
 
         registrar("A EQUIPE VENCEU A BATALHA!");
 
-        if (xpTotal <= 0) return;
+        if (xpTotal <= 0)
+            return;
 
         if (equipeOriginal != null) {
             equipeOriginal.ganharExperienciaGrupo(xpTotal);

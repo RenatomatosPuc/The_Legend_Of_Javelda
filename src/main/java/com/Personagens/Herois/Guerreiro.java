@@ -36,7 +36,6 @@ public class Guerreiro extends Heroi {
         return this.nome;
     }
 
- 
     @Override
     public double usarHabilidadeEspecial(Combatente target) {
 
@@ -60,7 +59,6 @@ public class Guerreiro extends Heroi {
         }
     }
 
-   
     @Override
     public double ataqueEspecial(Combatente target) {
         return usarHabilidadeEspecial(target);

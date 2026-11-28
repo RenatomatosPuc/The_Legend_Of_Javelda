@@ -1,6 +1,7 @@
 
 package com.Batalha;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.Personagens.Herois.Heroi;
@@ -8,12 +9,20 @@ import com.Personagens.Herois.Arqueiro;
 import com.Personagens.Herois.Clerigo;
 import com.Personagens.Herois.Mago;
 import com.Personagens.Herois.Guerreiro;
+import com.thelegendofjavelda.persistence.CsvSaveService;
 
 public class Cena1 {
+    private final CsvSaveService service;
+    private List<Heroi> party;
 
-    public Party iniciar(Scanner scanner) {
+    public Cena1(CsvSaveService service) {
+        this.service = service;
+        iniciar();
+    }
 
-        Party party = new Party();
+    public List<Heroi> iniciar() {
+
+        this.party = service.getEquipe();
 
         System.out.println("\n\n");
         System.out.println("################################################");
@@ -110,90 +119,16 @@ public class Cena1 {
         System.out.println("Há também aqueles que já não possuem");
         System.out.println("um lugar para onde voltar.");
 
-        System.out.println("\nQuantos heróis deseja recrutar? (1 a 4)");
-
-        int quantidade = lerEscolha(scanner, 1, 4);
-
-        for (int i = 1; i <= quantidade; i++) {
-
-            System.out.println("\n----------------------------------------------");
-            System.out.println("             RECRUTA " + i);
-            System.out.println("----------------------------------------------");
-
-            System.out.println("Escolha a classe:");
-            System.out.println("1 - Arqueiro");
-            System.out.println("2 - Clérigo");
-            System.out.println("3 - Mago");
-            System.out.println("4 - Guerreiro");
-
-            int escolha = lerEscolha(scanner, 1, 4);
-
-            System.out.print("\nQual é o nome do aventureiro? ");
-
-            String nome = scanner.nextLine().trim();
-
-            Heroi heroi;
-
-            switch (escolha) {
-
-                case 1:
-
-                    Arqueiro arqueiro = new Arqueiro(1);
-                    arqueiro.setNome(nome);
-                    heroi = arqueiro;
-
-                    break;
-
-                case 2:
-
-                    Clerigo clerigo = new Clerigo(1);
-                    clerigo.setNome(nome);
-                    heroi = clerigo;
-
-                    break;
-
-                case 3:
-
-                    Mago mago = new Mago(1);
-                    mago.setNome(nome);
-                    heroi = mago;
-
-                    break;
-
-                case 4:
-
-                    Guerreiro guerreiro = new Guerreiro(1);
-                    guerreiro.setNome(nome);
-                    heroi = guerreiro;
-
-                    break;
-
-                default:
-
-                    throw new IllegalStateException("Classe inválida.");
-            }
-
-            heroi.setId(i);
-
-            party.adicionarHeroi(heroi);
-
-            System.out.println("\nO aventureiro " + heroi.getNome());
-            System.out.println("agora faz parte da Guilda de Javária.");
-
-            System.out.println("Enquanto isso, os sinos continuam tocando...");
-        }
-
         System.out.println("\n==============================================");
         System.out.println("             EQUIPE DA GUILDA");
         System.out.println("==============================================");
 
-        for (Heroi heroi : party.getHerois()) {
+        for (Heroi heroi : party) {
 
             System.out.println(
-                "Nome: " + heroi.getNome()
-                + " | Classe: " + heroi.getClasse()
-                + " | Nível: " + heroi.getNivel()
-            );
+                    "Nome: " + heroi.getNome()
+                            + " | Classe: " + heroi.getClasse()
+                            + " | Nível: " + heroi.getNivel());
         }
 
         System.out.println("\nUm mensageiro invade o salão.");
@@ -213,33 +148,5 @@ public class Cena1 {
         System.out.println("==============================================");
 
         return party;
-    }
-
-    public Party iniciar() {
-        return iniciar(new Scanner(System.in));
-    }
-
-    private int lerEscolha(Scanner scanner, int minimo, int maximo) {
-
-        while (true) {
-
-            if (scanner.hasNextInt()) {
-
-                int escolha = scanner.nextInt();
-                scanner.nextLine();
-
-                if (escolha >= minimo && escolha <= maximo) {
-                    return escolha;
-                }
-
-            } else {
-
-                scanner.nextLine();
-            }
-
-            System.out.println(
-                "Escolha um número entre " + minimo + " e " + maximo + "."
-            );
-        }
     }
 }
