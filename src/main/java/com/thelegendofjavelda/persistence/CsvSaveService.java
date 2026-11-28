@@ -33,7 +33,7 @@ public class CsvSaveService {
     private static final String HEROIS_HEADER = "id,nome,classe,nivel,vidaMaxima,vidaAtual,ataque,defesa";
     private static final String GUILDA_HEADER = "id,nome,classe,nivel,vidaMaxima,vidaAtual,ataque,defesa";
     private static final String INVENTARIO_HEADER = "tipo,nome,ataque,defesa,cura,quantidade,durabilidade,heroi_id";
-    private static final String BATALHA_HEADER = "tipo,dificuldade,mapa_atual,batalha_atual,campanha_concluida,id_batalha,resultado";
+    private static final String BATALHA_HEADER = "ouro,tipo,dificuldade,mapa_atual,batalha_atual,campanha_concluida,id_batalha,resultado";
     private static final Set<String> DIFICULDADES = Set.of("FACIL", "MEDIO", "DIFICIL");
     private static final Logger LOGGER = Logger.getLogger(CsvSaveService.class.getName());
     private Notification n = new Notification();
@@ -51,7 +51,7 @@ public class CsvSaveService {
 
         String estadoInicial = BATALHA_HEADER
                 + System.lineSeparator()
-                + "CAMPANHA," + dificuldade + ",1,1,false,0,0"
+                + "0,CAMPANHA," + dificuldade + ",1,1,false,0,0"
                 + System.lineSeparator();
 
         try {
@@ -109,10 +109,10 @@ public class CsvSaveService {
                 continue;
             }
             String[] campos = linha.split(",", -1);
-            if (campos.length != 7) {
+            if (campos.length != 8) {
                 throw new IllegalStateException("Arquivo " + BATALHA_CSV + " corrompido ou com formato inválido.");
             }
-            if (!campos[0].equals("CAMPANHA")) {
+            if (!campos[1].equals("CAMPANHA")) {
                 continue;
             }
             if (encontrada != null) {
@@ -122,9 +122,9 @@ public class CsvSaveService {
             if (!DIFICULDADES.contains(dificuldade)) {
                 throw new IllegalStateException("Arquivo " + BATALHA_CSV + " corrompido ou com formato inválido.");
             }
-            int mapa = numPositivo(campos[2], "mapa atual", i);
-            int batalha = numPositivo(campos[3], "batalha atual", i);
-            boolean concluida = booleano(campos[4], i);
+            int mapa = numPositivo(campos[3], "mapa atual", i);
+            int batalha = numPositivo(campos[4], "batalha atual", i);
+            boolean concluida = booleano(campos[5], i);
             encontrada = new CampanhaSalva(dificuldade, batalha, mapa, concluida);
         }
         return Optional.ofNullable(encontrada);
