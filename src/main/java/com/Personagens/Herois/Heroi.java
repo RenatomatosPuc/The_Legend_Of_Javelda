@@ -137,6 +137,7 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
         }
 
         double dano = danoAtaque();
+        target.receberDano(dano);
         System.out.println(getNome() + " atacou " + target.getNome() + " causando " + dano + " de dano!");
         return dano;
 
