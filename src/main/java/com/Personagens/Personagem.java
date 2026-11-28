@@ -154,27 +154,14 @@ public abstract class Personagem implements Combatente {
             return this.vidaAtual;
         }
 
-        // A defesa reduz o dano recebido
-        double danoNegado = this.defesa * 0.25;
-
-        double danoFinal = Math.max(
-                0,
-                danoRecebido - danoNegado);
-
-        this.vidaAtual = Math.max(
-                0,
-                this.vidaAtual - danoFinal);
-
-        // Verifica se o personagem morreu
-        if (this.vidaAtual <= 0) {
-
-            this.vidaAtual = 0;
+        // Aplica a defesa do alvo e garante ao menos 1 ponto de dano recebido.
+        double danoFinal = Math.max(1, danoRecebido - this.defesa);
+        // O setter limita a vida ao intervalo válido e atualiza o estado de vida.
+        setVidaAtual(getVidaAtual() - danoFinal);
+        if (getVidaAtual() <= 0) {
+            setVidaAtual(0);
             this.estaVivo = false;
-
-            System.out.println(
-                    this.nome + " foi derrotado!");
         }
-
         return this.vidaAtual;
     }
 }

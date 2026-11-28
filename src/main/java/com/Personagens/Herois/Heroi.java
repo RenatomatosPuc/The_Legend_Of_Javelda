@@ -145,8 +145,11 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
         }
 
         double dano = danoAtaque();
+        // Aplica o dano ao alvo antes de registrar a vida restante.
         target.receberDano(dano);
         System.out.println(getNome() + " atacou " + target.getNome() + " causando " + dano + " de dano!");
+        System.out.println(target.getNome() + " agora tem " + target.getVidaAtual() + " de vida.");
+        System.out.println("-------------------------------------------------");
         return dano;
 
     }
