@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 
 import org.jetbrains.kotlin.it.unimi.dsi.fastutil.ints.H;
 
+import com.Batalha.Acao;
 import com.Batalha.Batalha;
 import com.Missao.Missao;
 import com.Missao.MissaoFloresta;
@@ -39,22 +40,25 @@ public class Batalha_1 extends BatalhaLayout {
     DownloadHandler spriteEquipeHandler;
     ProgressBar barraInimigo;
     ProgressBar barraEquipe;
+    List<Criatura> inimigosAtivos;
+    List<Heroi> equipeAtiva;
     private int vida = 100;
     List<Criatura> criaturas;
     List<Heroi> equipeHerois;
     Batalha batalha;
 
-    Div painelInimigo = criarPainelInimigo("Nome", 100);
-    Div painelEquipe = criarPainelEquipe(100);
     Div painelEscolhas = new Div();
     Div mensagem = new Div();
+    Div painelInimigo;
+    Div painelEquipe;
 
     Image spriteInimigo;
     Image spriteEquipe;
 
     Button btnAtacar = new Button("Atacar");
-    Button btnRodada = new Button("Proxima rodada");
-    Button btnSair = new Button("Sair da batalha");
+    Button btnHabilidade = new Button("Usar habilidade");
+    Button btnItem = new Button("Usar item");
+    Button btnSair = new Button("Fugir");
 
     public Batalha_1(CsvSaveService service) {
         Missao missao_1 = new MissaoFloresta(service.getDificuldade(), 100);
@@ -66,11 +70,11 @@ public class Batalha_1 extends BatalhaLayout {
         barraInimigo = new ProgressBar();
         barraEquipe = new ProgressBar();
 
-        barraInimigo.setValue(vida / 100.0);
-        barraEquipe.setValue(vida / 100.0);
-
         barraInimigo.setThemeVariant(ProgressBarVariant.LUMO_ERROR, true);
         barraEquipe.setThemeVariant(ProgressBarVariant.LUMO_ERROR, true);
+
+        painelInimigo = criarPainelInimigo("Nome", 100);
+        painelEquipe = criarPainelEquipe(100);
 
         spriteHandler = DownloadHandler.forClassResource(getClass(), "/images/arena/sprite_goblin.png",
                 "sprite_goblin.png");
@@ -84,14 +88,21 @@ public class Batalha_1 extends BatalhaLayout {
         atualizarbarras();
 
         btnAtacar.addClickListener(event -> {
-            batalha.executarRodada();
+            batalha.executarAcaoHeroiAtual(Acao.ATACAR, batalha.getCriaturas().get(0));
             atualizarbarras();
             mensagem.setText("Ação 1 executada!");
         });
 
-        btnRodada.addClickListener(event -> {
-            barraEquipe.setValue(barraEquipe.getValue() - 0.1);
+        btnHabilidade.addClickListener(event -> {
+            batalha.executarAcaoHeroiAtual(Acao.HABILIDADE, batalha.getCriaturas().get(0));
+            atualizarbarras();
             mensagem.setText("Ação 2 executada!");
+        });
+
+        btnItem.addClickListener(event -> {
+            batalha.executarAcaoHeroiAtual(Acao.ITEM, batalha.getCriaturas().get(0));
+            atualizarbarras();
+            mensagem.setText("Ação 3 executada!");
         });
 
         btnSair.addClickListener(event -> {
@@ -113,7 +124,8 @@ public class Batalha_1 extends BatalhaLayout {
         arena.add(painelInimigo, spriteInimigo, spriteEquipe, painelEquipe);
 
         painelEscolhas.add(btnAtacar);
-        painelEscolhas.add(btnRodada);
+        painelEscolhas.add(btnHabilidade);
+        painelEscolhas.add(btnItem);
         painelEscolhas.add(btnSair);
 
         arena.add(painelEscolhas);
@@ -149,13 +161,17 @@ public class Batalha_1 extends BatalhaLayout {
     }
 
     void atualizarbarras() {
-        if (!criaturas.isEmpty()) {
-            double alvo = criaturas.get(0).getVidaAtual();
-            barraInimigo.setValue(alvo / 100.0);
+        inimigosAtivos = batalha.getCriaturas();
+        equipeAtiva = batalha.getHerois();
+        if (!inimigosAtivos.isEmpty()) {
+            double vidaAtual = inimigosAtivos.get(0).getVidaAtual();
+            double vidaMaxima = inimigosAtivos.get(0).getVidaMaxima();
+            barraInimigo.setValue(vidaAtual / vidaMaxima);
         }
-        if (!equipeHerois.isEmpty()) {
-            double alvo = equipeHerois.get(0).getVidaAtual();
-            barraEquipe.setValue(alvo / 100.0);
+        if (!equipeAtiva.isEmpty()) {
+            double vidaAtual = equipeAtiva.get(0).getVidaAtual();
+            double vidaMaxima = equipeAtiva.get(0).getVidaMaxima();
+            barraEquipe.setValue(vidaAtual / vidaMaxima);
         }
     }
 
