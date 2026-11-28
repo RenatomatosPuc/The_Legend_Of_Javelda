@@ -9,12 +9,14 @@ import com.Batalha.Acao;
 import com.Batalha.Batalha;
 import com.Missao.Missao;
 import com.Missao.MissaoFloresta;
+import com.Personagens.Personagem;
 import com.Personagens.Criaturas.Criatura;
 import com.Personagens.Herois.Heroi;
 import com.thelegendofjavelda.persistence.CsvSaveService;
 import com.thelegendofjavelda.views.JornadaView;
 import com.thelegendofjavelda.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
@@ -60,12 +62,20 @@ public class Batalha_1 extends BatalhaLayout {
     Button btnItem = new Button("Usar item");
     Button btnSair = new Button("Fugir");
 
+    private final ComboBox<Personagem> seletorAlvo = new ComboBox<>("Selecionar alvo");
+    Button confirmarAlvo = new Button("Confirmar alvo");
+    private Acao acaoPendente;
+
     public Batalha_1(CsvSaveService service) {
         Missao missao_1 = new MissaoFloresta(service.getDificuldade(), 100);
 
         criaturas = missao_1.getCriaturas();
         equipeHerois = service.getEquipe();
         batalha = new Batalha(equipeHerois, criaturas);
+
+        seletorAlvo.setVisible(false);
+        confirmarAlvo.setVisible(false);
+        painelEscolhas.add(seletorAlvo, confirmarAlvo);
 
         barraInimigo = new ProgressBar();
         barraEquipe = new ProgressBar();
@@ -88,19 +98,19 @@ public class Batalha_1 extends BatalhaLayout {
         atualizarbarras();
 
         btnAtacar.addClickListener(event -> {
-            batalha.executarAcaoHeroiAtual(Acao.ATACAR, batalha.getCriaturas().get(0));
+            prepararEscolhaDeAlvo(Acao.ATACAR);
             atualizarbarras();
             mensagem.setText("Ação 1 executada!");
         });
 
         btnHabilidade.addClickListener(event -> {
-            batalha.executarAcaoHeroiAtual(Acao.HABILIDADE, batalha.getCriaturas().get(0));
+            prepararEscolhaDeAlvo(Acao.HABILIDADE);
             atualizarbarras();
             mensagem.setText("Ação 2 executada!");
         });
 
         btnItem.addClickListener(event -> {
-            batalha.executarAcaoHeroiAtual(Acao.ITEM, batalha.getCriaturas().get(0));
+            prepararEscolhaDeAlvo(Acao.ITEM);
             atualizarbarras();
             mensagem.setText("Ação 3 executada!");
         });
@@ -108,6 +118,20 @@ public class Batalha_1 extends BatalhaLayout {
         btnSair.addClickListener(event -> {
             Notification.show("Saindo da batalha...");
             getUI().ifPresent(ui -> ui.navigate(JornadaView.class));
+        });
+
+        confirmarAlvo.addClickListener(event -> {
+            Personagem alvoSelecionado = seletorAlvo.getValue();
+            if (alvoSelecionado == null) {
+                Notification.show("Selecione um alvo antes de confirmar.");
+                return;
+            }
+            batalha.executarAcaoHeroiAtual(acaoPendente, alvoSelecionado);
+            atualizarbarras();
+
+            seletorAlvo.clear();
+            seletorAlvo.setVisible(false);
+            confirmarAlvo.setVisible(false);
         });
 
         spriteEquipe.addClassName("grupo-equipe");
@@ -127,7 +151,6 @@ public class Batalha_1 extends BatalhaLayout {
         painelEscolhas.add(btnHabilidade);
         painelEscolhas.add(btnItem);
         painelEscolhas.add(btnSair);
-
         arena.add(painelEscolhas);
         arena.add(mensagem);
 
@@ -172,6 +195,28 @@ public class Batalha_1 extends BatalhaLayout {
             double vidaAtual = equipeAtiva.get(0).getVidaAtual();
             double vidaMaxima = equipeAtiva.get(0).getVidaMaxima();
             barraEquipe.setValue(vidaAtual / vidaMaxima);
+        }
+    }
+
+    private void prepararAcaoPendente(Acao acao) {
+        acaoPendente = acao;
+        List<Personagem> alvosDisponiveis = batalha.getAlvosValidos(acao, batalha.getHeroiAtual());
+        seletorAlvo.setItems(alvosDisponiveis);
+        seletorAlvo.setItemLabelGenerator(Personagem::getNome);
+    }
+
+    private void prepararEscolhaDeAlvo(Acao acao) {
+        acaoPendente = acao;
+        List<Personagem> alvosDisponiveis = batalha.getAlvosValidos(acao, batalha.getHeroiAtual());
+        seletorAlvo.clear();
+        seletorAlvo.setItems(alvosDisponiveis);
+
+        boolean temAlvos = !alvosDisponiveis.isEmpty();
+        seletorAlvo.setVisible(temAlvos);
+        confirmarAlvo.setVisible(temAlvos);
+
+        if (!temAlvos) {
+            Notification.show("Não há alvos disponíveis para esta ação.");
         }
     }
 
