@@ -184,3 +184,27 @@ vaadin-confirm-dialog > [slot="confirm-button"] {
     font-weight: bold;
 }
 
+.arena {
+  position: relative;
+  overflow: hidden;
+  /* definir proporção ou altura da cena */
+}
+
+.arena-fundo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placa-inimigo {
+  position: absolute;
+  top: 8%;
+  right: 4%;
+}
+
+.grupo-equipe {
+  position: absolute;
+  left: 5%;
+  bottom: 2%;
+}
+
