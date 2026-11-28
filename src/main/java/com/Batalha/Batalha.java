@@ -4,6 +4,7 @@ import com.Personagens.Combatente;
 import com.Personagens.Personagem;
 import com.Personagens.Criaturas.Criatura;
 import com.Personagens.Herois.Heroi;
+import com.vaadin.flow.component.notification.Notification;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,14 +86,17 @@ public class Batalha {
         }
 
         switch (acao) {
-            case ATACAR ->
+            case ATACAR -> {
                 heroiAtual.atacar(alvo);
+            }
 
-            case HABILIDADE ->
+            case HABILIDADE -> {
                 heroiAtual.usarHabilidadeEspecial(alvo);
+            }
 
-            case ITEM ->
+            case ITEM -> {
                 heroiAtual.usarItemSelecionado(alvo);
+            }
         }
         processarCriaturasDerrotadas();
 
@@ -210,6 +214,7 @@ public class Batalha {
             double dano = criatura.atacar(alvo);
             registrar(criatura.getNome() + " atacou " + alvo.getNome()
                     + " causando " + dano + " de dano.");
+            registrar(alvo.getNome() + " agora tem " + alvo.getVidaAtual() + " de vida.");
 
             if (!alvo.estaVivo()) {
                 registrar(alvo.getNome() + " foi derrotado!");
@@ -247,6 +252,5 @@ public class Batalha {
 
     private void registrar(String mensagem) {
         log.add(mensagem);
-        System.out.println(mensagem);
     }
 }
