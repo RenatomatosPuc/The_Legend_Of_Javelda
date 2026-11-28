@@ -154,7 +154,9 @@ public abstract class Personagem implements Combatente {
             return this.vidaAtual;
         }
 
+        // Aplica a defesa do alvo e garante ao menos 1 ponto de dano recebido.
         double danoFinal = Math.max(1, danoRecebido - this.defesa);
+        // O setter limita a vida ao intervalo válido e atualiza o estado de vida.
         setVidaAtual(getVidaAtual() - danoFinal);
         if (getVidaAtual() <= 0) {
             setVidaAtual(0);

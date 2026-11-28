@@ -40,6 +40,9 @@ public class Goblin extends Criatura {
         System.out.println(
                 "O Goblin atacou " + target.getNome() +
                         " causando " + dano + " de dano!");
+        // Este registro ocorre antes da aplicação do dano e mostra a vida anterior.
+        System.out.println(target.getNome() + " agora tem " + target.getVidaAtual() + " de vida.");
+        System.out.println("-------------------------------------------------");
 
         target.receberDano(dano);
 

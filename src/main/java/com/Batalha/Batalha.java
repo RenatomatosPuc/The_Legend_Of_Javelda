@@ -12,6 +12,7 @@ import java.util.List;
 
 public class Batalha {
 
+    // Mantém os combatentes, o registro e o estado da batalha atual.
     private Equipe equipeOriginal;
     private final List<Heroi> party;
     private final List<Criatura> criaturas;
@@ -29,6 +30,7 @@ public class Batalha {
         this.criaturas = new ArrayList<>(criaturas);
     }
 
+    // A batalha termina quando um dos lados não tem mais combatentes ativos.
     public boolean terminou() {
         return party.isEmpty() || criaturas.isEmpty();
     }
@@ -41,6 +43,7 @@ public class Batalha {
         return Collections.unmodifiableList(party);
     }
 
+    // Retorna o herói que deve escolher uma ação neste momento.
     public Heroi getHeroiAtual() {
         pularHeroisDerrotados();
         if (party.isEmpty() || criaturas.isEmpty()) {
@@ -61,6 +64,7 @@ public class Batalha {
         return Collections.unmodifiableList(log);
     }
 
+    // Remove da equipe de combate os heróis derrotados a partir do índice atual.
     public void pularHeroisDerrotados() {
         while (indexHeroiAtual < party.size() && !party.get(indexHeroiAtual).estaVivo()) {
             party.remove(indexHeroiAtual);
@@ -79,6 +83,7 @@ public class Batalha {
         }
     }
 
+    // Executa a ação escolhida para o herói atual e avança o fluxo dos turnos.
     public void executarAcaoHeroiAtual(Acao acao, Personagem alvo) {
         Heroi heroiAtual = getHeroiAtual();
         if (heroiAtual == null || alvo == null) {
@@ -95,6 +100,8 @@ public class Batalha {
             }
 
             case ITEM -> {
+                registrar(heroiAtual.getNome() + " usou o item " + heroiAtual.getItemSelecionado().getNome() + " em "
+                        + alvo.getNome() + ".");
                 heroiAtual.usarItemSelecionado(alvo);
             }
         }
@@ -114,6 +121,7 @@ public class Batalha {
         }
     }
 
+    // Concede XP e loot e remove da lista qualquer criatura derrotada.
     public void processarCriaturasDerrotadas() {
         for (Criatura criatura : new ArrayList<>(criaturas)) {
             if (!criatura.estaVivo()) {
@@ -126,6 +134,7 @@ public class Batalha {
         }
     }
 
+    // Monta os alvos que podem ser escolhidos para a ação informada.
     public List<Personagem> getAlvosValidos(Acao acao, Heroi heroi) {
         List<Personagem> alvos = new ArrayList<>();
         switch (acao) {
@@ -203,6 +212,7 @@ public class Batalha {
         }
     }
 
+    // Cada criatura viva realiza sua ação contra a equipe.
     private void turnoCriaturas() {
         registrar("=== TURNO DAS CRIATURAS ===");
 
@@ -223,6 +233,7 @@ public class Batalha {
         }
     }
 
+    // Registra o resultado e distribui a experiência da vitória uma única vez.
     private void finalizar() {
         if (xpDistribuido)
             return;
@@ -250,6 +261,7 @@ public class Batalha {
         registrar("Cada herói sobrevivente recebeu " + xpTotal + " XP.");
     }
 
+    // Guarda a mensagem no histórico da batalha.
     private void registrar(String mensagem) {
         log.add(mensagem);
     }

@@ -67,12 +67,14 @@ public class Batalha_1 extends BatalhaLayout {
     private Acao acaoPendente;
 
     public Batalha_1(CsvSaveService service) {
+        // A missão gera criaturas novas; a equipe vem do save da campanha.
         Missao missao_1 = new MissaoFloresta(service.getDificuldade(), 100);
 
         criaturas = missao_1.getCriaturas();
         equipeHerois = service.getEquipe();
         batalha = new Batalha(equipeHerois, criaturas);
 
+        // As barras são criadas antes dos painéis que as exibem.
         seletorAlvo.setVisible(false);
         confirmarAlvo.setVisible(false);
         painelEscolhas.add(seletorAlvo, confirmarAlvo);
@@ -121,6 +123,7 @@ public class Batalha_1 extends BatalhaLayout {
         });
 
         confirmarAlvo.addClickListener(event -> {
+            // A ação só é executada depois que o jogador confirma um alvo.
             Personagem alvoSelecionado = seletorAlvo.getValue();
             if (alvoSelecionado == null) {
                 Notification.show("Selecione um alvo antes de confirmar.");
@@ -186,6 +189,7 @@ public class Batalha_1 extends BatalhaLayout {
     }
 
     void atualizarbarras() {
+        // As barras refletem os valores atuais dos combatentes após uma ação.
         inimigosAtivos = batalha.getCriaturas();
         equipeAtiva = batalha.getHerois();
         if (!inimigosAtivos.isEmpty()) {
@@ -194,9 +198,13 @@ public class Batalha_1 extends BatalhaLayout {
             barraInimigo.setValue(vidaAtual / vidaMaxima);
         }
         if (!equipeAtiva.isEmpty()) {
-            double vidaAtual = equipeAtiva.get(0).getVidaAtual();
-            double vidaMaxima = equipeAtiva.get(0).getVidaMaxima();
-            barraEquipe.setValue(vidaAtual / vidaMaxima);
+            double vidaAtualTotal = equipeHerois.stream()
+                    .mapToDouble(Heroi::getVidaAtual)
+                    .sum();
+            double vidaMaximaTotal = equipeHerois.stream()
+                    .mapToDouble(Heroi::getVidaMaxima)
+                    .sum();
+            barraEquipe.setValue(vidaAtualTotal / vidaMaximaTotal);
         }
     }
 
@@ -208,6 +216,7 @@ public class Batalha_1 extends BatalhaLayout {
     }
 
     private void prepararEscolhaDeAlvo(Acao acao) {
+        // Atualiza as opções do seletor conforme a ação escolhida.
         acaoPendente = acao;
         List<Personagem> alvosDisponiveis = batalha.getAlvosValidos(acao, batalha.getHeroiAtual());
         seletorAlvo.clear();
