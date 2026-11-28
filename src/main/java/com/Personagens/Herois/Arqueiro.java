@@ -65,4 +65,10 @@ public class Arqueiro extends Heroi {
     public double ataqueEspecial(Combatente target) {
         return usarHabilidadeEspecial(target);
     }
+
+    @Override
+    public double atacar(Combatente target) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'atacar'");
+    }
 }

@@ -127,6 +127,8 @@ public class Batalha_1 extends BatalhaLayout {
                 return;
             }
             batalha.executarAcaoHeroiAtual(acaoPendente, alvoSelecionado);
+            Notification.show("Ação " + acaoPendente + " executada no alvo " + alvoSelecionado.getNome() + "!"
+                    + alvoSelecionado.getVidaAtual());
             atualizarbarras();
 
             seletorAlvo.clear();

@@ -134,7 +134,7 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
     }
 
     @Override
-    public double atacar(Combatente target) {
+    public double atacar(Personagem target) {
 
         if (target == null || !target.estaVivo()) {
 

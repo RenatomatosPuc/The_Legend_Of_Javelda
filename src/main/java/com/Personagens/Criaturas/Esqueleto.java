@@ -2,6 +2,7 @@
 package com.Personagens.Criaturas;
 
 import com.Personagens.Combatente;
+import com.Personagens.Personagem;
 import com.Exceptions.UltimateOnRechargeException;
 
 public class Esqueleto extends Criatura {
@@ -64,7 +65,7 @@ public class Esqueleto extends Criatura {
     }
 
     @Override
-    public double atacar(Combatente target) {
+    public double atacar(Personagem target) {
 
         if (target == null || !target.estaVivo()) {
 
