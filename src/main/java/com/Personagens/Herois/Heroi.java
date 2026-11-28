@@ -3,7 +3,11 @@ package com.Personagens.Herois;
 
 import com.Personagens.Personagem;
 import com.Personagens.Combatente;
+
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
+
 import com.Arsenal.InventarioPersonagem;
+import com.Arsenal.Itens.Utilitario;
 import com.Exceptions.UltimateOnRechargeException;
 
 public abstract class Heroi extends Personagem implements CombatenteHerois {
@@ -51,6 +55,10 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
 
     public int getContadorAtaque() {
         return this.contadorAtaque;
+    }
+
+    public Utilitario getItemSelecionado() {
+        return this.inventarioPersonagem.getUtilitario();
     }
 
     // OURO
@@ -137,6 +145,7 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
         }
 
         double dano = danoAtaque();
+        target.receberDano(dano);
         System.out.println(getNome() + " atacou " + target.getNome() + " causando " + dano + " de dano!");
         return dano;
 
@@ -179,8 +188,7 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
     }
     // Usa o utilitario
 
-    public void usarItem(Personagem alvo) {
-        inventarioPersonagem.getUtilitario().usarUtilitario(alvo);
+    public void usarItemSelecionado(Personagem alvo) {
     }
 
 }

@@ -9,15 +9,21 @@ public abstract class Utilitario implements Equipavel {
     protected int uso;
     protected int slotInventario = 2;
     protected int duracao;
+    protected Tipo tipo;
 
-    public Utilitario(String nome, int uso, int duracao) {
+    public Utilitario(String nome, int uso, int duracao, Tipo tipo) {
         this.nome = nome;
         this.uso = uso;
         this.duracao = duracao;
+        this.tipo = tipo;
     }
 
     public String getNome() {
         return this.nome;
+    }
+
+    public Tipo getTipo() {
+        return this.tipo;
     }
 
     public void usarUtilitario(Personagem alvo) {

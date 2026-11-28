@@ -1,5 +1,6 @@
 package com.Arsenal.Itens.Pocoes.Cura;
 
+import com.Arsenal.Itens.Tipo;
 import com.Arsenal.Itens.Utilitario;
 import com.Personagens.Personagem;
 import com.Exceptions.NoUsageLeftException;
@@ -7,14 +8,19 @@ import com.Exceptions.NoUsageLeftException;
 public abstract class PocaoCura extends Utilitario {
     protected String nome;
     protected int cura;
+    protected Tipo tipo;
 
-    public PocaoCura(String n, int u, int c, int d) {
-        super(n, u, d);
+    public PocaoCura(String n, int u, int c, int d, Tipo t) {
+        super(n, u, d, t);
         this.cura = c;
     }
 
     public int getCura() {
         return this.cura;
+    }
+
+    public Tipo getTipo() {
+        return this.tipo;
     }
 
     public void usarCura(Personagem alvo) {

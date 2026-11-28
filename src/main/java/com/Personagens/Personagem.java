@@ -137,9 +137,7 @@ public abstract class Personagem implements Combatente {
 
     @Override
     public boolean estaVivo() {
-        if (this.vidaAtual >= 0)
-            return true;
-        return false;
+        return vidaAtual > 0;
     }
 
     public double receberExperiencia(double experienciaRecebida) {

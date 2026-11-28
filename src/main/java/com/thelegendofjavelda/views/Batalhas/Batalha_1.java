@@ -5,7 +5,10 @@ import java.util.function.Supplier;
 
 import org.jetbrains.kotlin.it.unimi.dsi.fastutil.ints.H;
 
+import com.Batalha.Acao;
 import com.Batalha.Batalha;
+import com.Missao.Missao;
+import com.Missao.MissaoFloresta;
 import com.Personagens.Criaturas.Criatura;
 import com.Personagens.Herois.Heroi;
 import com.thelegendofjavelda.persistence.CsvSaveService;
@@ -37,65 +40,93 @@ public class Batalha_1 extends BatalhaLayout {
     DownloadHandler spriteEquipeHandler;
     ProgressBar barraInimigo;
     ProgressBar barraEquipe;
+    List<Criatura> inimigosAtivos;
+    List<Heroi> equipeAtiva;
     private int vida = 100;
-    private List<Supplier<Criatura>> criaturasSuppliers;
+    List<Criatura> criaturas;
+    List<Heroi> equipeHerois;
+    Batalha batalha;
 
-    public Batalha_1() {
-        List<Criatura> criaturas = criaturasSuppliers.stream().map(Supplier::get).toList();
-        List<Heroi> equipeHerois = service.getEquipe();
-        Batalha batalha = new Batalha(equipeHerois, criaturas);
+    Div painelEscolhas = new Div();
+    Div mensagem = new Div();
+    Div painelInimigo;
+    Div painelEquipe;
+
+    Image spriteInimigo;
+    Image spriteEquipe;
+
+    Button btnAtacar = new Button("Atacar");
+    Button btnHabilidade = new Button("Usar habilidade");
+    Button btnItem = new Button("Usar item");
+    Button btnSair = new Button("Fugir");
+
+    public Batalha_1(CsvSaveService service) {
+        Missao missao_1 = new MissaoFloresta(service.getDificuldade(), 100);
+
+        criaturas = missao_1.getCriaturas();
+        equipeHerois = service.getEquipe();
+        batalha = new Batalha(equipeHerois, criaturas);
 
         barraInimigo = new ProgressBar();
         barraEquipe = new ProgressBar();
-        barraInimigo.setValue(vida / 100.0);
+
         barraInimigo.setThemeVariant(ProgressBarVariant.LUMO_ERROR, true);
-        barraEquipe.setValue(vida / 100.0);
         barraEquipe.setThemeVariant(ProgressBarVariant.LUMO_ERROR, true);
 
-        tela.addClassName("tela-batalha");
-        arena.addClassName("arena");
+        painelInimigo = criarPainelInimigo("Nome", 100);
+        painelEquipe = criarPainelEquipe(100);
 
-        Div painelInimigo = criarPainelInimigo("Nome", 100);
         spriteHandler = DownloadHandler.forClassResource(getClass(), "/images/arena/sprite_goblin.png",
                 "sprite_goblin.png");
-        Image spriteInimigo = new Image(spriteHandler, "sprite_goblin.png");
-        spriteInimigo.addClassName("grupo-inimigo");
-        painelInimigo.addClassName("placa-inimigo");
-
-        Div painelEquipe = criarPainelEquipe(100);
         spriteEquipeHandler = DownloadHandler.forClassResource(getClass(), "/images/arena/sprite_equipe.png",
                 "sprite_equipe.png");
-        Image spriteEquipe = new Image(spriteEquipeHandler, "sprite_equipe.png");
-        spriteEquipe.addClassName("grupo-equipe");
-        painelEquipe.addClassName("placa-equipe");
 
-        arena.add(painelInimigo, spriteInimigo, spriteEquipe, painelEquipe);
+        spriteInimigo = new Image(spriteHandler, "sprite_goblin.png");
+        spriteEquipe = new Image(spriteEquipeHandler, "sprite_equipe.png");
 
-        Div mensagem = new Div();
         mensagem.setText("mensagem atual");
-        mensagem.addClassName("mensagem-batalha");
+        atualizarbarras();
 
-        Div painelEscolhas = new Div();
-        painelEscolhas.addClassName("painel-escolhas");
-        Button btn1 = new Button("Ação 1");
-        Button btn2 = new Button("Ação 2");
-        Button btn3 = new Button("Sair da batalha");
-        btn1.addClickListener(event -> {
-            barraInimigo.setValue(barraInimigo.getValue() - 0.1);
+        btnAtacar.addClickListener(event -> {
+            batalha.executarAcaoHeroiAtual(Acao.ATACAR, batalha.getCriaturas().get(0));
+            atualizarbarras();
             mensagem.setText("Ação 1 executada!");
         });
-        btn2.addClickListener(event -> {
-            barraEquipe.setValue(barraEquipe.getValue() - 0.1);
+
+        btnHabilidade.addClickListener(event -> {
+            batalha.executarAcaoHeroiAtual(Acao.HABILIDADE, batalha.getCriaturas().get(0));
+            atualizarbarras();
             mensagem.setText("Ação 2 executada!");
         });
-        btn3.addClickListener(event -> {
+
+        btnItem.addClickListener(event -> {
+            batalha.executarAcaoHeroiAtual(Acao.ITEM, batalha.getCriaturas().get(0));
+            atualizarbarras();
+            mensagem.setText("Ação 3 executada!");
+        });
+
+        btnSair.addClickListener(event -> {
             Notification.show("Saindo da batalha...");
             getUI().ifPresent(ui -> ui.navigate(JornadaView.class));
         });
 
-        painelEscolhas.add(btn1);
-        painelEscolhas.add(btn2);
-        painelEscolhas.add(btn3);
+        spriteEquipe.addClassName("grupo-equipe");
+        spriteInimigo.addClassName("grupo-inimigo");
+
+        painelEquipe.addClassName("placa-equipe");
+        painelInimigo.addClassName("placa-inimigo");
+
+        painelEscolhas.addClassName("painel-escolhas");
+        tela.addClassName("tela-batalha");
+        arena.addClassName("arena");
+        mensagem.addClassName("mensagem-batalha");
+
+        arena.add(painelInimigo, spriteInimigo, spriteEquipe, painelEquipe);
+
+        painelEscolhas.add(btnAtacar);
+        painelEscolhas.add(btnHabilidade);
+        painelEscolhas.add(btnItem);
+        painelEscolhas.add(btnSair);
 
         arena.add(painelEscolhas);
         arena.add(mensagem);
@@ -127,6 +158,21 @@ public class Batalha_1 extends BatalhaLayout {
         Div placa = new Div(cabecalho, barraEquipe);
         placa.addClassName("placa-vida");
         return placa;
+    }
+
+    void atualizarbarras() {
+        inimigosAtivos = batalha.getCriaturas();
+        equipeAtiva = batalha.getHerois();
+        if (!inimigosAtivos.isEmpty()) {
+            double vidaAtual = inimigosAtivos.get(0).getVidaAtual();
+            double vidaMaxima = inimigosAtivos.get(0).getVidaMaxima();
+            barraInimigo.setValue(vidaAtual / vidaMaxima);
+        }
+        if (!equipeAtiva.isEmpty()) {
+            double vidaAtual = equipeAtiva.get(0).getVidaAtual();
+            double vidaMaxima = equipeAtiva.get(0).getVidaMaxima();
+            barraEquipe.setValue(vidaAtual / vidaMaxima);
+        }
     }
 
 }
