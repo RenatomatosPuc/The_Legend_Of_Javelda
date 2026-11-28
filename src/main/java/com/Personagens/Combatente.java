@@ -1,31 +1,28 @@
+
 package com.Personagens;
 
-import com.Arsenal.InventarioPersonagem;
-import com.Personagens.Criaturas.Criatura;
-
 public interface Combatente {
-    // Identificação e Estatísticas Base
+
     String getNome();
 
+    // ATRIBUTOS
     double getVidaAtual();
-
     double getVidaMaxima();
-
     double getAtaque();
-
     double getDefesa();
 
     int getVelocidade();
-
     int getNivel();
-
     int getEsforco();
 
     boolean estaVivo();
 
     double receberDano(double danoRecebido);
-
+    double atacar(Combatente target);
     double usarHabilidadeEspecial(Combatente target);
 
-    double atacar(Combatente target);
+    default double ataqueEspecial(Combatente target) {
+        return usarHabilidadeEspecial(target);
+    }
 }
+

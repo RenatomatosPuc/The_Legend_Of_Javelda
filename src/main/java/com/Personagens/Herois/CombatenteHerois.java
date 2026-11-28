@@ -6,12 +6,12 @@ import com.Arsenal.InventarioPersonagem;
 
 public interface CombatenteHerois extends Combatente {
     
-  
+
     double atacar(Combatente target);
 
     double usarHabilidadeEspecial(Combatente target);
 
-  
+
     InventarioPersonagem getInventarioPersonagem();
 
 

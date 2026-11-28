@@ -1,55 +1,78 @@
+
 package com.Personagens;
 
-import com.Arsenal.InventarioPersonagem;
-import com.Personagens.Criaturas.Criatura;
-
 public abstract class Personagem implements Combatente {
+
     private String nome;
     private int nivel;
+
     private double vidaMaxima;
     private double vidaAtual;
+
     private double ataque;
     private double defesa;
+
     private int velocidade;
     private boolean estaVivo;
+
     private int esforco;
     private int experiencia;
 
-    public Personagem(String nome, int vidaMaxima, double defesa, double ataque, int velocidade, int nivel, int esforco,
-            int experiencia,
-            int vidaAtual, boolean estaVivo) {
+    // CONSTRUTOR
+    public Personagem(
+        String nome,
+        double vidaMaxima,
+        double defesa,
+        double ataque,
+        int velocidade,
+        int nivel,
+        int esforco,
+        int experiencia,
+        double vidaAtual,
+        boolean estaVivo
+    ) {
+
         this.nome = nome;
-        this.vidaMaxima = vidaMaxima;
-        this.vidaAtual = vidaAtual;
+        this.vidaMaxima = Math.max(0, vidaMaxima);
+        this.vidaAtual = Math.max(0, Math.min(vidaAtual, this.vidaMaxima));
+
         this.ataque = ataque;
         this.defesa = defesa;
+
         this.velocidade = velocidade;
-        this.estaVivo = estaVivo;
         this.nivel = nivel;
-        this.esforco = esforco;
+
+        this.esforco = Math.max(0, esforco);
         this.experiencia = experiencia;
+
+        this.estaVivo = estaVivo && this.vidaAtual > 0;
     }
+
+    // GETTERS
 
     @Override
-    public double getAtaque() {
-        return this.ataque;
-    }
-
-    public int getEsforco() {
-        return esforco;
-    }
-
-    public void setEsforco(int esforco) {
-        this.esforco = Math.max(esforco, 0);
-    }
-
-    public int getExperiencia() {
-        return experiencia;
+    public String getNome() {
+        return this.nome;
     }
 
     @Override
     public int getNivel() {
         return this.nivel;
+    }
+
+    @Override
+    public double getVidaMaxima() {
+        return this.vidaMaxima;
+    }
+
+    @Override
+    public double getVidaAtual() {
+        return this.vidaAtual;
+    }
+
+    @Override
+    public double getAtaque() {
+        return this.ataque;
     }
 
     @Override
@@ -61,27 +84,45 @@ public abstract class Personagem implements Combatente {
         return this.velocidade;
     }
 
-    @Override
-    public String getNome() {
-        return this.nome;
+    public int getEsforco() {
+        return this.esforco;
     }
 
-    @Override
-    public double getVidaAtual() {
-        return this.vidaAtual;
+    public int getExperiencia() {
+        return this.experiencia;
     }
 
-    @Override
-    public double getVidaMaxima() {
-        return this.vidaMaxima;
+    // SETTERS
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
+    }
+
+    public void setVelocidade(int velocidade) {
+        this.velocidade = velocidade;
     }
 
     public void setVidaMaxima(double vidaMaxima) {
-        this.vidaMaxima = vidaMaxima;
+
+        this.vidaMaxima = Math.max(0, vidaMaxima);
+
+        if (this.vidaAtual > this.vidaMaxima) {
+            setVidaAtual(this.vidaMaxima);
+        }
     }
 
     public void setVidaAtual(double vidaAtual) {
-        this.vidaAtual = vidaAtual;
+
+        this.vidaAtual = Math.max(
+            0,
+            Math.min(vidaAtual, this.vidaMaxima)
+        );
+
+        this.estaVivo = this.vidaAtual > 0;
     }
 
     public void setAtaque(double ataque) {
@@ -92,6 +133,27 @@ public abstract class Personagem implements Combatente {
         this.defesa = defesa;
     }
 
+<<<<<<< HEAD
+    public void setEsforco(int esforco) {
+        this.esforco = Math.max(esforco, 0);
+    }
+
+    // VERIFICA SE O PERSONAGEM ESTÁ VIVO
+
+    @Override
+    public boolean estaVivo() {
+        return this.estaVivo && this.vidaAtual > 0;
+    }
+
+    // EXPERIÊNCIA
+
+    public double receberExperiencia(int experienciaRecebida) {
+
+        if (experienciaRecebida > 0) {
+            this.experiencia += experienciaRecebida;
+        }
+
+=======
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -109,40 +171,43 @@ public abstract class Personagem implements Combatente {
 
     public double receberExperiencia(double experienciaRecebida) {
         this.experiencia += experienciaRecebida;
+>>>>>>> 48d4b1c0ffd70b5cbae3ffcb1acbed9062b78479
         return this.experiencia;
     }
 
+    // RECEBER DANO
+
     @Override
-    public double receberDano(double danoRecebido) { // da o dano e retorna a vida atual
-        double danoNegado = danoRecebido - this.defesa * 0.25;
-        if (danoRecebido > this.defesa * 0.25) {
-            this.vidaAtual = this.vidaAtual - danoNegado;
-            return this.vidaAtual; // a defesa reduz o dano em 1 quarto
-        } else {
-            this.vidaAtual = this.vidaAtual - 0;
+    public double receberDano(double danoRecebido) {
+
+        if (!estaVivo() || danoRecebido <= 0) {
+            return this.vidaAtual;
         }
 
+        // A defesa reduz o dano recebido
+        double danoNegado = this.defesa * 0.25;
+
+        double danoFinal = Math.max(
+            0,
+            danoRecebido - danoNegado
+        );
+
+        this.vidaAtual = Math.max(
+            0,
+            this.vidaAtual - danoFinal
+        );
+
+        // Verifica se o personagem morreu
         if (this.vidaAtual <= 0) {
+
             this.vidaAtual = 0;
             this.estaVivo = false;
+
+            System.out.println(
+                this.nome + " foi derrotado!"
+            );
         }
-        return this.vidaAtual; // dano;
-    }
 
-    public InventarioPersonagem getInventarioPersonagem() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getInventarioPersonagem'");
+        return this.vidaAtual;
     }
-
-    public double usarHabilidadeEspecial(Combatente target) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'usarHabilidadeEspecial'");
-    }
-
-    public double usarHabilidadeEspecial(Criatura target) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'usarHabilidadeEspecial'");
-    }
-
-    // public abstract Batalha acao();
 }

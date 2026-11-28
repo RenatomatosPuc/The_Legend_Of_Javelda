@@ -21,6 +21,11 @@ public abstract class Criatura extends Personagem {
         this.xpConcedido = 0;
     }
 
+
+    public double getXp() {
+        return this.xpConcedido;
+    }
+
     protected boolean consumirEsforco() {
         if (getEsforco() <= 0) {
             System.out.println("Esforco insuficiente: ataque especial cancelado.");
