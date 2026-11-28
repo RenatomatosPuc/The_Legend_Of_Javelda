@@ -4,7 +4,7 @@ import com.thelegendofjavelda.views.MainLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
-@Route(value = "Batalha_6", layout = MainLayout.class)
+@Route(value = "batalha_6", layout = MainLayout.class)
 public class Batalha_6 extends VerticalLayout {
 
     public Batalha_6() {

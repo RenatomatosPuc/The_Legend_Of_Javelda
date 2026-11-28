@@ -16,7 +16,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 import com.vaadin.flow.router.Route;
 
-@Route(value = "Batalha_1", layout = MainLayout.class)
+@Route(value = "batalha_1")
 public class Batalha_1 extends Div {
     VerticalLayout tela = new VerticalLayout();
     Div arena = new Div();
