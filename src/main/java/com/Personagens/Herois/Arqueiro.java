@@ -12,8 +12,6 @@ public class Arqueiro extends Heroi {
 
         super(n, Classe.ARQUEIRO);
 
-        this.nome = "Arqueiro";
-
         super.setVidaMaxima(100 + (n - 1) * 10);
         super.setVidaAtual(super.getVidaMaxima());
 

@@ -2,48 +2,22 @@
 package com.Personagens.Criaturas;
 
 import com.Personagens.Combatente;
-<<<<<<< HEAD
 import com.Exceptions.UltimateOnRechargeException;
-=======
-
-public class Lich_Null extends Criatura {
-
-    // falta corrigir o construtor
-    public Lich_Null() {
-        super("Lich Nulo", 1000, 100, 100, "Perigo", 30, 20, 1000, true);
-    }
-
-    // falta implementar o ataque do Lich Nulo
-    @Override
-    public double atacar(Combatente target) {
-        return 0;
-    }
-
-    public double getXpConcedido() {
-        return getNivel() * 100; // Exemplo: XP concedido é 100 vezes o nível do Lich Nulo
-    }
-
-    @Override
-    public void soltarLoot() {
-        System.out.println("O Lich Nulo soltou um [Fragmento Negro]! XP Concedido: " + getXpConcedido());
-    }
->>>>>>> 48d4b1c0ffd70b5cbae3ffcb1acbed9062b78479
 
 public class LichNulo extends Criatura {
 
     public LichNulo() {
 
         super(
-            "Nulien, o Lich Nulo",
-            500,
-            30,
-            40,
-            "SS",
-            12,
-            10,
-            500,
-            true
-        );
+                "Nulien, o Lich Nulo",
+                500,
+                30,
+                40,
+                "SS",
+                12,
+                10,
+                500,
+                true);
 
         setEsforco(20);
     }
@@ -62,19 +36,16 @@ public class LichNulo extends Criatura {
         double dano = getAtaque();
 
         System.out.println(
-            "\nNulien ergue sua mão e libera energia da morte em direção a " + target.getNome() + "!"
-        );
+                "\nNulien ergue sua mão e libera energia da morte em direção a " + target.getNome() + "!");
 
         System.out.println(
-            "O Lich atacou " + target.getNome()
-            + " causando " + dano + " de dano!"
-        );
+                "O Lich atacou " + target.getNome()
+                        + " causando " + dano + " de dano!");
 
         target.receberDano(dano);
 
         return dano;
     }
-
 
     @Override
     public double usarHabilidadeEspecial(Combatente target) {
@@ -97,19 +68,16 @@ public class LichNulo extends Criatura {
             System.out.println("================================");
 
             System.out.println(
-                "Nulien aponta para " + target.getNome() + "."
-            );
+                    "Nulien aponta para " + target.getNome() + ".");
 
             System.out.println(
-                "\"Você nunca deveria ter existido  não é você que faz as regras daqui.\""
-            );
+                    "\"Você nunca deveria ter existido  não é você que faz as regras daqui.\"");
 
             target.receberDano(dano);
 
             System.out.println(
-                "O Vazio atingiu " + target.getNome()
-                + " causando " + dano + " de dano!"
-            );
+                    "O Vazio atingiu " + target.getNome()
+                            + " causando " + dano + " de dano!");
 
             return dano;
 
@@ -121,7 +89,6 @@ public class LichNulo extends Criatura {
         }
     }
 
-   
     @Override
     public double getXp() {
         return 1000;

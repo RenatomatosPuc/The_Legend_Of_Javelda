@@ -7,13 +7,22 @@ import java.util.Scanner;
 
 import com.Personagens.Criaturas.Criatura;
 import com.Personagens.Criaturas.Goblin;
+import com.Personagens.Herois.Heroi;
 import com.Personagens.Criaturas.Esqueleto;
+import com.thelegendofjavelda.persistence.CsvSaveService;
 
 public class Cena5 {
+    private final CsvSaveService service;
+    private List<Heroi> party;
 
-    public void iniciar(Party party, Scanner scanner) {
+    public Cena5(CsvSaveService service) {
+        this.service = service;
+        this.party = service.getEquipe();
+    }
 
-        if (party == null || party.getHerois().isEmpty()) {
+    public void iniciar(Scanner scanner) {
+
+        if (party == null || party.isEmpty()) {
             System.out.println("A equipe não pode explorar as masmorras.");
             return;
         }
@@ -153,7 +162,7 @@ public class Cena5 {
 
         batalha.iniciarBatalha();
 
-        if (party.getHerois().isEmpty()) {
+        if (party.isEmpty()) {
 
             System.out.println("\nA equipe caiu nas profundezas.");
 

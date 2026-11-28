@@ -171,13 +171,14 @@ public class CsvSaveService {
                 double ataque = Double.parseDouble(campos[6]);
                 double defesa = Double.parseDouble(campos[7]);
                 Heroi heroi = switch (classe) {
-                    case "ARQUEIRO" -> new Arqueiro(nivel, nome);
-                    case "CLERIGO" -> new Clerigo(nivel, nome);
-                    case "MAGO" -> new Mago(nivel, nome);
-                    case "GUERREIRO" -> new Guerreiro(nivel, nome);
+                    case "ARQUEIRO" -> new Arqueiro(nivel);
+                    case "CLERIGO" -> new Clerigo(nivel);
+                    case "MAGO" -> new Mago(nivel);
+                    case "GUERREIRO" -> new Guerreiro(nivel);
                     default ->
                         throw new IllegalStateException("Classe inválida na linha " + (i + 1) + " de " + arquivoCSV);
                 };
+                heroi.setNome(nome);
                 heroi.setNivel(nivel);
                 heroi.setVidaMaxima(vidaMaxima);
                 heroi.setVidaAtual(vidaAtual);

@@ -20,17 +20,16 @@ public abstract class Personagem implements Combatente {
 
     // CONSTRUTOR
     public Personagem(
-        String nome,
-        double vidaMaxima,
-        double defesa,
-        double ataque,
-        int velocidade,
-        int nivel,
-        int esforco,
-        int experiencia,
-        double vidaAtual,
-        boolean estaVivo
-    ) {
+            String nome,
+            double vidaMaxima,
+            double defesa,
+            double ataque,
+            int velocidade,
+            int nivel,
+            int esforco,
+            int experiencia,
+            double vidaAtual,
+            boolean estaVivo) {
 
         this.nome = nome;
         this.vidaMaxima = Math.max(0, vidaMaxima);
@@ -94,14 +93,6 @@ public abstract class Personagem implements Combatente {
 
     // SETTERS
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setNivel(int nivel) {
-        this.nivel = nivel;
-    }
-
     public void setVelocidade(int velocidade) {
         this.velocidade = velocidade;
     }
@@ -118,9 +109,8 @@ public abstract class Personagem implements Combatente {
     public void setVidaAtual(double vidaAtual) {
 
         this.vidaAtual = Math.max(
-            0,
-            Math.min(vidaAtual, this.vidaMaxima)
-        );
+                0,
+                Math.min(vidaAtual, this.vidaMaxima));
 
         this.estaVivo = this.vidaAtual > 0;
     }
@@ -133,33 +123,16 @@ public abstract class Personagem implements Combatente {
         this.defesa = defesa;
     }
 
-<<<<<<< HEAD
-    public void setEsforco(int esforco) {
-        this.esforco = Math.max(esforco, 0);
-    }
-
-    // VERIFICA SE O PERSONAGEM ESTÁ VIVO
-
-    @Override
-    public boolean estaVivo() {
-        return this.estaVivo && this.vidaAtual > 0;
-    }
-
-    // EXPERIÊNCIA
-
-    public double receberExperiencia(int experienciaRecebida) {
-
-        if (experienciaRecebida > 0) {
-            this.experiencia += experienciaRecebida;
-        }
-
-=======
     public void setNome(String nome) {
         this.nome = nome;
     }
 
     public void setNivel(int n) {
         this.nivel = n;
+    }
+
+    public void setEsforco(int esforco) {
+        this.esforco = Math.max(0, esforco);
     }
 
     @Override
@@ -171,7 +144,6 @@ public abstract class Personagem implements Combatente {
 
     public double receberExperiencia(double experienciaRecebida) {
         this.experiencia += experienciaRecebida;
->>>>>>> 48d4b1c0ffd70b5cbae3ffcb1acbed9062b78479
         return this.experiencia;
     }
 
@@ -188,14 +160,12 @@ public abstract class Personagem implements Combatente {
         double danoNegado = this.defesa * 0.25;
 
         double danoFinal = Math.max(
-            0,
-            danoRecebido - danoNegado
-        );
+                0,
+                danoRecebido - danoNegado);
 
         this.vidaAtual = Math.max(
-            0,
-            this.vidaAtual - danoFinal
-        );
+                0,
+                this.vidaAtual - danoFinal);
 
         // Verifica se o personagem morreu
         if (this.vidaAtual <= 0) {
@@ -204,8 +174,7 @@ public abstract class Personagem implements Combatente {
             this.estaVivo = false;
 
             System.out.println(
-                this.nome + " foi derrotado!"
-            );
+                    this.nome + " foi derrotado!");
         }
 
         return this.vidaAtual;

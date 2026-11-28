@@ -7,12 +7,21 @@ import java.util.Scanner;
 
 import com.Personagens.Criaturas.Criatura;
 import com.Personagens.Criaturas.Dragao;
+import com.Personagens.Herois.Heroi;
+import com.thelegendofjavelda.persistence.CsvSaveService;
 
 public class Cena6 {
+    private final CsvSaveService service;
+    private List<Heroi> party;
 
-    public void iniciar(Party party, Scanner scanner) {
+    public Cena6(CsvSaveService service) {
+        this.service = service;
+        this.party = service.getEquipe();
+    }
 
-        if (party == null || party.getHerois().isEmpty()) {
+    public void iniciar(Scanner scanner) {
+
+        if (party == null || party.isEmpty()) {
             System.out.println("Não existem heróis para continuar.");
             return;
         }
@@ -96,16 +105,15 @@ public class Cena6 {
 
         // CRIAÇÃO DO DRAGÃO
         Dragao dragao = new Dragao(
-            "Vharz, o Guardião Esquecido",
-            vida,
-            defesa,
-            ataque,
-            "S",
-            9,
-            nivel,
-            vida,
-            true
-        );
+                "Vharz, o Guardião Esquecido",
+                vida,
+                defesa,
+                ataque,
+                "S",
+                9,
+                nivel,
+                vida,
+                true);
 
         List<Criatura> criaturas = new ArrayList<>();
 
@@ -131,7 +139,7 @@ public class Cena6 {
 
         batalha.iniciarBatalha();
 
-        if (party.getHerois().isEmpty()) {
+        if (party.isEmpty()) {
 
             System.out.println("\nVharz permanece diante do portão.");
 
@@ -177,8 +185,7 @@ public class Cena6 {
             }
 
             System.out.println(
-                "Escolha um número entre " + minimo + " e " + maximo + "."
-            );
+                    "Escolha um número entre " + minimo + " e " + maximo + ".");
         }
     }
 }

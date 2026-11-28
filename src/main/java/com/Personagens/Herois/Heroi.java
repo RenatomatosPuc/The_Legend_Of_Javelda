@@ -79,12 +79,7 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
     // EXPERIÊNCIA
 
     @Override
-<<<<<<< HEAD
-    public double ganharExperiencia(double experienciaGanha) {
-
-=======
     public double receberExperiencia(double experienciaGanha) {
->>>>>>> 48d4b1c0ffd70b5cbae3ffcb1acbed9062b78479
         this.experiencia += experienciaGanha;
 
         while (this.experiencia >= 100) {
@@ -94,9 +89,8 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
             subirNivel();
 
             System.out.println(
-                "O herói " + getNome() +
-                " subiu para o nível " + getNivel() + "!"
-            );
+                    "O herói " + getNome() +
+                            " subiu para o nível " + getNivel() + "!");
         }
 
         return this.experiencia;
@@ -117,16 +111,11 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
 
     // COMBATE
 
-<<<<<<< HEAD
-    public double calcularDanoBase() {
-
-=======
     public double danoAtaque() {
->>>>>>> 48d4b1c0ffd70b5cbae3ffcb1acbed9062b78479
         double danoArma = 0;
 
         if (inventarioPersonagem != null &&
-            inventarioPersonagem.getArma() != null) {
+                inventarioPersonagem.getArma() != null) {
 
             danoArma = inventarioPersonagem.getArma().getAtaque();
         }
@@ -142,31 +131,16 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
         if (target == null || !target.estaVivo()) {
 
             System.out.println(
-                getNome() + " tentou atacar, mas não há um alvo válido!"
-            );
+                    getNome() + " tentou atacar, mas não há um alvo válido!");
 
             return 0;
         }
 
-<<<<<<< HEAD
-        double dano = calcularDanoBase();
-
-        System.out.println(
-            getNome() + " atacou " + target.getNome() +
-            " causando " + dano + " de dano!"
-        );
-
-        target.receberDano(dano);
-
-=======
         double dano = danoAtaque();
         System.out.println(getNome() + " atacou " + target.getNome() + " causando " + dano + " de dano!");
->>>>>>> 48d4b1c0ffd70b5cbae3ffcb1acbed9062b78479
         return dano;
 
     }
-
-    
 
     @Override
     public abstract double usarHabilidadeEspecial(Combatente target);
@@ -176,14 +150,11 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
         if (getEsforco() <= 0) {
 
             throw new UltimateOnRechargeException(
-                "Esforço insuficiente: habilidade especial cancelada."
-            );
+                    "Esforço insuficiente: habilidade especial cancelada.");
         }
 
         setEsforco(getEsforco() - 1);
     }
-
-  
 
     private static int esforcoInicial(Classe classe) {
 
@@ -203,13 +174,9 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
 
             default:
                 throw new IllegalArgumentException(
-                    "Classe de herói inválida: " + classe
-                );
+                        "Classe de herói inválida: " + classe);
         }
     }
-<<<<<<< HEAD
-}
-=======
     // Usa o utilitario
 
     public void usarItem(Personagem alvo) {
@@ -217,4 +184,3 @@ public abstract class Heroi extends Personagem implements CombatenteHerois {
     }
 
 }
->>>>>>> 48d4b1c0ffd70b5cbae3ffcb1acbed9062b78479
