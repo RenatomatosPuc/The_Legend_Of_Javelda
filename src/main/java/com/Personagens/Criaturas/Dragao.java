@@ -2,6 +2,7 @@
 package com.Personagens.Criaturas;
 
 import com.Personagens.Combatente;
+import com.Personagens.Personagem;
 import com.Exceptions.UltimateOnRechargeException;
 
 public class Dragao extends Criatura {
@@ -48,7 +49,7 @@ public class Dragao extends Criatura {
     }
 
     @Override
-    public double atacar(Combatente target) {
+    public double atacar(Personagem target) {
 
         if (target == null || !target.estaVivo()) {
 
@@ -120,4 +121,5 @@ public class Dragao extends Criatura {
                 "O Dragão soltou um [Olho de Dragão]! XP Concedido: "
                         + getXp());
     }
+
 }
