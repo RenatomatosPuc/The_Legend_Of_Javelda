@@ -63,4 +63,5 @@ public class Guerreiro extends Heroi {
     public double ataqueEspecial(Combatente target) {
         return usarHabilidadeEspecial(target);
     }
+
 }

@@ -1,15 +1,24 @@
 
 package com.Batalha;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.Personagens.Herois.Heroi;
+import com.thelegendofjavelda.persistence.CsvSaveService;
 
 public class Cena4 {
+    private final CsvSaveService service;
+    private List<Heroi> party;
 
-    public void iniciar(Party party, Scanner scanner) {
+    public Cena4(CsvSaveService service) {
+        this.service = service;
+        this.party = service.getEquipe();
+    }
 
-        if (party == null || party.getHerois().isEmpty()) {
+    public void iniciar(Scanner scanner) {
+
+        if (party == null || party.isEmpty()) {
             System.out.println("A guilda não possui aventureiros disponíveis.");
             return;
         }
@@ -41,7 +50,7 @@ public class Cena4 {
 
         boolean continuar = true;
 
-        while (continuar && !party.getHerois().isEmpty()) {
+        while (continuar && !party.isEmpty()) {
 
             System.out.println("\n==============================================");
             System.out.println("              SALÃO DA GUILDA");
@@ -59,16 +68,15 @@ public class Cena4 {
 
                     System.out.println("\n=== AVENTUREIROS ===");
 
-                    for (Heroi heroi : party.getHerois()) {
+                    for (Heroi heroi : party) {
 
                         System.out.println("\nNome: " + heroi.getNome());
                         System.out.println("Classe: " + heroi.getClasse());
                         System.out.println("Nível: " + heroi.getNivel());
 
                         System.out.println(
-                            "Vida: " + heroi.getVidaAtual()
-                            + "/" + heroi.getVidaMaxima()
-                        );
+                                "Vida: " + heroi.getVidaAtual()
+                                        + "/" + heroi.getVidaMaxima());
 
                         System.out.println("Ataque: " + heroi.getAtaque());
                         System.out.println("Defesa: " + heroi.getDefesa());
@@ -82,13 +90,12 @@ public class Cena4 {
 
                     System.out.println("\nA equipe se recolhe para descansar.");
 
-                    for (Heroi heroi : party.getHerois()) {
+                    for (Heroi heroi : party) {
 
                         heroi.setVidaAtual(heroi.getVidaMaxima());
 
                         System.out.println(
-                            heroi.getNome() + " recuperou sua vida."
-                        );
+                                heroi.getNome() + " recuperou sua vida.");
                     }
 
                     System.out.println("\nA equipe está recuperada.");
@@ -133,8 +140,7 @@ public class Cena4 {
             }
 
             System.out.println(
-                "Escolha um número entre " + minimo + " e " + maximo + "."
-            );
+                    "Escolha um número entre " + minimo + " e " + maximo + ".");
         }
     }
 }

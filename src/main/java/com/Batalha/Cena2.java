@@ -7,13 +7,22 @@ import java.util.Scanner;
 
 import com.Personagens.Criaturas.Criatura;
 import com.Personagens.Criaturas.Goblin;
+import com.Personagens.Herois.Heroi;
 import com.Personagens.Criaturas.Esqueleto;
+import com.thelegendofjavelda.persistence.CsvSaveService;
 
 public class Cena2 {
+    private final CsvSaveService service;
+    private List<Heroi> party;
 
-    public void iniciar(Party party, Scanner scanner) {
+    public Cena2(CsvSaveService service) {
+        this.service = service;
+    }
 
-        if (party == null || party.getHerois().isEmpty()) {
+    public void iniciar(Scanner scanner) {
+        this.party = service.getEquipe();
+
+        if (party == null || party.isEmpty()) {
 
             System.out.println("Não existem heróis disponíveis para a missão.");
             return;
@@ -185,16 +194,15 @@ public class Cena2 {
                 double ataque = 12 + (nivelInimigo - 1) * 3;
 
                 Esqueleto esqueleto = new Esqueleto(
-                    "Esqueleto Fora de Escopo " + i,
-                    vida,
-                    defesa,
-                    ataque,
-                    "Comum",
-                    5 + nivelInimigo,
-                    nivelInimigo,
-                    vida,
-                    true
-                );
+                        "Esqueleto Fora de Escopo " + i,
+                        vida,
+                        defesa,
+                        ataque,
+                        "Comum",
+                        5 + nivelInimigo,
+                        nivelInimigo,
+                        vida,
+                        true);
 
                 criaturas.add(esqueleto);
             }
@@ -207,9 +215,9 @@ public class Cena2 {
         System.out.println("==============================================");
 
         System.out.println("\nMissão: " +
-            (missao == 1
-                ? "Floresta dos Sussurros"
-                : "Cemitério dos Esquecidos"));
+                (missao == 1
+                        ? "Floresta dos Sussurros"
+                        : "Cemitério dos Esquecidos"));
 
         System.out.println("Dificuldade: " + nomeDificuldade);
         System.out.println("Inimigos encontrados: " + criaturas.size());
@@ -222,9 +230,8 @@ public class Cena2 {
         // INICIAR BATALHA
 
         Batalha batalha = new Batalha(
-            party,
-            criaturas
-        );
+                party,
+                criaturas);
 
         batalha.iniciarBatalha();
 
@@ -234,7 +241,7 @@ public class Cena2 {
         System.out.println("             FIM DA MISSÃO");
         System.out.println("==============================================");
 
-        if (party.getHerois().isEmpty()) {
+        if (party.isEmpty()) {
 
             System.out.println("\nA equipe foi completamente derrotada.");
 
@@ -259,8 +266,8 @@ public class Cena2 {
     }
 
     // Permite iniciar sem fornecer Scanner
-    public void iniciar(Party party) {
-        iniciar(party, new Scanner(System.in));
+    public void iniciar() {
+        iniciar(new Scanner(System.in));
     }
 
     // VALIDAÇÃO
@@ -283,8 +290,7 @@ public class Cena2 {
             }
 
             System.out.println(
-                "Escolha um número entre " + minimo + " e " + maximo + "."
-            );
+                    "Escolha um número entre " + minimo + " e " + maximo + ".");
         }
     }
 }

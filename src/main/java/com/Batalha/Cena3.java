@@ -1,17 +1,27 @@
 
 package com.Batalha;
 
+import java.util.List;
+
 import com.Personagens.Herois.Heroi;
+import com.thelegendofjavelda.persistence.CsvSaveService;
 
 public class Cena3 {
+    private final CsvSaveService service;
+    private List<Heroi> party;
 
-    public void finalizar(Party party, int totalRecrutados) {
+    public Cena3(CsvSaveService service) {
+        this.service = service;
+        this.party = service.getEquipe();
+    }
+
+    public void finalizar(int totalRecrutados) {
 
         System.out.println("\n\n==============================================");
         System.out.println("           CENA 3: AS CRÔNICAS");
         System.out.println("==============================================");
 
-        if (party == null || party.getHerois().isEmpty()) {
+        if (party == null || party.isEmpty()) {
 
             System.out.println("\nA noite retorna à capital.");
 
@@ -37,12 +47,11 @@ public class Cena3 {
             return;
         }
 
-        int sobreviventes = party.getQuantidade();
+        int sobreviventes = party.size();
 
         int mortos = Math.max(
-            0,
-            totalRecrutados - sobreviventes
-        );
+                0,
+                totalRecrutados - sobreviventes);
 
         System.out.println("\nA equipe retorna à capital.");
 
@@ -67,14 +76,13 @@ public class Cena3 {
 
         System.out.println("\nSobreviventes da expedição:");
 
-        for (Heroi heroi : party.getHerois()) {
+        for (Heroi heroi : party) {
 
             System.out.println(
-                heroi.getNome()
-                + " | " + heroi.getClasse()
-                + " | Nível " + heroi.getNivel()
-                + " | Ouro: " + heroi.getOuro()
-            );
+                    heroi.getNome()
+                            + " | " + heroi.getClasse()
+                            + " | Nível " + heroi.getNivel()
+                            + " | Ouro: " + heroi.getOuro());
         }
 
         // RECOMPENSA EM OURO
@@ -84,19 +92,17 @@ public class Cena3 {
         System.out.println("                RECOMPENSAS");
         System.out.println("==============================================");
 
-        for (Heroi heroi : party.getHerois()) {
+        for (Heroi heroi : party) {
 
             heroi.adicionarOuro(ouroRecompensa);
 
             System.out.println(
-                heroi.getNome()
-                + " recebeu " + ouroRecompensa
-                + " moedas de ouro."
-            );
+                    heroi.getNome()
+                            + " recebeu " + ouroRecompensa
+                            + " moedas de ouro.");
 
             System.out.println(
-                "Ouro acumulado: " + heroi.getOuro()
-            );
+                    "Ouro acumulado: " + heroi.getOuro());
         }
 
         // DESCOBERTA
@@ -138,12 +144,12 @@ public class Cena3 {
     }
 
     // Compatibilidade com chamadas antigas
-    public void finalizar(Party party) {
+    public void finalizar() {
 
         int quantidade = party == null
-            ? 0
-            : party.getQuantidade();
+                ? 0
+                : party.size();
 
-        finalizar(party, quantidade);
+        finalizar(quantidade);
     }
 }

@@ -6,13 +6,22 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.Personagens.Criaturas.Criatura;
-import com.Personagens.Criaturas.Lich_Null;
+import com.Personagens.Criaturas.LichNulo;
+import com.Personagens.Herois.Heroi;
+import com.thelegendofjavelda.persistence.CsvSaveService;
 
 public class Cena7 {
+    private final CsvSaveService service;
+    private List<Heroi> party;
 
-    public void iniciar(Party party, Scanner scanner) {
+    public Cena7(CsvSaveService service) {
+        this.service = service;
+        this.party = service.getEquipe();
+    }
 
-        if (party == null || party.getHerois().isEmpty()) {
+    public void iniciar(Scanner scanner) {
+
+        if (party == null || party.isEmpty()) {
 
             System.out.println("Não existem aventureiros para enfrentar o Lich.");
             return;
@@ -73,7 +82,7 @@ public class Cena7 {
         System.out.println("\n\"Que a última revisão comece.\"");
 
         // PREPARAÇÃO DO CHEFE
-        Lich_Null lich = new Lich_Null();
+        LichNulo lich = new LichNulo();
 
         List<Criatura> inimigos = new ArrayList<>();
 
@@ -97,7 +106,7 @@ public class Cena7 {
         batalha.iniciarBatalha();
 
         // RESULTADO FINAL
-        if (party.getHerois().isEmpty()) {
+        if (party.isEmpty()) {
 
             System.out.println("\n==============================================");
             System.out.println("             O VAZIO VENCEU");
