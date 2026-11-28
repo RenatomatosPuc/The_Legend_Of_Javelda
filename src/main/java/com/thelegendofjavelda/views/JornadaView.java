@@ -89,8 +89,8 @@ public class JornadaView extends Div implements BeforeEnterObserver {
             case 0:
                 Card Batalha1 = new Card();
                 DownloadHandler imageHandler = DownloadHandler.forClassResource(getClass(),
-                        "/images/batalhas/cena_1.avif", "cena_1.avif");
-                Image imagem1 = new Image(imageHandler, "cena_1.avif");
+                        "/images/batalhas/cena_1.png", "cena_1.png");
+                Image imagem1 = new Image(imageHandler, "cena_1.png");
                 Batalha1.addThemeVariants(CardVariant.ELEVATED);
                 Batalha1.setMedia(imagem1);
                 Batalha1.setTitle("Batalha 1");
@@ -98,8 +98,8 @@ public class JornadaView extends Div implements BeforeEnterObserver {
 
                 Card Batalha2 = new Card();
                 DownloadHandler imageHandler2 = DownloadHandler.forClassResource(getClass(),
-                        "/images/batalhas/cena_2.avif", "cena_2.avif");
-                Image imagem2 = new Image(imageHandler2, "cena_2.avif");
+                        "/images/batalhas/cena_2.png", "cena_2.png");
+                Image imagem2 = new Image(imageHandler2, "cena_2.png");
                 Batalha2.addThemeVariants(CardVariant.ELEVATED);
                 Batalha2.setMedia(imagem2);
                 Batalha2.setTitle("Batalha 2");
@@ -117,8 +117,8 @@ public class JornadaView extends Div implements BeforeEnterObserver {
             case 1:
                 Card Batalha3 = new Card();
                 DownloadHandler imageHandler3 = DownloadHandler.forClassResource(getClass(),
-                        "/images/batalhas/cena_3.avif", "cena_3.avif");
-                Image imagem3 = new Image(imageHandler3, "cena_3.avif");
+                        "/images/batalhas/cena_3.png", "cena_3.png");
+                Image imagem3 = new Image(imageHandler3, "cena_3.png");
                 Batalha3.addThemeVariants(CardVariant.ELEVATED);
                 Batalha3.setMedia(imagem3);
                 Batalha3.setTitle("Batalha 3");
@@ -126,8 +126,8 @@ public class JornadaView extends Div implements BeforeEnterObserver {
 
                 Card Batalha4 = new Card();
                 DownloadHandler imageHandler4 = DownloadHandler.forClassResource(getClass(),
-                        "/images/batalhas/cena_4.avif", "cena_4.avif");
-                Image imagem4 = new Image(imageHandler4, "cena_4.avif");
+                        "/images/batalhas/cena_4.png", "cena_4.png");
+                Image imagem4 = new Image(imageHandler4, "cena_4.png");
                 Batalha4.addThemeVariants(CardVariant.ELEVATED);
                 Batalha4.setMedia(imagem4);
                 Batalha4.setTitle("Batalha 4");
@@ -147,8 +147,8 @@ public class JornadaView extends Div implements BeforeEnterObserver {
             case 2:
                 Card Batalha5 = new Card();
                 DownloadHandler imageHandler5 = DownloadHandler.forClassResource(getClass(),
-                        "/images/batalhas/cena_5.avif", "cena_5.avif");
-                Image imagem5 = new Image(imageHandler5, "cena_5.avif");
+                        "/images/batalhas/cena_5.png", "cena_5.png");
+                Image imagem5 = new Image(imageHandler5, "cena_5.png");
                 Batalha5.addThemeVariants(CardVariant.ELEVATED);
                 Batalha5.setMedia(imagem5);
                 Batalha5.setTitle("Batalha 5");
@@ -159,8 +159,8 @@ public class JornadaView extends Div implements BeforeEnterObserver {
                 batalha5btn.addClickListener(event -> iniciarBatalha(5));
                 Card Batalha6 = new Card();
                 DownloadHandler imageHandler6 = DownloadHandler.forClassResource(getClass(),
-                        "/images/batalhas/cena_6.avif", "cena_6.avif");
-                Image imagem6 = new Image(imageHandler6, "cena_6.avif");
+                        "/images/batalhas/cena_6.png", "cena_6.png");
+                Image imagem6 = new Image(imageHandler6, "cena_6.png");
                 Batalha6.addThemeVariants(CardVariant.ELEVATED);
                 Batalha6.setMedia(imagem6);
                 Batalha6.setTitle("Batalha 6");
@@ -175,8 +175,8 @@ public class JornadaView extends Div implements BeforeEnterObserver {
             case 3:
                 Card Batalha7 = new Card();
                 DownloadHandler imageHandler7 = DownloadHandler.forClassResource(getClass(),
-                        "/images/batalhas/cena_7.avif", "cena_7.avif");
-                Image imagem7 = new Image(imageHandler7, "cena_7.avif");
+                        "/images/batalhas/cena_7.png", "cena_7.png");
+                Image imagem7 = new Image(imageHandler7, "cena_7.png");
                 Batalha7.addThemeVariants(CardVariant.ELEVATED);
                 Batalha7.setMedia(imagem7);
                 Batalha7.setTitle("Batalha 7");
