@@ -12,51 +12,98 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
+import com.vaadin.flow.component.progressbar.ProgressBarVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.streams.DownloadHandler;
 
 @Route(value = "batalha_1")
 public class Batalha_1 extends Div {
     VerticalLayout tela = new VerticalLayout();
     Div arena = new Div();
+    DownloadHandler arenaHandler;
+    DownloadHandler spriteHandler;
+    DownloadHandler spriteEquipeHandler;
+    ProgressBar barraInimigo;
+    ProgressBar barraEquipe;
+    private int vida = 100;
 
     public Batalha_1() {
-        arena.addClassName("arena");
-        Image fundo = new Image("images/Batalha/arena.png", "Arena");
-        fundo.addClassName("arena-fundo");
+        barraInimigo = new ProgressBar();
+        barraEquipe = new ProgressBar();
+        barraInimigo.setValue(vida / 100.0);
+        barraInimigo.setThemeVariant(ProgressBarVariant.LUMO_ERROR, true);
+        barraEquipe.setValue(vida / 100.0);
+        barraEquipe.setThemeVariant(ProgressBarVariant.LUMO_ERROR, true);
 
-        Div painelInimigo = criarPainelVida("Nome", 100);
-        Image spriteInimigo = new Image("images/Batalha/sprite_goblin.png", "sprite_goblin");
+        tela.addClassName("tela-batalha");
+        arena.addClassName("arena");
+        arenaHandler = DownloadHandler.forClassResource(getClass(), "/images/arena/arena.png", "arena.png");
+        Image fundo = new Image(arenaHandler, "arena.png");
+        fundo.addClassName("arena-fundo");
+        fundo.setSizeFull();
+
+        Div painelInimigo = criarPainelInimigo("Nome", 100);
+        spriteHandler = DownloadHandler.forClassResource(getClass(), "/images/arena/sprite_goblin.png",
+                "sprite_goblin.png");
+        Image spriteInimigo = new Image(spriteHandler, "sprite_goblin.png");
+        spriteInimigo.addClassName("grupo-inimigo");
         painelInimigo.addClassName("placa-inimigo");
 
-        Div painelEquipe = criarPainelVida("Nome", 100);
-        Image spriteEquipe = new Image("images/Batalha/sprite_equipe.png", "sprite_equipe");
-        painelEquipe.addClassName("grupo-equipe");
+        Div painelEquipe = criarPainelEquipe(100);
+        spriteEquipeHandler = DownloadHandler.forClassResource(getClass(), "/images/arena/sprite_equipe.png",
+                "sprite_equipe.png");
+        Image spriteEquipe = new Image(spriteEquipeHandler, "sprite_equipe.png");
+        spriteEquipe.addClassName("grupo-equipe");
+        painelEquipe.addClassName("placa-equipe");
 
         arena.add(fundo, painelInimigo, spriteInimigo, spriteEquipe, painelEquipe);
 
         Div mensagem = new Div();
         mensagem.setText("mensagem atual");
 
-        HorizontalLayout escolhas = new HorizontalLayout(
-                new Button("Ação 1"),
-                new Button("Ação 2"),
-                new Button("Ação 3"));
+        Div painelEscolhas = new Div();
+        painelEscolhas.addClassName("painel-escolhas");
+        Button btn1 = new Button("Ação 1");
+        Button btn2 = new Button("Ação 2");
+        Button btn3 = new Button("Ação 3");
+        btn1.addClickListener(event -> {
+            barraInimigo.setValue(barraInimigo.getValue() - 0.1);
+            mensagem.setText("Ação 1 executada!");
+        });
 
-        tela.add(arena, mensagem, escolhas);
+        painelEscolhas.add(btn1);
+        painelEscolhas.add(btn2);
+        painelEscolhas.add(btn3);
+
+        arena.add(painelEscolhas);
+
+        tela.add(arena, mensagem);
+
+        add(tela);
 
     }
 
-    Div criarPainelVida(String nome, int vida) {
+    Div criarPainelInimigo(String nome, int vida) {
         HorizontalLayout cabecalho = new HorizontalLayout(
-                new Span(nome),
+                new Span("Goblin"),
                 new Span("Nível"));
 
-        ProgressBar barra = new ProgressBar();
-        barra.setValue(vida / 100.0);
+        Div placa = new Div(cabecalho, barraInimigo);
+        placa.addClassName("placa-vida");
+        return placa;
+    }
 
-        Div placa = new Div(cabecalho, barra);
+    Div criarPainelEquipe(int vida) {
+        HorizontalLayout cabecalho = new HorizontalLayout(
+                new Span("Equipe"),
+                new Span("Nível"));
+
+        barraEquipe.setValue(vida / 100.0);
+        barraEquipe.setThemeVariant(ProgressBarVariant.LUMO_ERROR, true);
+
+        Div placa = new Div(cabecalho, barraEquipe);
         placa.addClassName("placa-vida");
         return placa;
     }
