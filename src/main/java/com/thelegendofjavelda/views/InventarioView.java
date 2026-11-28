@@ -41,50 +41,28 @@ public class InventarioView extends VerticalLayout {
         this.service = service;
         add(new H1("Inventário"));
         HorizontalLayout gridLayout = new HorizontalLayout();
-        Stream<InventarioJogador> inventarioGeral = Stream.of(new InventarioJogador());
 
-        /* Grid<InventarioJogador> gridGeral = new Grid<>(InventarioJogador.class, false);
-        gridGeral.addColumn(InventarioJogador::getNome).setHeader("Nome");
-        gridGeral.addColumn(InventarioJogador::getAtaque).setHeader("Ataque");
-        gridGeral.setItems(
-                );
-        gridGeral.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS);
-        add(gridGeral); */
+        /*
+         * Grid<InventarioJogador> gridGeral = new Grid<>(InventarioJogador.class,
+         * false);
+         * gridGeral.addColumn(InventarioJogador::getNome).setHeader("Nome");
+         * gridGeral.addColumn(InventarioJogador::getAtaque).setHeader("Ataque");
+         * gridGeral.setItems(
+         * );
+         * gridGeral.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS);
+         * add(gridGeral);
+         */
 
         Grid<InventarioPersonagem> gridPersonagem = new Grid<>(InventarioPersonagem.class, false);
-        HeaderRow headerRow = gridPersonagem.prependHeaderRow();
         gridPersonagem.addColumn(InventarioPersonagem::getArma).setHeader("Arma");
         gridPersonagem.addColumn(InventarioPersonagem::getArmadura).setHeader("Armadura");
         gridPersonagem.addColumn(InventarioPersonagem::getUtilitario).setHeader("Utilitário");
-        headerRow.join(gridPersonagem.getColumns().get(0), gridPersonagem.getColumns().get(1), gridPersonagem.getColumns().get(2))
+        HeaderRow headerRow = gridPersonagem.prependHeaderRow();
+        headerRow
+                .join(gridPersonagem.getColumns().get(0), gridPersonagem.getColumns().get(1),
+                        gridPersonagem.getColumns().get(2))
                 .setText("Inventário do Personagem");
 
-    }
-
-    public InventarioJogador atualizarInventario(CSVFormat formato) {
-        if (!Files.exists(INVENTARIO_CSV)){
-            throw new IllegalStateException("O arquivo de inventário não existe. Inicie uma nova campanha.");
-        }
-
-        try (CSVParser parser = CSVParser.parse(INVENTARIO_CSV, java.nio.charset.StandardCharsets.UTF_8, formato)){
-            List<Equipavel> inventarioGeral = new ArrayList<>();
-             for (var record : parser) {
-                String nome = record.get("nome");
-                String tipo = record.get("tipo");
-                int ataque = Integer.parseInt(record.get("ataque"));
-                int defesa = Integer.parseInt(record.get("defesa"));
-                int quantidade = Integer.parseInt(record.get("quantidade"));
-                int cura = Integer.parseInt(record.get("cura"));
-                int durabilidade = Integer.parseInt(record.get("durabilidade"));
-                switch(tipo){
-
-                }
-            } 
-
-        } catch (Exception e) {
-            Notification.show("Erro ao carregar membros da guilda: " + e.getMessage());
-        }
-        return new InventarioJogador();
     }
 
     public void beforeEnter(BeforeEnterEvent event) {

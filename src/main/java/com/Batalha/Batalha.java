@@ -17,15 +17,6 @@ public class Batalha {
     private double xpTotal;
     private boolean xpDistribuido = false;
 
-    public Batalha(Equipe equipe, List<Criatura> criaturas) {
-        if (equipe == null || criaturas == null) {
-            throw new IllegalArgumentException("Equipe e criaturas não podem ser nulas.");
-        }
-        this.equipeOriginal = equipe;
-        this.party = new ArrayList<>(equipe.getHerois());
-        this.criaturas = new ArrayList<>(criaturas);
-    }
-
     public Batalha(List<Heroi> herois, List<Criatura> criaturas) {
         if (herois == null || criaturas == null) {
             throw new IllegalArgumentException("Heróis e criaturas não podem ser nulos.");

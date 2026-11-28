@@ -1,7 +1,15 @@
 package com.thelegendofjavelda.views.Batalhas;
 
+import java.util.List;
+import java.util.function.Supplier;
+
 import org.jetbrains.kotlin.it.unimi.dsi.fastutil.ints.H;
 
+import com.Batalha.Batalha;
+import com.Personagens.Criaturas.Criatura;
+import com.Personagens.Herois.Heroi;
+import com.thelegendofjavelda.persistence.CsvSaveService;
+import com.thelegendofjavelda.views.JornadaView;
 import com.thelegendofjavelda.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
@@ -22,13 +30,21 @@ import com.vaadin.flow.server.streams.DownloadHandler;
 public class Batalha_1 extends BatalhaLayout {
     VerticalLayout tela = new VerticalLayout();
     Div arena = new Div();
+
+    CsvSaveService service;
+
     DownloadHandler spriteHandler;
     DownloadHandler spriteEquipeHandler;
     ProgressBar barraInimigo;
     ProgressBar barraEquipe;
     private int vida = 100;
+    private List<Supplier<Criatura>> criaturasSuppliers;
 
     public Batalha_1() {
+        List<Criatura> criaturas = criaturasSuppliers.stream().map(Supplier::get).toList();
+        List<Heroi> equipeHerois = service.getEquipe();
+        Batalha batalha = new Batalha(equipeHerois, criaturas);
+
         barraInimigo = new ProgressBar();
         barraEquipe = new ProgressBar();
         barraInimigo.setValue(vida / 100.0);
@@ -63,10 +79,18 @@ public class Batalha_1 extends BatalhaLayout {
         painelEscolhas.addClassName("painel-escolhas");
         Button btn1 = new Button("Ação 1");
         Button btn2 = new Button("Ação 2");
-        Button btn3 = new Button("Ação 3");
+        Button btn3 = new Button("Sair da batalha");
         btn1.addClickListener(event -> {
             barraInimigo.setValue(barraInimigo.getValue() - 0.1);
             mensagem.setText("Ação 1 executada!");
+        });
+        btn2.addClickListener(event -> {
+            barraEquipe.setValue(barraEquipe.getValue() - 0.1);
+            mensagem.setText("Ação 2 executada!");
+        });
+        btn3.addClickListener(event -> {
+            Notification.show("Saindo da batalha...");
+            getUI().ifPresent(ui -> ui.navigate(JornadaView.class));
         });
 
         painelEscolhas.add(btn1);

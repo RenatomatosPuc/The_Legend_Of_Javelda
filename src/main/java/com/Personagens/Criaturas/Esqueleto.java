@@ -47,6 +47,22 @@ public class Esqueleto extends Criatura {
         setEsforco(6);
     }
 
+    public Esqueleto(int nivel) {
+
+        super(
+                "Esqueleto",
+                80 + (nivel - 1) * 10,
+                10 + (nivel - 1) * 2,
+                15 + (nivel - 1) * 3,
+                "C",
+                8,
+                nivel,
+                80 + (nivel - 1) * 10,
+                true);
+
+        setEsforco(6);
+    }
+
     @Override
     public double atacar(Combatente target) {
 
